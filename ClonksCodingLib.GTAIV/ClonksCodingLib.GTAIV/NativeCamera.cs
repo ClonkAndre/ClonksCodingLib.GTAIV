@@ -20,6 +20,9 @@ namespace CCL.GTAIV
     // DESTROY_ALL_CAMS
     // IS_CAM_INTERPOLATING
 
+    /// <summary>
+    /// Camera shake types.
+    /// </summary>
     public enum CameraShakeType
     {
         PITCH_UP_DOWN = 0,
@@ -33,6 +36,9 @@ namespace CCL.GTAIV
         TRACK_UP_DOWN_2 = 8,
         PULSE_IN_OUT = 9
     }
+    /// <summary>
+    /// Camera shake behaviours.
+    /// </summary>
     public enum CameraShakeBehaviour
     {
         CONSTANT_PLUS_FADE_IN_OUT = 1,
@@ -45,6 +51,9 @@ namespace CCL.GTAIV
         MEDIUM_SLOW_EXPONENTIAL_PLUS_FADE_IN = 8
     }
 
+    /// <summary>
+    /// Gives you access to native functions that involve the camera.
+    /// </summary>
     public class NativeCamera : HandleObject
     {
         #region Properties
@@ -68,7 +77,7 @@ namespace CCL.GTAIV
             }
         }
         /// <summary>
-        /// Gets or sets the offset position of the camera.
+        /// Sets the attach offset position of the camera.
         /// </summary>
         public Vector3 Offset
         {
@@ -76,7 +85,7 @@ namespace CCL.GTAIV
                 if (!IsValid)
                     return;
 
-                SET_CAM_POINT_OFFSET(Handle, value.X, value.Y, value.Z);
+                SET_CAM_ATTACH_OFFSET(Handle, value.X, value.Y, value.Z);
             }
         }
         /// <summary>
@@ -210,13 +219,13 @@ namespace CCL.GTAIV
         /// <summary>
         /// Sets if the <see cref="Offset"/> is relative.
         /// </summary>
-        public bool OffsetPointIsRelative
+        public bool AttachOffsetIsRelative
         {
             set {
                 if (!IsValid)
                     return;
 
-                SET_CAM_POINT_OFFSET_IS_RELATIVE(Handle, value);
+                SET_CAM_ATTACH_OFFSET_IS_RELATIVE(Handle, value);
             }
         }
         #endregion
@@ -361,6 +370,61 @@ namespace CCL.GTAIV
             UNPOINT_CAM(Handle);
         }
 
+        /// <summary>
+        /// Attaches the camera to the given vehicle.
+        /// </summary>
+        /// <param name="vehicleHandle">The handle of the vehicle.</param>
+        public void AttachToVehicle(int vehicleHandle)
+        {
+            if (!IsValid)
+                return;
+
+            ATTACH_CAM_TO_VEHICLE(Handle, vehicleHandle);
+        }
+        /// <summary>
+        /// Attaches the camera to the given object.
+        /// </summary>
+        /// <param name="objectHandle">The handle of the object.</param>
+        public void AttachToObject(int objectHandle)
+        {
+            if (!IsValid)
+                return;
+
+            ATTACH_CAM_TO_OBJECT(Handle, objectHandle);
+        }
+        /// <summary>
+        /// Attaches the camera to the given ped.
+        /// </summary>
+        /// <param name="pedHandle">The handle of the ped.</param>
+        public void AttachToPed(int pedHandle)
+        {
+            if (!IsValid)
+                return;
+
+            ATTACH_CAM_TO_PED(Handle, pedHandle);
+        }
+        /// <summary>
+        /// Attaches the camera to the given viewport.
+        /// </summary>
+        /// <param name="viewportHandle">The handle of the viewport.</param>
+        public void AttachToViewport(int viewportHandle)
+        {
+            if (!IsValid)
+                return;
+
+            ATTACH_CAM_TO_VIEWPORT(Handle, viewportHandle);
+        }
+        /// <summary>
+        /// Detaches the camera.
+        /// </summary>
+        public void Unattach()
+        {
+            if (!IsValid)
+                return;
+
+            UNATTACH_CAM(Handle);
+        }
+
         // Statics
         public static void SetCameraControlsDisabledWithPlayerControls(bool value)
         {
@@ -415,6 +479,20 @@ namespace CCL.GTAIV
 
             return null;
         }
+        /// <summary>
+        /// Creates a new camera of type <see cref="eCamType.CAM_SCRIPTED"/>.
+        /// </summary>
+        /// <returns>If successful, the newly created camera is returned. Otherwise, false.</returns>
+        public static NativeCamera Create()
+        {
+            CREATE_CAM((uint)eCamType.CAM_SCRIPTED, out int cam);
+
+            if (cam != 0)
+                return new NativeCamera(cam);
+
+            return null;
+        }
+
         /// <summary>
         /// Gets the game camera.
         /// </summary>

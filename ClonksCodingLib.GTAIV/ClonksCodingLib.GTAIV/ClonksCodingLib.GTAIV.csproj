@@ -30,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ClonksCodingLib.GTAIV.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IVSDKDotNetWrapper">
@@ -42,16 +43,53 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ColorExtensions.cs" />
+    <Compile Include="Extensions\CPedExtensions.cs" />
+    <Compile Include="Extensions\CVehicleExtensions.cs" />
+    <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="HandleObject.cs" />
+    <Compile Include="AnimationStuff.cs" />
     <Compile Include="NativeCamera.cs" />
     <Compile Include="NativeCheckpoint.cs" />
     <Compile Include="NativeControls.cs" />
+    <Compile Include="NativeGame.cs" />
     <Compile Include="NativeLight.cs" />
     <Compile Include="NativePickup.cs" />
     <Compile Include="NativeRoom.cs" />
     <Compile Include="NativeScriptFire.cs" />
+    <Compile Include="NativeWorld.cs" />
     <Compile Include="NewsScrollbar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Structs\Rectangle3D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TBOGT_Scripts.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TLAD_MP_Scripts.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TLAD_Scripts.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\IV_MP_Scripts.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\IV_Scripts.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TBOGT_MP_Scripts.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
