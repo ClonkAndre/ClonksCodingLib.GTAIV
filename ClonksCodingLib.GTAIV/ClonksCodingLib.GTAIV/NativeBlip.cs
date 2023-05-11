@@ -143,7 +143,11 @@ namespace CCL.GTAIV
         #endregion
 
         #region Constructor
-        internal NativeBlip(int handle) : base(handle)
+        /// <summary>
+        /// Creates a new instance of the <see cref="NativeBlip"/> class with an existing handle.
+        /// </summary>
+        /// <param name="handle">The handle of an already existing blip.</param>
+        public NativeBlip(int handle) : base(handle)
         {
 
         }

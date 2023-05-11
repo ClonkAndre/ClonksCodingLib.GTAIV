@@ -231,7 +231,11 @@ namespace CCL.GTAIV
         #endregion
 
         #region Constructor
-        internal NativeCamera(int handle) : base(handle)
+        /// <summary>
+        /// Creates a new instance of the <see cref="NativeCamera"/> class with an existing handle.
+        /// </summary>
+        /// <param name="handle">The handle of an already existing camera.</param>
+        public NativeCamera(int handle) : base(handle)
         {
 
         }
@@ -539,6 +543,19 @@ namespace CCL.GTAIV
         public static NativeCamera GetCinematicCam()
         {
             GET_CINEMATIC_CAM(out int cam);
+
+            if (cam != 0)
+                return new NativeCamera(cam);
+
+            return null;
+        }
+        /// <summary>
+        /// Gets the free camera.
+        /// </summary>
+        /// <returns>If successful, the free camera is returned. Otherwise, false.</returns>
+        public static NativeCamera GetFreeCam()
+        {
+            GET_FREE_CAM(out int cam);
 
             if (cam != 0)
                 return new NativeCamera(cam);

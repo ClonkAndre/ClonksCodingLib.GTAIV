@@ -92,7 +92,11 @@ namespace CCL.GTAIV
         #endregion
 
         #region Constructor
-        internal NativePickup(int handle) : base(handle)
+        /// <summary>
+        /// Creates a new instance of the <see cref="NativePickup"/> class with an existing handle.
+        /// </summary>
+        /// <param name="handle">The handle of an already existing pickup.</param>
+        public NativePickup(int handle) : base(handle)
         {
 
         }

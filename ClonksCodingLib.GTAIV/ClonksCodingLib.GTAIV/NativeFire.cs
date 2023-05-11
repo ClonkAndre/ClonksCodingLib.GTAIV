@@ -24,7 +24,11 @@ namespace CCL.GTAIV
         #endregion
 
         #region Constructor
-        internal NativeFire(int handle) : base(handle)
+        /// <summary>
+        /// Creates a new instance of the <see cref="NativeFire"/> class with an existing handle.
+        /// </summary>
+        /// <param name="handle">The handle of an already existing fire.</param>
+        public NativeFire(int handle) : base(handle)
         {
 
         }
