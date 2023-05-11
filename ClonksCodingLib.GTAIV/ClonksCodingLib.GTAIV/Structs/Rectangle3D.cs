@@ -50,7 +50,8 @@ namespace CCL.GTAIV
 
         #region Methods
         /// <summary>
-        /// Visualizes the bounds of this <see cref="Rectangle3D"/>. This needs to be called in a loop, like from your <see cref="IVSDKDotNet.Script.Tick"/> event.
+        /// Visualizes the bounds of this <see cref="Rectangle3D"/>. This needs to be called in a loop, like from your <see cref="IVSDKDotNet.Script.Tick"/> event.<br/>
+        /// The center of the <see cref="Rectangle3D"/> is gonna be orange, and the corners are gonne be magenta.
         /// </summary>
         /// <param name="centerSize">The size of the corona that represents the <see cref="Center"/> of this <see cref="Rectangle3D"/>.</param>
         /// <param name="cornerSize">The size of the corona that represents the corners of this <see cref="Rectangle3D"/>.</param>

@@ -4,28 +4,6 @@ using static IVSDKDotNet.Native.Natives;
 
 namespace CCL.GTAIV
 {
-
-    public enum ControllerButton
-    {
-        NONE = 0,
-        BUTTON_BACK = 13,
-        BUTTON_START = 12,
-        BUTTON_X = 14,
-        BUTTON_Y = 15,
-        BUTTON_A = 16,
-        BUTTON_B = 17,
-        BUTTON_DPAD_UP = 8,
-        BUTTON_DPAD_DOWN = 9,
-        BUTTON_DPAD_LEFT = 10,
-        BUTTON_DPAD_RIGHT = 11,
-        BUTTON_TRIGGER_LEFT = 5,
-        BUTTON_TRIGGER_RIGHT = 7,
-        BUTTON_BUMPER_LEFT = 4,
-        BUTTON_BUMPER_RIGHT = 6,
-        BUTTON_STICK_LEFT = 18,
-        BUTTON_STICK_RIGHT = 19
-    }
-
     public class NativeControls
     {
 
@@ -68,11 +46,31 @@ namespace CCL.GTAIV
         #endregion
 
         #region Methods
+        private static void GetMovement(uint padIndex, out float x, out float y)
+        {
+            GetAnalogueStickPositions(padIndex, out Vector2 leftStick, out Vector2 rightStick);
+
+            if (leftStick.X == 0f && leftStick.Y == 0f)
+            {
+                GetKeyboardMoveInput(out int x2, out int y2);
+                x = x2;
+                y = y2;
+                return;
+            }
+
+            x = leftStick.X;
+            y = leftStick.Y;
+        }
+
         public static void GetAnalogueStickPositions(uint padIndex, out Vector2 stickLeft, out Vector2 stickRight)
         {
             GET_POSITION_OF_ANALOGUE_STICKS(padIndex, out int l1, out int r1, out int l2, out int r2);
             stickLeft = new Vector2(l1, r1);
             stickRight = new Vector2(l2, r2);
+        }
+        public static void GetKeyboardMoveInput(out int x, out int y)
+        {
+            GET_KEYBOARD_MOVE_INPUT(out x, out y);
         }
         public static bool GetPadPitchRoll(uint padIndex, out float pitch, out float roll)
         {
@@ -183,6 +181,32 @@ namespace CCL.GTAIV
             }
 
             return ControllerButton.NONE;
+        }
+
+        /// <summary>
+        /// Gets if the given game key is pressed.
+        /// </summary>
+        /// <param name="padIndex">Target controller. Default is 0.</param>
+        /// <param name="key">Target key.</param>
+        /// <returns>True if the given key was pressed. Otherwise, false.</returns>
+        public static bool IsGameKeyPressed(uint padIndex, GameKey key)
+        {
+            if ((int)key < 1000)
+            {
+                return IS_CONTROL_PRESSED((int)padIndex, (int)key);
+            }
+            else
+            {
+                GetMovement(padIndex, out float x, out float y);
+                switch (key)
+                {
+                    case GameKey.MoveForward:   return (y < -32);
+                    case GameKey.MoveBackward:  return (y > 32);
+                    case GameKey.MoveLeft:      return (x < -32);
+                    case GameKey.MoveRight:     return (x > 32);
+                }
+                return false;
+            }
         }
         #endregion
 

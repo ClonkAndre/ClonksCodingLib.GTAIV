@@ -6,55 +6,6 @@ using static IVSDKDotNet.Native.Natives;
 
 namespace CCL.GTAIV
 {
-
-    /// <summary>
-    /// Contains all common episodes that are in GTA IV.
-    /// </summary>
-    public enum Episode
-    {
-        /// <summary>GTA IV</summary>
-        IV = 0,
-        /// <summary>The Lost and Damned</summary>
-        TLaD,
-        /// <summary>The Ballad of Gay Tony</summary>
-        TBoGT
-    }
-
-    /// <summary>
-    /// Contains all common game modes that are in GTA IV and its Episodes.
-    /// </summary>
-    public enum NetworkGameMode
-    {
-        None = -1,
-        Deathmatch = 0,
-        TeamDeathmatch = 1,
-        MafiyaWork = 2,
-        TeamMafiyaWork = 3,
-        TeamCarJackCity = 4,
-        CarJackCity = 5,
-        Race = 6,
-        GTARace = 7,
-        PartyMode = 8,
-        CopsAndCrooks = 10,
-        TurfWar = 12,
-        DealBreaker = 13,
-        HangmansNoose = 14,
-        BombDaBaseII = 15,
-        FreeMode = 16,
-        TBoGT_Deathmatch = 26,
-        TBoGT_TeamDeathmatch = 27,
-        TBoGT_Race = 28,
-        TBoGT_GTARace = 29,
-        TLaD_Deathmatch = 24,
-        TLaD_TeamDeathmatch = 21,
-        TLaD_Race = 20,
-        TLaD_ClubBusiness = 19,
-        TLaD_LoneWolfBiker = 23,
-        TLaD_ChopperVsChopper = 17,
-        TLaD_WitnessProtection = 18,
-        TLaD_OwnTheCity = 22
-    }
-
     /// <summary>
     /// Gives you access to native functions that involve the game.
     /// </summary>

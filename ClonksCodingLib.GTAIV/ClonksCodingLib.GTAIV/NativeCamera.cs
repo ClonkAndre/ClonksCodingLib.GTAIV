@@ -532,6 +532,19 @@ namespace CCL.GTAIV
 
             return null;
         }
+        /// <summary>
+        /// Gets the cinematic camera.
+        /// </summary>
+        /// <returns>If successful, the cinematic camera is returned. Otherwise, false.</returns>
+        public static NativeCamera GetCinematicCam()
+        {
+            GET_CINEMATIC_CAM(out int cam);
+
+            if (cam != 0)
+                return new NativeCamera(cam);
+
+            return null;
+        }
         #endregion
     }
 }

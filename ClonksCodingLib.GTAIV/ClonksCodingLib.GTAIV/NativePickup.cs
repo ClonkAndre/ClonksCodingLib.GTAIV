@@ -290,6 +290,20 @@ namespace CCL.GTAIV
         {
             SET_PICKUPS_FIX_CARS(value);
         }
+
+        /// <summary>
+        /// Attaches a <see cref="NativeBlip"/> to this <see cref="NativePickup"/>.
+        /// </summary>
+        /// <returns>If successful, the attached <see cref="NativeBlip"/> is returned. Otherwise, <see langword="null"/>.</returns>
+        public NativeBlip AttachBlip()
+        {
+            if (!IsValid)
+                return null;
+            if (!Exists())
+                return null;
+
+            return NativeBlip.AddBlip(this);
+        }
         #endregion
 
     }

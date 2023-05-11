@@ -2,6 +2,10 @@
 
 namespace CCL.GTAIV
 {
+    /// <summary>
+    /// A <see cref="HandleObject"/> is an entity which has a <b>handle</b> like the <see cref="IVSDKDotNet.CPed"/>, <see cref="IVSDKDotNet.CVehicle"/> or the <see cref="NativeBlip"/>.<br/>
+    /// Most native functions require a <b>handle</b> like the <see cref="IVSDKDotNet.Native.Natives.DOES_CHAR_EXIST(int)"/> native, which requries the <b>handle</b> of a <see cref="IVSDKDotNet.CPed"/>.
+    /// </summary>
     public abstract class HandleObject : IDisposable
     {
 
@@ -72,9 +76,9 @@ namespace CCL.GTAIV
         }
 
         /// <summary>
-        /// Gets the handle of this object.
+        /// Gets the handle of this native object.
         /// </summary>
-        /// <returns>The handle if this object.</returns>
+        /// <returns>The handle of this native object.</returns>
         public override int GetHashCode()
         {
             return Handle;

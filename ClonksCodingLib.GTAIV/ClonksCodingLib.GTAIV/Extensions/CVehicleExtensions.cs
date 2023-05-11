@@ -12,7 +12,53 @@ namespace CCL.GTAIV
     public static class CVehicleExtensions
     {
         #region Methods
+        public static void ApplyForce(this CVehicle veh, Vector3 direction, Vector3 rotation)
+        {
+            if (veh == null)
+                return;
 
+            APPLY_FORCE_TO_CAR(GetHandle(veh), 3, direction.X, direction.Y, direction.Z, rotation.X, rotation.Y, rotation.Z, 0, 0, 1, 1);
+        }
+        public static void ApplyForce(this CVehicle veh, Vector3 direction)
+        {
+            if (veh == null)
+                return;
+
+            ApplyForce(veh, direction, Vector3.Zero);
+        }
+
+        public static void ApplyForceRelative(this CVehicle veh, Vector3 direction, Vector3 rotation)
+        {
+            if (veh == null)
+                return;
+
+            APPLY_FORCE_TO_CAR(GetHandle(veh), 3, direction.X, direction.Y, direction.Z, rotation.X, rotation.Y, rotation.Z, 0, 1, 1, 1);
+        }
+        public static void ApplyForceRelative(this CVehicle veh, Vector3 direction)
+        {
+            if (veh == null)
+                return;
+
+            ApplyForceRelative(veh, direction, Vector3.Zero);
+        }
+
+        public static void SetCurrentRoom(this CVehicle veh, NativeRoom room)
+        {
+            if (veh == null)
+                return;
+            if (room == null)
+                return;
+
+            SET_ROOM_FOR_CAR_BY_KEY(GetHandle(veh), (uint)room.Room);
+        }
+
+        public static void Delete(this CVehicle veh)
+        {
+            if (veh == null)
+                return;
+
+            CPools.DeleteCar(GetHandle(veh));
+        }
         #endregion
 
         #region Functions
@@ -48,6 +94,52 @@ namespace CCL.GTAIV
 
             GET_MODEL_DIMENSIONS(pModel, out Vector3 min, out Vector3 max);
             return new Rectangle3D(veh.Matrix.pos, max);
+        }
+
+        public static float GetSpeed(this CVehicle veh)
+        {
+            if (veh == null)
+                return 0f;
+
+            GET_CAR_SPEED(GetHandle(veh), out float speed);
+            return speed;
+        }
+        public static Vector3 GetSpeedVector(this CVehicle veh, bool unknownFalse = false)
+        {
+            if (veh == null)
+                return Vector3.Zero;
+
+            GET_CAR_SPEED_VECTOR(GetHandle(veh), out Vector3 vec, unknownFalse);
+            return vec;
+        }
+
+        public static NativeRoom GetCurrentRoom(this CVehicle veh)
+        {
+            if (veh == null)
+                return null;
+
+            return NativeRoom.FromVehicle(veh);
+        }
+
+        public static bool Exists(this CVehicle veh)
+        {
+            if (veh == null)
+                return false;
+
+            return DOES_VEHICLE_EXIST(GetHandle(veh));
+        }
+
+        /// <summary>
+        /// Attaches a <see cref="NativeBlip"/> to this <see cref="CVehicle"/>.
+        /// </summary>
+        /// <param name="veh"></param>
+        /// <returns>If successful, the attached <see cref="NativeBlip"/> is returned. Otherwise, <see langword="null"/>.</returns>
+        public static NativeBlip AttachBlip(this CVehicle veh)
+        {
+            if (veh == null)
+                return null;
+
+            return NativeBlip.AddBlip(veh);
         }
         #endregion
     }
