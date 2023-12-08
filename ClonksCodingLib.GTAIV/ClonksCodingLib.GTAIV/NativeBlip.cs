@@ -12,7 +12,8 @@ namespace CCL.GTAIV
         #region Properties
         public Vector3 Position
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return Vector3.Zero;
 
@@ -23,47 +24,54 @@ namespace CCL.GTAIV
 
         public eBlipColor Color
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return eBlipColor.BLIP_COLOR_WHITE;
 
                 GET_BLIP_COLOUR(Handle, out uint c);
                 return (eBlipColor)c;
             }
-            set {
+            set
+            {
                 if (IsValid)
                     CHANGE_BLIP_COLOUR(Handle, (int)value);
             }
         }
         public eBlipDisplay Display
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return eBlipDisplay.BLIP_DISPLAY_HIDDEN;
 
                 return (eBlipDisplay)GET_BLIP_INFO_ID_DISPLAY(Handle);
             }
-            set {
+            set
+            {
                 if (IsValid)
                     CHANGE_BLIP_DISPLAY(Handle, (uint)value);
             }
         }
         public BlipIcon Icon
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return BlipIcon.Misc_Destination;
 
                 return (BlipIcon)GET_BLIP_SPRITE(Handle);
             }
-            set {
+            set
+            {
                 if (IsValid)
                     CHANGE_BLIP_SPRITE(Handle, (uint)value);
             }
         }
         public eBlipType Type
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return eBlipType.BLIP_TYPE_UNKNOWN;
 
@@ -72,62 +80,71 @@ namespace CCL.GTAIV
         }
         public uint Priority
         {
-            set {
+            set
+            {
                 if (IsValid)
                     CHANGE_BLIP_PRIORITY(Handle, value);
             }
         }
         public bool Friendly
         {
-            set {
+            set
+            {
                 if (IsValid)
                     SET_BLIP_AS_FRIENDLY(Handle, value);
             }
         }
         public bool ShowOnlyWhenNear
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return false;
 
                 return IS_BLIP_SHORT_RANGE(Handle);
             }
-            set {
+            set
+            {
                 if (IsValid)
                     SET_BLIP_AS_SHORT_RANGE(Handle, value);
             }
         }
         public bool RouteActive
         {
-            set {
+            set
+            {
                 if (IsValid)
                     SET_ROUTE(Handle, value);
             }
         }
         public bool FlashBlip
         {
-            set {
+            set
+            {
                 if (IsValid)
                     FLASH_BLIP(Handle, value);
             }
         }
         public bool FlashBlip2
         {
-            set {
+            set
+            {
                 if (IsValid)
                     FLASH_BLIP_ALT(Handle, value);
             }
         }
         public float Scale
         {
-            set {
+            set
+            {
                 if (IsValid)
                     CHANGE_BLIP_SCALE(Handle, value);
             }
         }
         public int Transparency
         {
-            set {
+            set
+            {
                 if (IsValid)
                     CHANGE_BLIP_ALPHA(Handle, value);
             }
@@ -135,7 +152,8 @@ namespace CCL.GTAIV
         
         public string Name
         {
-            set {
+            set
+            {
                 if (IsValid)
                     CHANGE_BLIP_NAME_FROM_ASCII(Handle, value);
             }
@@ -190,7 +208,7 @@ namespace CCL.GTAIV
         {
             SWITCH_ARROW_ABOVE_BLIPPED_PICKUPS(on);
         }
-        public static void SetBlipThrottleRandomly(CVehicle veh, bool on)
+        public static void SetBlipThrottleRandomly(IVVehicle veh, bool on)
         {
             if (veh == null)
                 return;
@@ -255,7 +273,7 @@ namespace CCL.GTAIV
 
             return null;
         }
-        public static NativeBlip AddBlip(CVehicle target)
+        public static NativeBlip AddBlip(IVVehicle target)
         {
             if (target == null)
                 return null;
@@ -267,7 +285,7 @@ namespace CCL.GTAIV
 
             return null;
         }
-        public static NativeBlip AddBlip(CPed target)
+        public static NativeBlip AddBlip(IVPed target)
         {
             if (target == null)
                 return null;

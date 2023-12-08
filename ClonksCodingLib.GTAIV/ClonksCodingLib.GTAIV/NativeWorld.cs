@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Security.Policy;
+
 using IVSDKDotNet;
 using IVSDKDotNet.Enums;
 using static IVSDKDotNet.Native.Natives;
@@ -21,7 +20,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float PedDensity
         {
-            set {
+            set
+            {
                 SET_PED_DENSITY_MULTIPLIER(value); 
             }
         }
@@ -31,7 +31,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float CarDensity
         {
-            set {
+            set
+            {
                 SET_CAR_DENSITY_MULTIPLIER(value);
             }
         }
@@ -41,7 +42,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float ParkedCarDensity
         {
-            set {
+            set
+            {
                 SET_PARKED_CAR_DENSITY_MULTIPLIER(value);
             }
         }
@@ -51,7 +53,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float RandomCarDensity
         {
-            set {
+            set
+            {
                 SET_RANDOM_CAR_DENSITY_MULTIPLIER(value);
             }
         }
@@ -61,7 +64,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static bool AllowRandomTrains
         {
-            set {
+            set
+            {
                 SWITCH_RANDOM_TRAINS(value);
             }
         }
@@ -70,7 +74,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static bool AllowRandomBoats
         {
-            set {
+            set
+            {
                 SWITCH_RANDOM_BOATS(value);
             }
         }
@@ -79,7 +84,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static bool AllowAmbientPlanes
         {
-            set {
+            set
+            {
                 SWITCH_AMBIENT_PLANES(value);
             }
         }
@@ -88,7 +94,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static bool AllowGarbageTrucks
         {
-            set {
+            set
+            {
                 SWITCH_GARBAGE_TRUCKS(value);
             }
         }
@@ -98,7 +105,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static bool GravityEnabled
         {
-            set {
+            set
+            {
                 SET_GRAVITY_OFF(!value);
             }
         }
@@ -108,11 +116,13 @@ namespace CCL.GTAIV
         /// </summary>
         public static eWeather CurrentWeather
         {
-            get {
+            get
+            {
                 GET_CURRENT_WEATHER(out int weather);
                 return (eWeather)weather;
             }
-            set {
+            set
+            {
                 FORCE_WEATHER_NOW((uint)value);
             }
         }
@@ -122,11 +132,13 @@ namespace CCL.GTAIV
         /// </summary>
         public static TimeSpan CurrentDayTime
         {
-            get {
+            get
+            {
                 GET_TIME_OF_DAY(out int hour, out int min);
                 return new TimeSpan(hour, min, 0);
             }
-            set {
+            set
+            {
                 SET_TIME_OF_DAY((uint)value.Hours, (uint)value.Minutes);
             }
         }
@@ -136,7 +148,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static DateTime CurrentDate
         {
-            get {
+            get
+            {
                 GET_TIME_OF_DAY(out int hour, out int min);
                 GET_CURRENT_DATE(out uint day, out uint month);
                 return new DateTime(2008, (int)month, (int)day, hour, min, 0);
@@ -216,10 +229,16 @@ namespace CCL.GTAIV
             POPULATE_NOW();
         }
 
+        /// <summary>
+        /// Goes to the next day.
+        /// </summary>
         public static void OneDayForward()
         {
             SET_TIME_ONE_DAY_FORWARD();
         }
+        /// <summary>
+        /// Goes back one day.
+        /// </summary>
         public static void OneDayBack()
         {
             SET_TIME_ONE_DAY_BACK();
@@ -248,6 +267,9 @@ namespace CCL.GTAIV
             FORCE_TIME_OF_DAY(hour, minute);
         }
 
+        /// <summary>
+        /// The time of day will be released.
+        /// </summary>
         public static void UnlockDayTime()
         {
             RELEASE_TIME_OF_DAY();
@@ -263,15 +285,15 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
         /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
         /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CPed"/> is returned. Otherwise, null.</returns>
-        public static CPed SpawnPed(string modelName, GTAMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(string modelName, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
         {
-            uint modelHash = RAGE.atStringHash(modelName);
-            CModelInfo.GetModelInfo(modelHash, out int index);
-            CStreaming.ScriptRequestModel((int)modelHash);
-            CStreaming.LoadAllRequestedModels(false);
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
 
-            CPed ped = CPedFactoryNY.CreatePed(tSpawnData.Default(), index, position, true, true);
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, position, true, true);
 
             if (ped == null)
             {
@@ -280,9 +302,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld) 
-                CWorld.Add(ped, false);
+                IVWorld.Add(ped.GetUIntPtr(), false);
 
-            int pedHandle = (int)CPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
 
             if (setAsMissionPed)
                 SET_CHAR_AS_MISSION_CHAR(pedHandle);
@@ -298,15 +320,15 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
         /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
         /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CPed"/> is returned. Otherwise, null.</returns>
-        public static CPed SpawnPed(string modelName, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(string modelName, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
         {
-            uint modelHash = RAGE.atStringHash(modelName);
-            CModelInfo.GetModelInfo(modelHash, out int index);
-            CStreaming.ScriptRequestModel((int)modelHash);
-            CStreaming.LoadAllRequestedModels(false);
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
 
-            CPed ped = CPedFactoryNY.CreatePed(tSpawnData.Default(), index, new GTAMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true, true);
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true, true);
 
             if (ped == null)
             {
@@ -315,9 +337,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld)
-                CWorld.Add(ped, false);
+                IVWorld.Add(ped.GetUIntPtr(), false);
 
-            int pedHandle = (int)CPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
 
             if (setAsMissionPed)
                 SET_CHAR_AS_MISSION_CHAR(pedHandle);
@@ -333,14 +355,14 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
         /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
         /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CPed"/> is returned. Otherwise, null.</returns>
-        public static CPed SpawnPed(uint model, GTAMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(uint model, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
         {
-            CModelInfo.GetModelInfo(model, out int index);
-            CStreaming.ScriptRequestModel((int)model);
-            CStreaming.LoadAllRequestedModels(false);
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
 
-            CPed ped = CPedFactoryNY.CreatePed(tSpawnData.Default(), index, position, true, true);
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, position, true, true);
 
             if (ped == null)
             {
@@ -349,9 +371,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld)
-                CWorld.Add(ped, false);
+                IVWorld.Add(ped.GetUIntPtr(), false);
 
-            int pedHandle = (int)CPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
 
             if (setAsMissionPed)
                 SET_CHAR_AS_MISSION_CHAR(pedHandle);
@@ -367,14 +389,14 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
         /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
         /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CPed"/> is returned. Otherwise, null.</returns>
-        public static CPed SpawnPed(uint model, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(uint model, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
         {
-            CModelInfo.GetModelInfo(model, out int index);
-            CStreaming.ScriptRequestModel((int)model);
-            CStreaming.LoadAllRequestedModels(false);
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
 
-            CPed ped = CPedFactoryNY.CreatePed(tSpawnData.Default(), index, new GTAMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true, true);
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true, true);
 
             if (ped == null)
             {
@@ -383,9 +405,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld)
-                CWorld.Add(ped, false);
+                IVWorld.Add(ped.GetUIntPtr(), false);
 
-            int pedHandle = (int)CPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
 
             if (setAsMissionPed)
                 SET_CHAR_AS_MISSION_CHAR(pedHandle);
@@ -402,15 +424,15 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
         /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
         /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CVehicle"/> is returned. Otherwise, null.</returns>
-        public static CVehicle SpawnVehicle(string modelName, GTAMatrix position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(string modelName, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
         {
-            uint modelHash = RAGE.atStringHash(modelName);
-            CModelInfo.GetModelInfo(modelHash, out int index);
-            CStreaming.ScriptRequestModel((int)modelHash);
-            CStreaming.LoadAllRequestedModels(false);
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
 
-            CVehicle veh = CVehicleFactoryNY.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
 
             if (veh == null)
             {
@@ -419,9 +441,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld)
-                CWorld.Add(veh, false);
+                IVWorld.Add(veh.GetUIntPtr(), false);
 
-            int vehHandle = (int)CPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
 
             if (setAsMissionVehicle)
                 SET_CAR_AS_MISSION_CAR(vehHandle);
@@ -437,15 +459,15 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
         /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
         /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CVehicle"/> is returned. Otherwise, null.</returns>
-        public static CVehicle SpawnVehicle(string modelName, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(string modelName, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
         {
-            uint modelHash = RAGE.atStringHash(modelName);
-            CModelInfo.GetModelInfo(modelHash, out int index);
-            CStreaming.ScriptRequestModel((int)modelHash);
-            CStreaming.LoadAllRequestedModels(false);
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
             
-            CVehicle veh = CVehicleFactoryNY.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, new GTAMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true);
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true);
 
             if (veh == null)
             {
@@ -454,9 +476,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld)
-                CWorld.Add(veh, false);
+                IVWorld.Add(veh.GetUIntPtr(), false);
 
-            int vehHandle = (int)CPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
 
             if (setAsMissionVehicle)
                 SET_CAR_AS_MISSION_CAR(vehHandle);
@@ -472,14 +494,14 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
         /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
         /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CVehicle"/> is returned. Otherwise, null.</returns>
-        public static CVehicle SpawnVehicle(uint model, GTAMatrix position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(uint model, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
         {
-            CModelInfo.GetModelInfo(model, out int index);
-            CStreaming.ScriptRequestModel((int)model);
-            CStreaming.LoadAllRequestedModels(false);
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
 
-            CVehicle veh = CVehicleFactoryNY.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
 
             if (veh == null)
             {
@@ -488,9 +510,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld)
-                CWorld.Add(veh, false);
+                IVWorld.Add(veh.GetUIntPtr(), false);
 
-            int vehHandle = (int)CPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
 
             if (setAsMissionVehicle)
                 SET_CAR_AS_MISSION_CAR(vehHandle);
@@ -506,14 +528,14 @@ namespace CCL.GTAIV
         /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
         /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
         /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="CVehicle"/> is returned. Otherwise, null.</returns>
-        public static CVehicle SpawnVehicle(uint model, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(uint model, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
         {
-            CModelInfo.GetModelInfo(model, out int index);
-            CStreaming.ScriptRequestModel((int)model);
-            CStreaming.LoadAllRequestedModels(false);
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
 
-            CVehicle veh = CVehicleFactoryNY.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, new GTAMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true);
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true);
 
             if (veh == null)
             {
@@ -522,9 +544,9 @@ namespace CCL.GTAIV
             }
 
             if (addToWorld)
-                CWorld.Add(veh, false);
+                IVWorld.Add(veh.GetUIntPtr(), false);
 
-            int vehHandle = (int)CPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
 
             if (setAsMissionVehicle)
                 SET_CAR_AS_MISSION_CAR(vehHandle);
@@ -540,8 +562,8 @@ namespace CCL.GTAIV
         /// <param name="radius">The radius to search for the closest ped.</param>
         /// <param name="unk1">Undocumented. Usually 0 or 1.</param>
         /// <param name="unk2">Undocumented. Usually 0 or 1.</param>
-        /// <returns>If successful, the closest <see cref="CPed"/> is returned. Otherwise, null.</returns>
-        public static CPed GetClosestPed(Vector3 position, float radius, int unk1, int unk2)
+        /// <returns>If successful, the closest <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed GetClosestPed(Vector3 position, float radius, int unk1, int unk2)
         {
             //ALLOW_SCENARIO_PEDS_TO_BE_RETURNED_BY_NEXT_COMMAND(true);
             BEGIN_CHAR_SEARCH_CRITERIA();
@@ -552,13 +574,66 @@ namespace CCL.GTAIV
             if (handle == 0)
                 return null;
 
-            return CPed.FromPointer(CPools.GetPedPool().GetAt((uint)handle));
+            return IVPed.FromUIntPtr(IVPools.GetPedPool().GetAt((uint)handle));
         }
 
+        /// <summary>
+        /// Gets the <see cref="IVPed"/> IV-SDK instance from the given <paramref name="pedHandle"/>.
+        /// </summary>
+        /// <param name="pedHandle">The ped handle to get the <see cref="IVPed"/> instance from.</param>
+        /// <returns>If successful the <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed GetPedInstaceFromHandle(int pedHandle)
+        {
+            UIntPtr ptr = IVPools.GetPedPool().GetAt((uint)pedHandle);
+
+            if (ptr != UIntPtr.Zero)
+                return IVPed.FromUIntPtr(ptr);
+
+            return null;
+        }
+        /// <summary>
+        /// Gets the <see cref="IVVehicle"/> IV-SDK instance from the given <paramref name="vehicleHandle"/>.
+        /// </summary>
+        /// <param name="vehicleHandle">The vehicle handle to get the <see cref="IVVehicle"/> instance from.</param>
+        /// <returns>If successful the <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle GetVehicleInstaceFromHandle(int vehicleHandle)
+        {
+            UIntPtr ptr = IVPools.GetVehiclePool().GetAt((uint)vehicleHandle);
+
+            if (ptr != UIntPtr.Zero)
+                return IVVehicle.FromUIntPtr(ptr);
+
+            return null;
+        }
+        /// <summary>
+        /// Gets the <see cref="CObject"/> IV-SDK instance from the given <paramref name="objectHandle"/>.
+        /// </summary>
+        /// <param name="objectHandle">The object handle to get the <see cref="CObject"/> instance from.</param>
+        /// <returns>If successful the <see cref="CObject"/> is returned. Otherwise, null.</returns>
+        public static IVObject GetObjectInstaceFromHandle(int objectHandle)
+        {
+            UIntPtr ptr = IVPools.GetObjectPool().GetAt((uint)objectHandle);
+
+            if (ptr != UIntPtr.Zero)
+                return (IVObject)IVEntity.FromUIntPtr(ptr);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the name of the current zone at this position.
+        /// </summary>
+        /// <param name="pos">The position to get the zone name of.</param>
+        /// <returns>The name of the zone.</returns>
         public static string GetZoneName(Vector3 pos)
         {
             return GET_NAME_OF_ZONE(pos.X, pos.Y, pos.Z);
         }
+        /// <summary>
+        /// Gets the name of the current info zone at this position.
+        /// </summary>
+        /// <param name="pos">The position to get the info zone name of.</param>
+        /// <returns>The name of the info zone.</returns>
         public static string GetInfoZoneName(Vector3 pos)
         {
             return GET_NAME_OF_INFO_ZONE(pos.X, pos.Y, pos.Z);
@@ -678,6 +753,18 @@ namespace CCL.GTAIV
             }
 
             return Vector3.Zero;
+        }
+
+        /// <summary>
+        /// Checks if the given position is visible on screen.
+        /// </summary>
+        /// <param name="pos">The position to check for.</param>
+        /// <param name="radius">Unknown.</param>
+        /// <returns><see langword="true"/> if visible. Otherwise, <see langword="false"/>.</returns>
+        public static bool IsPositionVisibleOnScreen(Vector3 pos, float radius = 5f)
+        {
+            GET_GAME_VIEWPORT_ID(out int viewportId);
+            return CAM_IS_SPHERE_VISIBLE(viewportId, pos, radius);
         }
         #endregion
 

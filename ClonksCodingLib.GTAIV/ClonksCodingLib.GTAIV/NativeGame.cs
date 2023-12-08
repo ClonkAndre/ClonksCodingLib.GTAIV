@@ -36,7 +36,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static Episode CurrentEpisode
         {
-            get {
+            get
+            {
                 return (Episode)GET_CURRENT_EPISODE();
             }
         }
@@ -46,7 +47,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static bool IsMultiplayer
         {
-            get {
+            get
+            {
                 return NETWORK_IS_SESSION_STARTED();
             }
         }
@@ -55,7 +57,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static bool IsRankedMultiplayer
         {
-            get {
+            get
+            {
                 return NETWORK_IS_GAME_RANKED();
             }
         }
@@ -65,7 +68,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static eGameType NetworkMode
         {
-            get {
+            get
+            {
                 if (!IsMultiplayer)
                     return eGameType.GAME_TYPE_SINGLEPLAYER;
                 if (IsRankedMultiplayer)
@@ -79,7 +83,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static NetworkGameMode NetworkGameMode
         {
-            get {
+            get
+            {
                 if (!IsMultiplayer)
                     return NetworkGameMode.None;
 
@@ -92,7 +97,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static uint PlayerCount
         {
-            get {
+            get
+            {
                 return GET_NUMBER_OF_PLAYERS();
             }
         }
@@ -102,7 +108,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static uint GameTime
         {
-            get {
+            get
+            {
                 GET_GAME_TIMER(out uint t);
                 return t;
             }
@@ -112,7 +119,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float FrameTime
         {
-            get {
+            get
+            {
                 GET_FRAME_TIME(out float t);
                 return t;
             }
@@ -122,7 +130,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float FPS
         {
-            get {
+            get
+            {
                 return 1.0f / FrameTime;
             }
         }
@@ -132,38 +141,57 @@ namespace CCL.GTAIV
         /// </summary>
         public static eRadioStation RadioStation
         {
-            get {
+            get
+            {
                 return (eRadioStation)GET_PLAYER_RADIO_STATION_INDEX();
             }
-            set {
+            set
+            {
                 RETUNE_RADIO_TO_STATION_INDEX((uint)value);
             }
         }
 
+        /// <summary>
+        /// Gets or sets if a minigame is currently in progress.
+        /// </summary>
         public static bool IsMinigameInProgress
         {
-            get {
+            get
+            {
                 return IS_MINIGAME_IN_PROGRESS();
             }
-            set {
+            set
+            {
                 SET_MINIGAME_IN_PROGRESS(value);
             }
         }
+        /// <summary>
+        /// Sets if emergency services are allowed.
+        /// </summary>
         public static bool AllowEmergencyServices
         {
-            set {
+            set
+            {
                 ALLOW_EMERGENCY_SERVICES(value);
             }
         }
+        /// <summary>
+        /// Sets if the max ammo cap is disabled.
+        /// </summary>
         public static bool DisableMaxAmmoLimit
         {
-            set {
+            set
+            {
                 ENABLE_MAX_AMMO_CAP(!value);
             }
         }
+        /// <summary>
+        /// Sets if mad drivers should be switched on.
+        /// </summary>
         public static bool MadDrivers
         {
-            set {
+            set
+            {
                 SWITCH_MAD_DRIVERS(value);
             }
         }
@@ -171,9 +199,10 @@ namespace CCL.GTAIV
         /// <summary>
         /// Sets the zoom of the radar.
         /// </summary>
-        public static float RadarZoom
+        public static int RadarZoom
         {
-            set {
+            set
+            {
                 SET_RADAR_ZOOM(value);
             }
         }
@@ -182,7 +211,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float TimeScale
         {
-            set {
+            set
+            {
                 SET_TIME_SCALE(value);
             }
         }
@@ -191,7 +221,8 @@ namespace CCL.GTAIV
         /// </summary>
         public static float WantedMultiplier
         {
-            set {
+            set
+            {
                 SET_WANTED_MULTIPLIER(value);
             }
         }
@@ -977,48 +1008,77 @@ namespace CCL.GTAIV
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Does an auto save.
+        /// </summary>
         public static void DoAutoSave()
         {
             DO_AUTO_SAVE();
         }
+        /// <summary>
+        /// Shows the save menu.
+        /// </summary>
         public static void ShowSaveMenu()
         {
             ACTIVATE_SAVE_MENU();
         }
 
+        /// <summary>
+        /// Plays an audio event with the given name.
+        /// </summary>
+        /// <param name="eventName">The name of the event.</param>
         public static void PlayAudioEvent(string eventName)
         {
             PLAY_AUDIO_EVENT(eventName);
         }
+        /// <summary>
+        /// Starts playing the credits music.
+        /// </summary>
         public static void PlayCreditsMusic()
         {
-            CTheScripts.SetDummyThread();
+            IVTheScripts.SetDummyThread();
             START_END_CREDITS_MUSIC();
-            CTheScripts.RestorePreviousThread();
+            IVTheScripts.RestorePreviousThread();
         }
+        /// <summary>
+        /// Stops playing the credits music.
+        /// </summary>
         public static void StopCreditsMusic()
         {
-            CTheScripts.SetDummyThread();
+            IVTheScripts.SetDummyThread();
             STOP_END_CREDITS_MUSIC();
-            CTheScripts.RestorePreviousThread();
+            IVTheScripts.RestorePreviousThread();
         }
+        /// <summary>
+        /// Previews a ringtone with the given id.
+        /// </summary>
+        /// <param name="ringtoneId">The ringtone id to preview.</param>
         public static void PreviewRingtone(int ringtoneId)
         {
-            CTheScripts.SetDummyThread();
+            IVTheScripts.SetDummyThread();
             PREVIEW_RINGTONE(ringtoneId);
-            CTheScripts.RestorePreviousThread();
+            IVTheScripts.RestorePreviousThread();
         }
+        /// <summary>
+        /// Stops the current ringtone preview.
+        /// </summary>
         public static void StopRingtonePreview()
         {
-            CTheScripts.SetDummyThread();
+            IVTheScripts.SetDummyThread();
             STOP_PREVIEW_RINGTONE();
-            CTheScripts.RestorePreviousThread();
+            IVTheScripts.RestorePreviousThread();
         }
 
+        /// <summary>
+        /// Pauses the game. Used when you open the Games for Windows Live overlay.
+        /// </summary>
         public static void Pause()
         {
             PAUSE_GAME();
         }
+        /// <summary>
+        /// Unpauses the game.
+        /// </summary>
         public static void Unpause()
         {
             UNPAUSE_GAME();

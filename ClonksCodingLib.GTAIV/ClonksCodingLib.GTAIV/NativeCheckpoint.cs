@@ -132,19 +132,19 @@ namespace CCL.GTAIV
 
         #region Functions
         /// <summary>
-        /// Checks if the given <see cref="CPed"/> is inside this checkpoint.
+        /// Checks if the given <see cref="IVPed"/> is inside this checkpoint.
         /// </summary>
-        /// <param name="ped">The given <see cref="CPed"/> to check for.</param>
-        /// <param name="ignoreZCoordinate">Sets if the Z coordinate of the given <see cref="CPed"/> should be ignored. If set to <see langword="true"/>, this function will return <see langword="true"/> when the <see cref="CPed"/> is inside the checkpoint no matter the current height.</param>
-        /// <returns>True if the given <see cref="CPed"/> is inside this checkpoint. Otherwise, false.</returns>
-        public bool IsInside(CPed ped, bool ignoreZCoordinate = false)
+        /// <param name="ped">The given <see cref="IVPed"/> to check for.</param>
+        /// <param name="ignoreZCoordinate">Sets if the Z coordinate of the given <see cref="IVPed"/> should be ignored. If set to <see langword="true"/>, this function will return <see langword="true"/> when the <see cref="CPed"/> is inside the checkpoint no matter the current height.</param>
+        /// <returns>True if the given <see cref="IVPed"/> is inside this checkpoint. Otherwise, false.</returns>
+        public bool IsInside(IVPed ped, bool ignoreZCoordinate = false)
         {
             if (!Visible)
                 return false;
             if (ped == null)
                 return false;
 
-            Vector3 pos = ped.Matrix.pos;
+            Vector3 pos = ped.Matrix.Pos;
 
             if ((pos.Z > (Position.Z + 5f)) && !ignoreZCoordinate)
                 return false;

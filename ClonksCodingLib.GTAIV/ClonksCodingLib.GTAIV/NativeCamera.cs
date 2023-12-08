@@ -21,37 +21,6 @@ namespace CCL.GTAIV
     // IS_CAM_INTERPOLATING
 
     /// <summary>
-    /// Camera shake types.
-    /// </summary>
-    public enum CameraShakeType
-    {
-        PITCH_UP_DOWN = 0,
-        ROLL_LEFT_RIGHT = 1,
-        YAW_LEFT_RIGHT = 2,
-        TRACK_FORWARD_BACK = 3,
-        TRACK_LEFT_RIGHT = 4,
-        TRACK_UP_DOWN = 5,
-        TRACK_LEFT_RIGHT_2 = 6,
-        TRACK_FORWARD_BACK_2 = 7,
-        TRACK_UP_DOWN_2 = 8,
-        PULSE_IN_OUT = 9
-    }
-    /// <summary>
-    /// Camera shake behaviours.
-    /// </summary>
-    public enum CameraShakeBehaviour
-    {
-        CONSTANT_PLUS_FADE_IN_OUT = 1,
-        CONSTANT_PLUS_FADE_IN = 2,
-        EXPONENTIAL_PLUS_FADE_IN_OUT = 3,
-        VERY_SLOW_EXPONENTIAL_PLUS_FADE_IN = 4,
-        FAST_EXPONENTIAL_PLUS_FADE_IN_OUT = 5,
-        MEDIUM_FAST_EXPONENTIAL_PLUS_FADE_IN_OUT = 6,
-        SLOW_EXPONENTIAL_PLUS_FADE_IN = 7,
-        MEDIUM_SLOW_EXPONENTIAL_PLUS_FADE_IN = 8
-    }
-
-    /// <summary>
     /// Gives you access to native functions that involve the camera.
     /// </summary>
     public class NativeCamera : HandleObject
@@ -62,14 +31,16 @@ namespace CCL.GTAIV
         /// </summary>
         public Vector3 Position
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return Vector3.Zero;
 
                 GET_CAM_POS(Handle, out Vector3 pos);
                 return pos;
             }
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
                 
@@ -81,7 +52,8 @@ namespace CCL.GTAIV
         /// </summary>
         public Vector3 Offset
         {
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -93,14 +65,16 @@ namespace CCL.GTAIV
         /// </summary>
         public Vector3 Rotation
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return Vector3.Zero;
 
                 GET_CAM_ROT(Handle, out Vector3 pos);
                 return pos;
             }
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -113,14 +87,16 @@ namespace CCL.GTAIV
         /// </summary>
         public float FOV
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return 0f;
                 
                 GET_CAM_FOV(Handle, out float fov);
                 return fov;
             }
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -132,14 +108,16 @@ namespace CCL.GTAIV
         /// </summary>
         public float NearClip
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return 0f;
 
                 GET_CAM_NEAR_CLIP(Handle, out float nearClip);
                 return nearClip;
             }
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -152,14 +130,16 @@ namespace CCL.GTAIV
         /// </summary>
         public float FarDoF
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return 0f;
 
                 GET_CAM_FAR_DOF(Handle, out float farDoF);
                 return farDoF;
             }
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -171,14 +151,16 @@ namespace CCL.GTAIV
         /// </summary>
         public float NearDoF
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return 0f;
 
                 GET_CAM_NEAR_DOF(Handle, out float farDoF);
                 return farDoF;
             }
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -191,7 +173,8 @@ namespace CCL.GTAIV
         /// </summary>
         public bool IsActive
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return false;
 
@@ -203,13 +186,15 @@ namespace CCL.GTAIV
         /// </summary>
         public bool IsPropagating
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return false;
 
                 return IS_CAM_PROPAGATING(Handle);
             }
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -221,7 +206,8 @@ namespace CCL.GTAIV
         /// </summary>
         public bool AttachOffsetIsRelative
         {
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -276,6 +262,11 @@ namespace CCL.GTAIV
             ACTIVATE_SCRIPTED_CAMS(false, false);
         }
 
+        /// <summary>
+        /// Sets the depth of field focus point (Not sure if it actually works).
+        /// </summary>
+        /// <param name="pos">The focus point.</param>
+        /// <param name="unk">Undocumented.</param>
         public void SetDoFFocusPoint(Vector3 pos, float unk)
         {
             if (!IsValid)
@@ -472,7 +463,7 @@ namespace CCL.GTAIV
         /// <summary>
         /// Creates a new camera.
         /// </summary>
-        /// <param name="type">The camera type. Usually <see cref="eCamType.CAM_SCRIPTED"/>.</param>
+        /// <param name="type">The camera type. Usually <see cref="IVSDKDotNet.Enums.eCamType.CAM_SCRIPTED"/>.</param>
         /// <returns>If successful, the newly created camera is returned. Otherwise, false.</returns>
         public static NativeCamera Create(eCamType type)
         {
@@ -484,7 +475,7 @@ namespace CCL.GTAIV
             return null;
         }
         /// <summary>
-        /// Creates a new camera of type <see cref="eCamType.CAM_SCRIPTED"/>.
+        /// Creates a new camera of type <see cref="IVSDKDotNet.Enums.eCamType.CAM_SCRIPTED"/>.
         /// </summary>
         /// <returns>If successful, the newly created camera is returned. Otherwise, false.</returns>
         public static NativeCamera Create()

@@ -18,28 +18,32 @@ namespace CCL.GTAIV
         #region Properties
         public static Vector2 MousePosition
         {
-            get {
+            get
+            {
                 GET_MOUSE_POSITION(out int x, out int y);
                 return new Vector2(x, y);
             }
         }
         public static Vector2 MouseInput
         {
-            get {
+            get
+            {
                 GET_MOUSE_INPUT(out int x, out int y);
                 return new Vector2(x, y);
             }
         }
         public static int MouseWheel
         {
-            get {
+            get
+            {
                 GET_MOUSE_WHEEL(out int wheel);
                 return wheel;
             }
         }
         public static float MouseSensitivity
         {
-            get {
+            get
+            {
                 return GET_MOUSE_SENSITIVITY();
             }
         }
@@ -79,10 +83,18 @@ namespace CCL.GTAIV
         #endregion
 
         #region Functions
+        /// <summary>
+        /// Gets if a joypad is being used.
+        /// </summary>
+        /// <returns>True if using a joypad.</returns>
         public static bool IsUsingJoypad()
         {
             return IS_PC_USING_JOYPAD();
         }
+        /// <summary>
+        /// Gets if a controller is being used.
+        /// </summary>
+        /// <returns>True if using a controller.</returns>
         public static bool IsUsingController()
         {
             return IS_USING_CONTROLLER();

@@ -12,11 +12,11 @@ namespace CCL.GTAIV.AnimationController
     public class PedAnimationController
     {
         #region Variables
-        private CPed ped;
+        private IVPed ped;
         #endregion
 
         #region Constructor
-        internal PedAnimationController(CPed targetPed)
+        internal PedAnimationController(IVPed targetPed)
         {
             ped = targetPed;
         }

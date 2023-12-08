@@ -1,4 +1,4 @@
-﻿using IVSDKDotNet;
+﻿#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
 namespace CCL.GTAIV
 {
@@ -9,7 +9,7 @@ namespace CCL.GTAIV
     public enum ShootMode
     {
         AimOnly = 0,
-		SingleShot = 1,
+        SingleShot = 1,
 		SingleShotKeepAim = 2,
 		Burst = 3,
 		Continuous = 4
@@ -295,4 +295,47 @@ namespace CCL.GTAIV
 		Misc_Base
     };
 
+    /// <summary>
+    /// The indicators of a <see cref="IVSDKDotNet.IVVehicle"/>.
+    /// </summary>
+    public enum VehicleIndicator
+    {
+        Left = 0,
+        Right = 1
+    }
+
+    /// <summary>
+    /// Camera shake types.
+    /// </summary>
+    public enum CameraShakeType
+    {
+        PITCH_UP_DOWN = 0,
+        ROLL_LEFT_RIGHT = 1,
+        YAW_LEFT_RIGHT = 2,
+        TRACK_FORWARD_BACK = 3,
+        TRACK_LEFT_RIGHT = 4,
+        TRACK_UP_DOWN = 5,
+        TRACK_LEFT_RIGHT_2 = 6,
+        TRACK_FORWARD_BACK_2 = 7,
+        TRACK_UP_DOWN_2 = 8,
+        PULSE_IN_OUT = 9
+    }
+
+    /// <summary>
+    /// Camera shake behaviours.
+    /// </summary>
+    public enum CameraShakeBehaviour
+    {
+        CONSTANT_PLUS_FADE_IN_OUT = 1,
+        CONSTANT_PLUS_FADE_IN = 2,
+        EXPONENTIAL_PLUS_FADE_IN_OUT = 3,
+        VERY_SLOW_EXPONENTIAL_PLUS_FADE_IN = 4,
+        FAST_EXPONENTIAL_PLUS_FADE_IN_OUT = 5,
+        MEDIUM_FAST_EXPONENTIAL_PLUS_FADE_IN_OUT = 6,
+        SLOW_EXPONENTIAL_PLUS_FADE_IN = 7,
+        MEDIUM_SLOW_EXPONENTIAL_PLUS_FADE_IN = 8
+    }
+
 }
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

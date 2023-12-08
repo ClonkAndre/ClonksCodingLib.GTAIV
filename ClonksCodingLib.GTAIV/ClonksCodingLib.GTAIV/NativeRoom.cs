@@ -48,7 +48,7 @@ namespace CCL.GTAIV
             return new NativeRoom(Convert.ToInt32(arr[1], 16), Convert.ToInt32(arr[2], 16));
         }
 
-        public static NativeRoom FromPed(CPed ped)
+        public static NativeRoom FromPed(IVPed ped)
         {
             if (ped == null)
                 return null;
@@ -57,7 +57,7 @@ namespace CCL.GTAIV
             if (ptr == UIntPtr.Zero)
                 return null;
 
-            int pedHandle = (int)CPools.GetPedPool().GetIndex(ptr);
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ptr);
             if (pedHandle == 0)
                 return null;
 
@@ -77,7 +77,7 @@ namespace CCL.GTAIV
             return new NativeRoom((int)room, interior);
         }
 
-        public static NativeRoom FromVehicle(CVehicle vehicle)
+        public static NativeRoom FromVehicle(IVVehicle vehicle)
         {
             if (vehicle == null)
                 return null;
@@ -86,7 +86,7 @@ namespace CCL.GTAIV
             if (ptr == UIntPtr.Zero)
                 return null;
 
-            int vehicleHandle = (int)CPools.GetVehiclePool().GetIndex(ptr);
+            int vehicleHandle = (int)IVPools.GetVehiclePool().GetIndex(ptr);
             if (vehicleHandle == 0)
                 return null;
 

@@ -32,7 +32,8 @@ namespace CCL.GTAIV
         /// </summary>
         public Vector3 Position
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return Vector3.Zero;
 
@@ -45,7 +46,8 @@ namespace CCL.GTAIV
         /// </summary>
         public bool HasBeenCollected
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return false;
 
@@ -57,7 +59,8 @@ namespace CCL.GTAIV
         /// </summary>
         public bool DoNotSpawnParkedCarsOnTop
         {
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -69,7 +72,8 @@ namespace CCL.GTAIV
         /// </summary>
         public bool CollectableByCar
         {
-            set {
+            set
+            {
                 if (!IsValid)
                     return;
 
@@ -81,7 +85,8 @@ namespace CCL.GTAIV
         /// </summary>
         public uint RoomHash
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return 0;
 

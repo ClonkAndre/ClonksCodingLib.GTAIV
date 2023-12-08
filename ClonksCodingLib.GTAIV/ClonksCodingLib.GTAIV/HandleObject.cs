@@ -3,8 +3,8 @@
 namespace CCL.GTAIV
 {
     /// <summary>
-    /// A <see cref="HandleObject"/> is an entity which has a <b>handle</b> like the <see cref="IVSDKDotNet.CPed"/>, <see cref="IVSDKDotNet.CVehicle"/> or the <see cref="NativeBlip"/>.<br/>
-    /// Most native functions require a <b>handle</b> like the <see cref="IVSDKDotNet.Native.Natives.DOES_CHAR_EXIST(int)"/> native, which requries the <b>handle</b> of a <see cref="IVSDKDotNet.CPed"/>.
+    /// A <see cref="HandleObject"/> is an entity which has a <b>handle</b> like the <see cref="IVSDKDotNet.IVPed"/>, <see cref="IVSDKDotNet.IVVehicle"/> or the <see cref="NativeBlip"/>.<br/>
+    /// Most native functions require a <b>handle</b> like the <see cref="IVSDKDotNet.Native.Natives.DOES_CHAR_EXIST(int)"/> native, which requries the <b>handle</b> of a <see cref="IVSDKDotNet.IVPed"/>.
     /// </summary>
     public abstract class HandleObject : IDisposable
     {

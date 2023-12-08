@@ -13,7 +13,8 @@ namespace CCL.GTAIV
         #region Properties
         public Vector3 Position
         {
-            get {
+            get
+            {
                 if (!IsValid)
                     return Vector3.Zero;
 
@@ -49,12 +50,12 @@ namespace CCL.GTAIV
         {
             EXTINGUISH_FIRE_AT_POINT(pos.X, pos.Y, pos.Z, radius);
         }
-        public static void ExtinguishCarFire(CVehicle veh)
+        public static void ExtinguishCarFire(IVVehicle veh)
         {
             if (veh != null)
                 EXTINGUISH_CAR_FIRE(veh.GetHandle());
         }
-        public static void ExtinguishCharFire(CPed ped)
+        public static void ExtinguishCharFire(IVPed ped)
         {
             if (ped != null)
                 EXTINGUISH_CHAR_FIRE(ped.GetHandle());
@@ -125,9 +126,9 @@ namespace CCL.GTAIV
         /// <summary>
         /// Starts a new char fire for the specified <paramref name="ped"/>.
         /// </summary>
-        /// <param name="ped">The <see cref="CPed"/> who should be set on fire.</param>
+        /// <param name="ped">The <see cref="IVPed"/> who should be set on fire.</param>
         /// <returns>If successful, the newly created fire is returned. Otherwise, false.</returns>
-        public static NativeFire StartCharFire(CPed ped)
+        public static NativeFire StartCharFire(IVPed ped)
         {
             if (ped == null)
                 return null;
@@ -143,9 +144,9 @@ namespace CCL.GTAIV
         /// <summary>
         /// Starts a new car fire for the specified <paramref name="veh"/>.
         /// </summary>
-        /// <param name="veh">The <see cref="CVehicle"/> who should be set on fire.</param>
+        /// <param name="veh">The <see cref="IVVehicle"/> who should be set on fire.</param>
         /// <returns>If successful, the newly created fire is returned. Otherwise, false.</returns>
-        public static NativeFire StartCarFire(CVehicle veh)
+        public static NativeFire StartCarFire(IVVehicle veh)
         {
             if (veh == null)
                 return null;
