@@ -49,11 +49,11 @@
   <ItemGroup>
     <Compile Include="AnimationController\PedAnimationController.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="Extensions\CObjectExtensions.cs" />
+    <Compile Include="Extensions\IVObjectExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
-    <Compile Include="Extensions\CPedExtensions.cs" />
-    <Compile Include="Extensions\CPlayerInfoExtensions.cs" />
-    <Compile Include="Extensions\CVehicleExtensions.cs" />
+    <Compile Include="Extensions\IVPedExtensions.cs" />
+    <Compile Include="Extensions\IVPlayerInfoExtensions.cs" />
+    <Compile Include="Extensions\IVVehicleExtensions.cs" />
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="HandleObject.cs" />
     <Compile Include="AnimationStuff.cs" />
