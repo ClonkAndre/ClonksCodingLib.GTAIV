@@ -213,7 +213,7 @@ namespace CCL.GTAIV
         /// <param name="angle">The current door angle. 0 is closed, 1 is open, -1 is open to the other direction.</param>
         public static void SetDoorState(uint model, Vector3 pos, bool locked, float angle)
         {
-            SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(model, pos.X, pos.Y, pos.Z, locked ? 1 : 0, angle);
+            SET_STATE_OF_CLOSEST_DOOR_OF_TYPE(model, pos.X, pos.Y, pos.Z, locked ? true : false, angle);
         }
 
         /// <summary>
@@ -606,10 +606,10 @@ namespace CCL.GTAIV
             return null;
         }
         /// <summary>
-        /// Gets the <see cref="CObject"/> IV-SDK instance from the given <paramref name="objectHandle"/>.
+        /// Gets the <see cref="IVObject"/> IV-SDK instance from the given <paramref name="objectHandle"/>.
         /// </summary>
-        /// <param name="objectHandle">The object handle to get the <see cref="CObject"/> instance from.</param>
-        /// <returns>If successful the <see cref="CObject"/> is returned. Otherwise, null.</returns>
+        /// <param name="objectHandle">The object handle to get the <see cref="IVObject"/> instance from.</param>
+        /// <returns>If successful the <see cref="IVObject"/> is returned. Otherwise, null.</returns>
         public static IVObject GetObjectInstaceFromHandle(int objectHandle)
         {
             UIntPtr ptr = IVPools.GetObjectPool().GetAt((uint)objectHandle);

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Numerics;
-
+using IVSDKDotNet;
 using IVSDKDotNet.Enums;
 using static IVSDKDotNet.Native.Natives;
 
@@ -79,6 +79,19 @@ namespace CCL.GTAIV
                     return;
 
                 SET_CAM_ROT(Handle, value.X, value.Y, value.Z);
+            }
+        }
+        /// <summary>
+        /// Gets the direction of the camera.
+        /// </summary>
+        public Vector3 Direction
+        {
+            get
+            {
+                if (!IsValid)
+                    return Vector3.Zero;
+
+                return Helper.RotationToDirection(Rotation);
             }
         }
 
@@ -233,7 +246,7 @@ namespace CCL.GTAIV
         {
             if (Exists())
                 DESTROY_CAM(Handle);
-
+            
             base.Dispose();
         }
 
@@ -245,9 +258,9 @@ namespace CCL.GTAIV
             if (!IsValid)
                 return;
 
-            ACTIVATE_SCRIPTED_CAMS(true, true);
             SET_CAM_ACTIVE(Handle, true);
             IsPropagating = true;
+            ACTIVATE_SCRIPTED_CAMS(true, true);
         }
         /// <summary>
         /// Deactivates the camera.

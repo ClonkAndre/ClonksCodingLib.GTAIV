@@ -10,114 +10,110 @@ namespace CCL.GTAIV.TaskController
     {
         #region Variables and Properties
         // Variables
+        internal static readonly PedTaskController TempTaskController = new PedTaskController(0);
+
         /// <summary>1 Hour</summary>
         public const int MAX_DURATION = 3600000;
 
-        private IVPed ped;
+        private IVPed thePed;
         private int handle;
+        private bool wasCreatedForTaskSequence;
 
         // Properties
         public bool AlwaysKeepTask
         {
-            set
-            {
-                if (ped == null)
-                    return;
-
-                SET_CHAR_KEEP_TASK(handle, value);
-            }
+            set { SET_CHAR_KEEP_TASK(handle, value); }
         }
         #endregion
 
         #region Constructor
         internal PedTaskController(IVPed targetPed)
         {
-            ped = targetPed;
-            handle = ped.GetHandle();
+            thePed = targetPed;
+            handle = targetPed.GetHandle();
+            wasCreatedForTaskSequence = false;
         }
         internal PedTaskController(int pedHandle)
         {
             handle = pedHandle;
+            wasCreatedForTaskSequence = true;
         }
         #endregion
 
         public void ClearAll()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             CLEAR_CHAR_TASKS(handle);
         }
         public void ClearAllImmediately()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             CLEAR_CHAR_TASKS_IMMEDIATELY(handle);
         }
         public void ClearSecondary()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             CLEAR_CHAR_SECONDARY_TASK(handle);
         }
 
+        public void AchieveHeading(float heading)
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
+                return;
+
+            _TASK_ACHIEVE_HEADING(handle, heading);
+        }
         public void AimAt(Vector3 target, uint duration)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_AIM_GUN_AT_COORD(handle, target.X, target.Y, target.Z, duration);
         }
         public void AimAt(IVPed target, uint duration)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_AIM_GUN_AT_CHAR(handle, target.GetHandle(), duration);
         }
         public void CruiseWithVehicle(IVVehicle veh, float speedMph, bool obeyTrafficLaws)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
 
             _TASK_CAR_DRIVE_WANDER(handle, veh.GetHandle(), speedMph, (uint)(obeyTrafficLaws ? 1 : 2));
         }
         public void Die()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_DIE(handle);
         }
         public void DrivePointRoute(IVVehicle veh, float speed, Vector3[] routePoints)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
             if (routePoints.Length == 0)
                 return;
 
             _TASK_FLUSH_ROUTE();
+
             for (int i = 0; i < routePoints.Length; i++)
-            {
                 _TASK_EXTEND_ROUTE(routePoints[i]);
-            }
+
             _TASK_DRIVE_POINT_ROUTE(handle, veh.GetHandle(), speed);
         }
         public void DriveTo(IVVehicle veh, IVPed targetPed, float speedMph, bool obeyTrafficLaws, bool allowToDriveRoadsWrongWay)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
-                return;
-            if (targetPed == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null && targetPed == null))
                 return;
 
             if (!allowToDriveRoadsWrongWay)
@@ -127,25 +123,17 @@ namespace CCL.GTAIV.TaskController
         }
         public void DriveTo(IVVehicle veh, IVVehicle targetVeh, float speedMph, bool obeyTrafficLaws, bool allowToDriveRoadsWrongWay)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
-                return;
-            if (targetVeh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null && targetVeh == null))
                 return;
 
             if (!allowToDriveRoadsWrongWay)
                 _TASK_CAR_MISSION_NOT_AGAINST_TRAFFIC(handle, veh.GetHandle(), (uint)targetVeh.GetHandle(), 1, speedMph, (uint)(obeyTrafficLaws ? 1 : 2), 10, 5);
             else
-            {
-                _TASK_CAR_MISSION(handle, veh.GetHandle(), (uint)targetVeh.GetHandle(), 1, speedMph, (uint)(obeyTrafficLaws ? 1 : 2), 10, 5);
-            }
+                _TASK_CAR_MISSION(handle, veh.GetHandle(), targetVeh.GetHandle(), 1, speedMph, obeyTrafficLaws ? 1 : 2, 10, 5);
         }
         public void DriveTo(IVVehicle veh, Vector3 target, float speedMph, bool obeyTrafficLaws, bool allowToDriveRoadsWrongWay)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
 
             if (!allowToDriveRoadsWrongWay)
@@ -155,16 +143,14 @@ namespace CCL.GTAIV.TaskController
         }
         public void EnterVehicle()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_ENTER_CAR_AS_PASSENGER(handle, 0, 0, 2);
         }
         public void EnterVehicle(IVVehicle veh, uint seat)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
 
             if (seat == 0)
@@ -174,41 +160,35 @@ namespace CCL.GTAIV.TaskController
         }
         public void FightAgainst(IVPed target, uint duration)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_COMBAT_TIMED(handle, target.GetHandle(), duration);
         }
         public void FightAgainst(IVPed target)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_COMBAT(handle, target.GetHandle());
         }
         public void FightAgainstHatedTargets(float radius, uint duration)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_COMBAT_HATED_TARGETS_AROUND_CHAR_TIMED(handle, radius, duration);
         }
         public void FightAgainstHatedTargets(float radius)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_COMBAT_HATED_TARGETS_AROUND_CHAR(handle, radius);
         }
         public void FleeFromChar(IVPed target, bool onPavements, uint duration)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             if (onPavements)
@@ -218,48 +198,42 @@ namespace CCL.GTAIV.TaskController
         }
         public void FleeFromChar(IVPed target, bool onPavements)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             FleeFromChar(target, onPavements, MAX_DURATION);
         }
         public void FleeFromChar(IVPed target)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             FleeFromChar(target, false, MAX_DURATION);
         }
-        public void GoTo(IVPed target, float offsetRight, float offsetFront, uint duration)
+        public void GoTo(IVPed target, float offsetRight, float offsetFront, int duration)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_GOTO_CHAR_OFFSET(handle, target.GetHandle(), duration, offsetRight, offsetFront);
         }
         public void GoTo(IVPed target, float offsetRight, float offsetFront)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_GOTO_CHAR_OFFSET(handle, target.GetHandle(), MAX_DURATION, offsetRight, offsetFront);
         }
         public void GoTo(IVPed target)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_GOTO_CHAR_OFFSET(handle, target.GetHandle(), MAX_DURATION, 0f, 0f);
         }
         public void GoTo(Vector3 pos, bool ignorePaths)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             if (ignorePaths)
@@ -269,37 +243,42 @@ namespace CCL.GTAIV.TaskController
         }
         public void GoTo(Vector3 pos)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
-
+            
             GoTo(pos, false);
         }
         public void GuardCurrentPosition()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_GUARD_CURRENT_POSITION(handle, 15f, 10f, 1);
         }
         public void HandsUp(uint duration)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_HANDS_UP(handle, duration);
         }
+        public void Jump(bool maybeOnSpot)
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
+                return;
+
+            _TASK_JUMP(handle, maybeOnSpot);
+        }
         public void LandHelicopter(IVVehicle veh, Vector3 pos)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
 
             _TASK_HELI_MISSION(handle, veh.GetHandle(), 0, 0, pos.X, pos.Y, pos.Z, 5, 0f, 0, -1f, 0, 0);
         }
         public void LeaveVehicle(IVVehicle veh, bool closeDoor)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
 
             if (closeDoor)
@@ -309,57 +288,70 @@ namespace CCL.GTAIV.TaskController
         }
         public void LeaveVehicle()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
-
+            
             _TASK_LEAVE_ANY_CAR(handle);
         }
         public void LeaveVehicleImmediately(IVVehicle veh)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
 
             _TASK_LEAVE_CAR_IMMEDIATELY(handle, veh.GetHandle());
         }
+        public void LeaveVehicleInDirection(IVVehicle veh, bool direction)
+        {
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
+                return;
+
+            _TASK_LEAVE_CAR_IN_DIRECTION(handle, veh.GetHandle(), direction);
+        }
         public void LookAt(Vector3 target, uint duration)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_LOOK_AT_COORD(handle, target.X, target.Y, target.Z, duration, 0);
         }
         public void LookAt(IVObject target, uint duration)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_LOOK_AT_OBJECT(handle, target.GetHandle(), duration, 0);
         }
         public void LookAt(IVVehicle target, uint duration)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_LOOK_AT_VEHICLE(handle, target.GetHandle(), duration, 0);
         }
         public void LookAt(IVPed target, uint duration)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_LOOK_AT_CHAR(handle, target.GetHandle(), duration, 0);
         }
+        public void OpenDriverDoor(IVVehicle target)
+        {
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
+                return;
+
+            _TASK_OPEN_DRIVER_DOOR(handle, target.GetHandle(), 0);
+        }
+        public void OpenPassengerDoor(IVVehicle target, uint seatIndex)
+        {
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
+                return;
+            
+            _TASK_OPEN_PASSENGER_DOOR(handle, target.GetHandle(), seatIndex, 0);
+        }
         public void PlayAnimation(string animSet, string animName, float speed, int unknown, AnimationFlags flags)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_PLAY_ANIM_WITH_FLAGS(handle, animName, animSet, speed, unknown, (int)flags);
@@ -372,16 +364,29 @@ namespace CCL.GTAIV.TaskController
         {
             PlayAnimation(animSet, animName, speed, -1, AnimationFlags.None);
         }
+
+        public void PlayAnimationSecondaryUpperBody(string animSet, string animName, float speed, int unknown1, int unknown2, int unknown3, int unknown4, int unknown5)
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
+                return;
+
+            _TASK_PLAY_ANIM_SECONDARY_UPPER_BODY(handle, animName, animSet, speed, unknown1, unknown2, unknown3, unknown4, unknown5);
+        }
+        public void PlayAnimationSecondaryUpperBody(string animSet, string animName, float speed)
+        {
+            PlayAnimationSecondaryUpperBody(animSet, animName, speed, 0, 0, 0, 0, -1);
+        }
+
         public void PutAwayMobilePhone()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_USE_MOBILE_PHONE(handle, false);
         }
         public void RunTo(Vector3 pos, bool ignorePaths)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             if (ignorePaths)
@@ -391,30 +396,53 @@ namespace CCL.GTAIV.TaskController
         }
         public void RunTo(Vector3 pos)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             RunTo(pos, false);
         }
         public void ShootAt(IVPed target, int duration, ShootMode mode)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_SHOOT_AT_CHAR(handle, target.GetHandle(), duration, (int)mode);
         }
         public void ShootAt(IVPed target, ShootMode mode)
         {
-            if (ped == null)
+            ShootAt(target, -1, mode);
+        }
+        public void Shimmy()
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
-            ShootAt(target, -1, mode);
+            _TASK_SHIMMY(handle, 1);
+        }
+        public bool ShimmyInDirection(bool direction)
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
+                return false;
+
+            return _TASK_SHIMMY_IN_DIRECTION(handle, direction ? 1 : 0);
+        }
+        public bool ShimmyLetGo()
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
+                return false;
+            
+            return _TASK_SHIMMY_LET_GO(handle);
+        }
+        public bool ShimmyClimbUp()
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
+                return false;
+            
+            return _TASK_SHIMMY_CLIMB_UP(handle);
         }
         public void StandStill(int duration)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
             if (duration < 0)
                 duration = MAX_DURATION;
@@ -423,10 +451,10 @@ namespace CCL.GTAIV.TaskController
         }
         public void SwapWeapon(eWeaponType weapon)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
-            _TASK_SWAP_WEAPON(handle, (uint)weapon);
+            _TASK_SWAP_WEAPON(handle, (int)weapon);
         }
         /// <summary>
         /// Example scenario: Vehicle_LookingInBoot
@@ -435,60 +463,63 @@ namespace CCL.GTAIV.TaskController
         /// <param name="pos">The position of the scenario to start?</param>
         public void StartScenario(string scenarioName, Vector3 pos)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_START_SCENARIO_AT_POSITION(handle, scenarioName, pos, 0);
         }
         public void TurnTo(Vector3 pos)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_TURN_CHAR_TO_FACE_COORD(handle, pos.X, pos.Y, pos.Z);
         }
         public void TurnTo(IVPed target)
         {
-            if (ped == null)
-                return;
-            if (target == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && target == null))
                 return;
 
             _TASK_TURN_CHAR_TO_FACE_CHAR(handle, target.GetHandle());
         }
+        public void ToggleDuck(bool toggle)
+        {
+            if (!wasCreatedForTaskSequence && handle == 0)
+                return;
+
+            _TASK_TOGGLE_DUCK(handle, toggle ? 1 : 0);
+        }
         public void UseMobilePhone()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_USE_MOBILE_PHONE(handle, true);
         }
         public void UseMobilePhone(uint duration)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_USE_MOBILE_PHONE_TIMED(handle, duration);
         }
-        public void Wait(uint duration)
+        public void Wait(int duration)
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_PAUSE(handle, duration);
         }
         public void WanderAround()
         {
-            if (ped == null)
+            if (!wasCreatedForTaskSequence && handle == 0)
                 return;
 
             _TASK_WANDER_STANDARD(handle);
         }
         public void WarpIntoVehicle(IVVehicle veh, uint seat)
         {
-            if (ped == null)
-                return;
-            if (veh == null)
+            if (!wasCreatedForTaskSequence && (handle == 0 && veh == null))
                 return;
 
             if (seat == 0)
@@ -502,7 +533,7 @@ namespace CCL.GTAIV.TaskController
             if (sequence == null)
                 return;
 
-            sequence.Perform(ped);
+            sequence.Perform(thePed);
         }
 
     }

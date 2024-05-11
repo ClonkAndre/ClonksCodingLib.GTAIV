@@ -22,12 +22,14 @@ namespace CCL.GTAIV
         /// <param name="ped"></param>
         /// <param name="weapon">The weapon to fill up the ammo.</param>
         /// <param name="amount">The amount of ammo to fill up.</param>
-        public static void AddAmmoToChar(this IVPed ped, eWeaponType weapon, uint amount)
+        public static void AddAmmoToChar(this IVPed ped, eWeaponType weapon, int amount)
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
-            ADD_AMMO_TO_CHAR(GetHandle(ped), (uint)weapon, amount);
+            ADD_AMMO_TO_CHAR(GetHandle(ped), (int)weapon, amount);
         }
 
         /// <summary>
@@ -35,11 +37,13 @@ namespace CCL.GTAIV
         /// </summary>
         /// <param name="ped"></param>
         /// <param name="amount">The amount of armour to fill up.</param>
-        public static void AddArmourToChar(this IVPed ped, uint amount)
+        public static void AddArmourToChar(this IVPed ped, int amount)
         {
             if (ped == null)
                 return;
-            
+            if (!Exists(ped))
+                return;
+
             ADD_ARMOUR_TO_CHAR(GetHandle(ped), amount);
         }
 
@@ -52,6 +56,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             UNLOCK_RAGDOLL(GetHandle(ped), !value);
         }
@@ -60,12 +66,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             APPLY_FORCE_TO_PED(GetHandle(ped), 3, direction.X, direction.Y, direction.Z, rotation.X, rotation.Y, rotation.Z, 0, 0, 1, 1);
         }
         public static void ApplyForce(this IVPed ped, Vector3 direction)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             ApplyForce(ped, direction, Vector3.Zero);
@@ -75,12 +85,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             APPLY_FORCE_TO_PED(GetHandle(ped), 3, direction.X, direction.Y, direction.Z, rotation.X, rotation.Y, rotation.Z, 0, 1, 1, 1);
         }
         public static void ApplyForceRelative(this IVPed ped, Vector3 direction)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             ApplyForceRelative(ped, direction, Vector3.Zero);
@@ -90,6 +104,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             SET_CHAR_VELOCITY(GetHandle(ped), velocity.X, velocity.Y, velocity.Z);
         }
@@ -98,12 +114,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             SET_SENSE_RANGE(GetHandle(ped), range);
         }
         public static void BlockAmbientAnims(this IVPed ped, bool block)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             BLOCK_CHAR_AMBIENT_ANIMS(GetHandle(ped), block);
@@ -112,6 +132,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             BLOCK_CHAR_GESTURE_ANIMS(GetHandle(ped), block);
         }
@@ -119,12 +141,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(GetHandle(ped), block);
         }
         public static void SetCharWillFlyThroughWindscreen(this IVPed ped, bool set)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             SET_CHAR_WILL_FLY_THROUGH_WINDSCREEN(GetHandle(ped), set);
@@ -135,12 +161,16 @@ namespace CCL.GTAIV
                 return;
             if (room == null)
                 return;
-            
+            if (!Exists(ped))
+                return;
+
             SET_ROOM_FOR_CHAR_BY_KEY(GetHandle(ped), (uint)room.Room);
         }
         public static void SetAlwaysDiesOnLowHealth(this IVPed ped, bool set)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             int handle = GetHandle(ped);
@@ -151,12 +181,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             SET_CHAR_FIRE_DAMAGE_MULTIPLIER(GetHandle(ped), multiplier);
         }
         public static void SetCharDrownsInWater(this IVPed ped, bool set)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             SET_CHAR_DROWNS_IN_WATER(GetHandle(ped), set);
@@ -165,12 +199,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             SAY_AMBIENT_SPEECH(ped.GetHandle(), phraseID, true, true, 0);
         }
         public static void CancelAmbientSpeech(this IVPed ped)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             CANCEL_CURRENTLY_PLAYING_AMBIENT_SPEECH(ped.GetHandle());
@@ -180,12 +218,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             SET_CHAR_HEADING(GetHandle(ped), heading);
         }
         public static void SetHealth(this IVPed ped, uint health)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             SET_CHAR_HEALTH(GetHandle(ped), health);
@@ -195,6 +237,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             SET_CHAR_AS_MISSION_CHAR(GetHandle(ped));
         }
@@ -202,12 +246,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return;
+            if (!Exists(ped))
+                return;
 
             MARK_CHAR_AS_NO_LONGER_NEEDED(GetHandle(ped));
         }
         public static void Delete(this IVPed ped)
         {
             if (ped == null)
+                return;
+            if (!Exists(ped))
                 return;
 
             int handle = GetHandle(ped);
@@ -231,6 +279,19 @@ namespace CCL.GTAIV
         }
 
         /// <summary>
+        /// Checks if this <see cref="IVPed"/> exists.
+        /// </summary>
+        /// <param name="ped"></param>
+        /// <returns>True if this <see cref="IVPed"/> exists. Otherwise, false.</returns>
+        public static bool Exists(this IVPed ped)
+        {
+            if (ped == null)
+                return false;
+
+            return DOES_CHAR_EXIST(GetHandle(ped));
+        }
+
+        /// <summary>
         /// Gets the <see cref="Rectangle3D"/> (or bounds) of this <see cref="IVPed"/> with their current model.
         /// </summary>
         /// <param name="ped"></param>
@@ -238,6 +299,8 @@ namespace CCL.GTAIV
         public static Rectangle3D GetModelRect3D(this IVPed ped)
         {
             if (ped == null)
+                return Rectangle3D.Empty();
+            if (!Exists(ped))
                 return Rectangle3D.Empty();
 
             int handle = GetHandle(ped);
@@ -260,6 +323,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return false;
+            if (!Exists(ped))
+                return false;
 
             return ARE_ANY_CHARS_NEAR_CHAR(GetHandle(ped), radius);
         }
@@ -273,6 +338,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return false;
+            if (!Exists(ped))
+                return false;
 
             return IS_CHAR_SITTING_IN_ANY_CAR(GetHandle(ped));
         }
@@ -285,6 +352,8 @@ namespace CCL.GTAIV
         public static uint GetCharModel(this IVPed ped)
         {
             if (ped == null)
+                return 0;
+            if (!Exists(ped))
                 return 0;
 
             GET_CHAR_MODEL(GetHandle(ped), out uint pModel);
@@ -300,8 +369,26 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return PedGender.Unkown;
+            if (!Exists(ped))
+                return PedGender.Unkown;
 
             return IS_CHAR_MALE(GetHandle(ped)) ? PedGender.Male : PedGender.Female;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ePedType"/> of this <see cref="IVPed"/>.
+        /// </summary>
+        /// <param name="ped"></param>
+        /// <returns>The <see cref="ePedType"/>. Warning: Can also return <see cref="ePedType.PED_TYPE_CIV_MALE"/> on error.</returns>
+        public static ePedType GetPedType(this IVPed ped)
+        {
+            if (ped == null)
+                return ePedType.PED_TYPE_CIV_MALE;
+            if (!Exists(ped))
+                return ePedType.PED_TYPE_CIV_MALE;
+
+            GET_PED_TYPE(GetHandle(ped), out uint type);
+            return (ePedType)type;
         }
 
         /// <summary>
@@ -313,6 +400,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return 0f;
+            if (!Exists(ped))
+                return 0f;
 
             GET_CHAR_HEIGHT_ABOVE_GROUND(GetHandle(ped), out float val);
             return val;
@@ -322,6 +411,8 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return 0f;
+            if (!Exists(ped))
+                return 0f;
 
             GET_CHAR_HEADING(GetHandle(ped), out float val);
             return val;
@@ -329,6 +420,8 @@ namespace CCL.GTAIV
         public static uint GetHealth(this IVPed ped)
         {
             if (ped == null)
+                return 0;
+            if (!Exists(ped))
                 return 0;
 
             GET_CHAR_HEALTH(GetHandle(ped), out uint health);
@@ -339,13 +432,17 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return 0f;
-            
+            if (!Exists(ped))
+                return 0f;
+
             GET_CHAR_SPEED(GetHandle(ped), out float speed);
             return speed;
         }
         public static Vector3 GetVelocity(this IVPed ped)
         {
             if (ped == null)
+                return Vector3.Zero;
+            if (!Exists(ped))
                 return Vector3.Zero;
 
             GET_CHAR_VELOCITY(GetHandle(ped), out float x, out float y, out float z);
@@ -356,21 +453,16 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return null;
+            if (!Exists(ped))
+                return null;
 
             return NativeRoom.FromPed(ped);
         }
-
-        public static bool Exists(this IVPed ped)
-        {
-            if (ped == null)
-                return false;
-
-            return DOES_CHAR_EXIST(GetHandle(ped));
-        }
-
         public static PedAnimationController GetAnimationController(this IVPed ped)
         {
             if (ped == null)
+                return null;
+            if (!Exists(ped))
                 return null;
 
             return new PedAnimationController(ped);
@@ -378,6 +470,8 @@ namespace CCL.GTAIV
         public static PedTaskController GetTaskController(this IVPed ped)
         {
             if (ped == null)
+                return null;
+            if (!Exists(ped))
                 return null;
 
             return new PedTaskController(ped);
@@ -392,10 +486,11 @@ namespace CCL.GTAIV
         {
             if (ped == null)
                 return null;
+            if (!Exists(ped))
+                return null;
 
             return NativeBlip.AddBlip(ped);
         }
         #endregion
     }
-
 }

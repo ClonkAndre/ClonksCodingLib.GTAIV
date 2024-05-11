@@ -16,6 +16,8 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return;
+            if (!Exists(veh))
+                return;
 
             APPLY_FORCE_TO_CAR(GetHandle(veh), 3, direction.X, direction.Y, direction.Z, rotation.X, rotation.Y, rotation.Z, 0, 0, 1, 1);
         }
@@ -23,7 +25,9 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return;
-
+            if (!Exists(veh))
+                return;
+            
             ApplyForce(veh, direction, Vector3.Zero);
         }
 
@@ -31,12 +35,16 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return;
+            if (!Exists(veh))
+                return;
 
             APPLY_FORCE_TO_CAR(GetHandle(veh), 3, direction.X, direction.Y, direction.Z, rotation.X, rotation.Y, rotation.Z, 0, 1, 1, 1);
         }
         public static void ApplyForceRelative(this IVVehicle veh, Vector3 direction)
         {
             if (veh == null)
+                return;
+            if (!Exists(veh))
                 return;
 
             ApplyForceRelative(veh, direction, Vector3.Zero);
@@ -48,13 +56,26 @@ namespace CCL.GTAIV
                 return;
             if (room == null)
                 return;
+            if (!Exists(veh))
+                return;
 
             SET_ROOM_FOR_CAR_BY_KEY(GetHandle(veh), (uint)room.Room);
+        }
+        public static void SetHeading(this IVVehicle veh, float heading)
+        {
+            if (veh == null)
+                return;
+            if (!Exists(veh))
+                return;
+            
+            SET_CAR_HEADING(GetHandle(veh), heading);
         }
 
         public static void PlaceOnGroundProperly(this IVVehicle veh)
         {
             if (veh == null)
+                return;
+            if (!Exists(veh))
                 return;
 
             SET_CAR_ON_GROUND_PROPERLY(GetHandle(veh));
@@ -64,12 +85,16 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return;
+            if (!Exists(veh))
+                return;
 
             SET_CAR_AS_MISSION_CAR(GetHandle(veh));
         }
         public static void MarkAsNoLongerNeeded(this IVVehicle veh)
         {
             if (veh == null)
+                return;
+            if (!Exists(veh))
                 return;
 
             MARK_CAR_AS_NO_LONGER_NEEDED(GetHandle(veh));
@@ -78,14 +103,28 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return;
+            if (!Exists(veh))
+                return;
 
             int handle = GetHandle(veh);
             DELETE_CAR(ref handle);
         }
 
+        public static void Explode(this IVVehicle veh, bool addExplosion, bool maybeKeepDamageEntity = false)
+        {
+            if (veh == null)
+                return;
+            if (!Exists(veh))
+                return;
+
+            EXPLODE_CAR(GetHandle(veh), addExplosion, maybeKeepDamageEntity);
+        }
+
         public static unsafe void SoundCarHorn(this IVVehicle veh, uint time)
         {
             if (veh == null)
+                return;
+            if (!Exists(veh))
                 return;
 
             *(uint*)(veh.GetUIntPtr().ToUInt32() + 0x133C) = time;
@@ -93,6 +132,8 @@ namespace CCL.GTAIV
         public static unsafe void SetVehIndicator(this IVVehicle veh, VehicleIndicator indicator)
         {
             if (veh == null)
+                return;
+            if (!Exists(veh))
                 return;
 
             *(uint*)(veh.GetUIntPtr().ToUInt32() + 3947 + (int)indicator) = (uint)177;
@@ -115,6 +156,19 @@ namespace CCL.GTAIV
         }
 
         /// <summary>
+        /// Checks if this <see cref="IVVehicle"/> exists.
+        /// </summary>
+        /// <param name="veh"></param>
+        /// <returns>True if this <see cref="IVVehicle"/> exists. Otherwise, false.</returns>
+        public static bool Exists(this IVVehicle veh)
+        {
+            if (veh == null)
+                return false;
+
+            return DOES_VEHICLE_EXIST(GetHandle(veh));
+        }
+
+        /// <summary>
         /// Gets the <see cref="Rectangle3D"/> (or bounds) of this <see cref="IVVehicle"/> with their current model.
         /// </summary>
         /// <param name="veh"></param>
@@ -122,6 +176,8 @@ namespace CCL.GTAIV
         public static Rectangle3D GetModelRect3D(this IVVehicle veh)
         {
             if (veh == null)
+                return Rectangle3D.Empty();
+            if (!Exists(veh))
                 return Rectangle3D.Empty();
 
             int handle = GetHandle(veh);
@@ -138,6 +194,8 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return 0f;
+            if (!Exists(veh))
+                return 0f;
 
             GET_CAR_SPEED(GetHandle(veh), out float speed);
             return speed;
@@ -145,6 +203,8 @@ namespace CCL.GTAIV
         public static Vector3 GetSpeedVector(this IVVehicle veh, bool unknownFalse = false)
         {
             if (veh == null)
+                return Vector3.Zero;
+            if (!Exists(veh))
                 return Vector3.Zero;
 
             GET_CAR_SPEED_VECTOR(GetHandle(veh), out Vector3 vec, unknownFalse);
@@ -155,6 +215,8 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return 0f;
+            if (!Exists(veh))
+                return 0f;
 
             GET_CAR_HEADING(veh.GetHandle(), out float heading);
             return heading;
@@ -164,28 +226,26 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return null;
+            if (!Exists(veh))
+                return null;
 
             return NativeRoom.FromVehicle(veh);
-        }
-
-        public static bool Exists(this IVVehicle veh)
-        {
-            if (veh == null)
-                return false;
-
-            return DOES_VEHICLE_EXIST(GetHandle(veh));
         }
 
         public static bool IsDead(this IVVehicle veh)
         {
             if (veh == null)
                 return false;
-            
+            if (!Exists(veh))
+                return false;
+
             return IS_CAR_DEAD(GetHandle(veh));
         }
         public static bool IsDriveable(this IVVehicle veh)
         {
             if (veh == null)
+                return false;
+            if (!Exists(veh))
                 return false;
 
             return IS_VEH_DRIVEABLE(GetHandle(veh));
@@ -200,6 +260,8 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return null;
+            if (!Exists(veh))
+                return null;
 
             return NativeBlip.AddBlip(veh);
         }
@@ -208,12 +270,16 @@ namespace CCL.GTAIV
         {
             if (veh == null)
                 return 0;
+            if (!Exists(veh))
+                return 0;
 
             return *(uint*)(veh.GetUIntPtr().ToUInt32() + 3947 + (int)indicator);
         }
         public static unsafe uint GetCarHornStatus(this IVVehicle veh)
         {
             if (veh == null)
+                return 0;
+            if (!Exists(veh))
                 return 0;
 
             return *(uint*)(veh.GetUIntPtr().ToUInt32() + 0x133C);
