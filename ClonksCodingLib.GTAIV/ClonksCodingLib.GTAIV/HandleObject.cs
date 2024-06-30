@@ -28,7 +28,8 @@ namespace CCL.GTAIV
         /// </summary>
         public int Handle
         {
-            get {
+            get
+            {
                 if (IsDisposed)
                     return 0;
 

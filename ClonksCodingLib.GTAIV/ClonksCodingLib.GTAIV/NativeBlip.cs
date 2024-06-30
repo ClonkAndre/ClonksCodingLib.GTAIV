@@ -7,6 +7,9 @@ using static IVSDKDotNet.Native.Natives;
 
 namespace CCL.GTAIV
 {
+    /// <summary>
+    /// Gives you easy access to native functions that involve blips.
+    /// </summary>
     public class NativeBlip : HandleObject
     {
         #region Properties

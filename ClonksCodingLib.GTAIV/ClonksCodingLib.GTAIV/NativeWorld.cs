@@ -8,7 +8,7 @@ using static IVSDKDotNet.Native.Natives;
 namespace CCL.GTAIV
 {
     /// <summary>
-    /// Functions that involve stuff with the world. Like spawning things.
+    /// Gives you easy access to native functions that involve the world.
     /// </summary>
     public class NativeWorld
     {
@@ -591,6 +591,7 @@ namespace CCL.GTAIV
 
             return null;
         }
+        // Whoops
         /// <summary>
         /// Gets the <see cref="IVVehicle"/> IV-SDK instance from the given <paramref name="vehicleHandle"/>.
         /// </summary>

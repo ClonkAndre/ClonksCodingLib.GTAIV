@@ -36,7 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IVSDKDotNetWrapper, Version=0.8.0.11511, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="IVSDKDotNetWrapper, Version=1.4.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\IVSDKDotNet\Release\IVSDKDotNetWrapper.dll</HintPath>
     </Reference>
@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimationController\PedAnimationController.cs" />
+    <Compile Include="ExtendedIVSave.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Extensions\IVObjectExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\IVPedExtensions.cs" />
@@ -57,12 +59,16 @@
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="HandleObject.cs" />
     <Compile Include="AnimationStuff.cs" />
+    <Compile Include="InternalHelper.cs" />
     <Compile Include="NativeBlip.cs" />
     <Compile Include="NativeCamera.cs" />
     <Compile Include="NativeCheckpoint.cs" />
     <Compile Include="NativeControls.cs" />
+    <Compile Include="NativeDrawing.cs" />
     <Compile Include="NativeGame.cs" />
+    <Compile Include="NativeGroup.cs" />
     <Compile Include="NativeLight.cs" />
+    <Compile Include="NativeModel.cs" />
     <Compile Include="NativePickup.cs" />
     <Compile Include="NativeRoom.cs" />
     <Compile Include="NativeFire.cs" />
@@ -75,6 +81,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Rope.cs" />
     <Compile Include="Structs\Rectangle3D.cs" />
     <Compile Include="TaskController\PedTaskController.cs" />
   </ItemGroup>

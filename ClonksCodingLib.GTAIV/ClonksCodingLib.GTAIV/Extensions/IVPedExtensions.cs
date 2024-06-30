@@ -251,6 +251,54 @@ namespace CCL.GTAIV
 
             MARK_CHAR_AS_NO_LONGER_NEEDED(GetHandle(ped));
         }
+
+        public static void ActivateDrunkRagdoll(this IVPed ped, int ragdollTime)
+        {
+            if (ped == null)
+                return;
+            if (!Exists(ped))
+                return;
+
+            int handle = GetHandle(ped);
+
+            if (IS_PED_RAGDOLL(handle))
+                return;
+
+            SWITCH_PED_TO_RAGDOLL(handle, 0, ragdollTime, true, true, true, false);
+            CREATE_NM_MESSAGE(true, (int)eNaturalMotionMessageID.nm079_bodyBalance);
+            SET_NM_MESSAGE_FLOAT(89, 8.70000000f);
+            SET_NM_MESSAGE_FLOAT(98, 0.60000000f);
+            SET_NM_MESSAGE_FLOAT(81, 8.39999900f);
+            SET_NM_MESSAGE_FLOAT(82, 0.70000000f);
+            SET_NM_MESSAGE_INT(85, ragdollTime + 1);
+            SET_NM_MESSAGE_BOOL(95, true);
+            SET_NM_MESSAGE_FLOAT(101, 0.80000000f);
+            SET_NM_MESSAGE_FLOAT(102, 999.00000000f);
+            SET_NM_MESSAGE_FLOAT(84, 1.40000000f);
+            SET_NM_MESSAGE_FLOAT(83, 1.95000000f);
+            SET_NM_MESSAGE_FLOAT(94, 1.00000000f);
+            SET_NM_MESSAGE_FLOAT(110, 0.00000000f);
+            SET_NM_MESSAGE_FLOAT(111, 0.10000000f);
+            SET_NM_MESSAGE_FLOAT(112, 0.10000000f);
+            SET_NM_MESSAGE_FLOAT(108, 0.00000000f);
+            SET_NM_MESSAGE_FLOAT(113, 0.60000000f);
+            SET_NM_MESSAGE_FLOAT(109, 0.20000000f);
+            SET_NM_MESSAGE_FLOAT(91, 0.10000000f);
+            SET_NM_MESSAGE_FLOAT(93, 0.10000000f);
+            SET_NM_MESSAGE_FLOAT(106, -0.30000000f);
+            SEND_NM_MESSAGE(handle);
+        }
+
+        public static void LeaveGroup(this IVPed ped)
+        {
+            if (ped == null)
+                return;
+            if (!Exists(ped))
+                return;
+
+            REMOVE_CHAR_FROM_GROUP(GetHandle(ped));
+        }
+
         public static void Delete(this IVPed ped)
         {
             if (ped == null)
@@ -289,6 +337,16 @@ namespace CCL.GTAIV
                 return false;
 
             return DOES_CHAR_EXIST(GetHandle(ped));
+        }
+
+        public static bool IsRequiredForMission(this IVPed ped)
+        {
+            if (ped == null)
+                return false;
+            if (!Exists(ped))
+                return false;
+
+            return IS_PED_A_MISSION_PED(GetHandle(ped));
         }
 
         /// <summary>
@@ -491,6 +549,51 @@ namespace CCL.GTAIV
 
             return NativeBlip.AddBlip(ped);
         }
+
+        public static bool CanCharSeeChar(this IVPed source, int targetPed, float sourcePedViewDistance = 50f, float sourcePedFOV = 90f)
+        {
+            if (source == null)
+                return false;
+            if (targetPed <= 0)
+                return false;
+            if (!Exists(source))
+                return false;
+            if (!DOES_CHAR_EXIST(targetPed))
+                return false;
+
+            // Get the position of the target ped
+            GET_CHAR_COORDINATES(targetPed, out Vector3 targetPedPosition);
+
+            Vector3 toTarget = targetPedPosition - source.Matrix.Pos;
+
+            // Check if within view distance
+            if (Vector3.Distance(source.Matrix.Pos, targetPedPosition) > sourcePedViewDistance)
+                return false;
+
+            // Normalize the vector to target
+            toTarget = Vector3.Normalize(toTarget);
+
+            // Calculate the angle between the forward direction and the direction to the target
+            float dotProduct = Vector3.Dot(Helper.HeadingToDirection(source.GetHeading()), toTarget);
+            float angleToTarget = (float)Math.Acos(dotProduct) * (180f / (float)Math.PI); // Convert to degrees
+
+            // Check if within field of view
+            if (angleToTarget > sourcePedFOV / 2f)
+                return false;
+
+            // Check if source ped has a clear line-of-sight to the target ped
+            return !IVWorld.ProcessLineOfSight(source.Matrix.Pos, targetPedPosition, out IVLineOfSightResults res, 1);
+        }
+        public static bool CanCharSeeChar(this IVPed source, IVPed targetPed, float sourcePedViewDistance = 50f, float sourcePedFOV = 90f)
+        {
+            if (targetPed == null)
+                return false;
+            if (!targetPed.Exists())
+                return false;
+
+            return CanCharSeeChar(source, targetPed.GetHandle(), sourcePedViewDistance, sourcePedFOV);
+        }
+
         #endregion
     }
 }

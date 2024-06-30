@@ -6,6 +6,8 @@ using IVSDKDotNet.Native;
 
 namespace CCL.GTAIV
 {
+    // This sucks
+
     public struct Rectangle3D
     {
         #region Variables and Properties

@@ -7,7 +7,7 @@ using static IVSDKDotNet.Native.Natives;
 namespace CCL.GTAIV
 {
     /// <summary>
-    /// Gives you access to native functions that involve the game.
+    /// Gives you easy access to native functions that are all about the game.
     /// </summary>
     public class NativeGame
     {
@@ -1116,6 +1116,32 @@ namespace CCL.GTAIV
                 return;
 
             TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME(name);
+        }
+
+        /// <summary>
+        /// Displays a custom help message at the top left of the screen.
+        /// </summary>
+        /// <param name="text">The text you want to display.</param>
+        /// <param name="noSound">If the message should display without any sound.</param>
+        /// <param name="forever">If the message should be visible all the time. Make sure to call <see cref="CLEAR_HELP"/> once you're done.</param>
+        public static void DisplayCustomHelpMessage(string text, bool noSound = false, bool forever = false)
+        {
+            IVText.TheIVText.ReplaceTextOfTextLabel("PLACEHOLDER_1", text);
+            
+            if (noSound)
+            {
+                if (forever)
+                    PRINT_HELP_FOREVER_WITH_STRING_NO_SOUND("PLACEHOLDER_1", "STRING");
+                else
+                    PRINT_HELP_WITH_STRING_NO_SOUND("PLACEHOLDER_1", "STRING");
+            }
+            else
+            {
+                if (forever)
+                    PRINT_HELP_FOREVER("PLACEHOLDER_1");
+                else
+                    PRINT_HELP("PLACEHOLDER_1");
+            }
         }
         #endregion
 

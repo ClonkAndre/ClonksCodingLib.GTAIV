@@ -10,7 +10,7 @@ using static IVSDKDotNet.Native.Natives;
 namespace CCL.GTAIV
 {
     /// <summary>
-    /// Used to place a light in the world.
+    /// Gives you easy access to native functions that involve lights.
     /// </summary>
     public class NativeLight
     {

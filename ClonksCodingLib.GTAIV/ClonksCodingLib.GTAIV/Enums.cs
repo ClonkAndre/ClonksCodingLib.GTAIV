@@ -20,8 +20,9 @@ namespace CCL.GTAIV
     /// </summary>
     public enum PedGender
     {
+        // Whoops
         /// <summary>
-        /// Unknown gender. You will only see this appearing when for example the <see cref="CPed"/> is <see langword="null"/>.
+        /// Unknown gender. You will only see this appearing when <see cref="IVSDKDotNet.IVPed"/> would be <see langword="null"/> for example.
         /// </summary>
         Unkown,
         /// <summary>
@@ -334,6 +335,45 @@ namespace CCL.GTAIV
         MEDIUM_FAST_EXPONENTIAL_PLUS_FADE_IN_OUT = 6,
         SLOW_EXPONENTIAL_PLUS_FADE_IN = 7,
         MEDIUM_SLOW_EXPONENTIAL_PLUS_FADE_IN = 8
+    }
+
+    /// <summary>
+    /// The seats of a vehicle.
+    /// </summary>
+    public enum VehicleSeat
+    {
+        None = -3,
+        AnyPassengerSeat = -2,
+        Driver = -1,
+        RightFront = 0,
+        LeftRear = 1,
+        RightRear = 2,
+    }
+
+    /// <summary>
+    /// <see cref="Rope"/> states!
+    /// </summary>
+    public enum RopeDeploymentState
+    {
+        Instant,
+
+        // Deploying
+        Deployed,
+        Deploying,
+
+        // Undeploying
+        Undeployed,
+        Undeploying
+    }
+
+    /// <summary>
+    /// Attach to information
+    /// </summary>
+    public enum AttachedTo
+    {
+        Nothing,
+        Vehicle,
+        Ped
     }
 
 }

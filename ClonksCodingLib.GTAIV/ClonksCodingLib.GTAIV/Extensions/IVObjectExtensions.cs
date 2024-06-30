@@ -61,6 +61,27 @@ namespace CCL.GTAIV
 
             CLEAR_OBJECT_LAST_DAMAGE_ENTITY(GetHandle(obj));
         }
+
+        public static void MarkAsNoLongerNeeded(this IVObject obj)
+        {
+            if (obj == null)
+                return;
+            if (!Exists(obj))
+                return;
+            
+            MARK_OBJECT_AS_NO_LONGER_NEEDED(GetHandle(obj));
+        }
+
+        public static void Delete(this IVObject obj)
+        {
+            if (obj == null)
+                return;
+            if (!Exists(obj))
+                return;
+
+            int handle = GetHandle(obj);
+            DELETE_OBJECT(ref handle);
+        }
         #endregion
 
         #region Functions

@@ -10,7 +10,7 @@ using static IVSDKDotNet.Native.Natives;
 namespace CCL.GTAIV
 {
     /// <summary>
-    /// Used to draw a checkpoint in the world.
+    /// Gives you easy access to native functions that involve checkpoints.
     /// </summary>
     public class NativeCheckpoint
     {
@@ -132,10 +132,30 @@ namespace CCL.GTAIV
 
         #region Functions
         /// <summary>
+        /// Checks if the given <see cref="IVVehicle"/> is inside this checkpoint.
+        /// </summary>
+        /// <param name="veh">The given <see cref="IVVehicle"/> to check for.</param>
+        /// <param name="ignoreZCoordinate">Sets if the Z coordinate of the given <see cref="IVVehicle"/> should be ignored. If set to <see langword="true"/>, this function will return <see langword="true"/> when the <see cref="IVVehicle"/> is inside the checkpoint no matter the current height.</param>
+        /// <returns>True if the given <see cref="IVVehicle"/> is inside this checkpoint. Otherwise, false.</returns>
+        public bool IsInside(IVVehicle veh, bool ignoreZCoordinate = false)
+        {
+            if (!Visible)
+                return false;
+            if (veh == null)
+                return false;
+
+            Vector3 pos = veh.Matrix.Pos;
+
+            if ((pos.Z > (Position.Z + 5f)) && !ignoreZCoordinate)
+                return false;
+
+            return Vector2.Distance(new Vector2(pos.X, pos.Y), new Vector2(Position.X, Position.Y)) < Radius / 2f;
+        }
+        /// <summary>
         /// Checks if the given <see cref="IVPed"/> is inside this checkpoint.
         /// </summary>
         /// <param name="ped">The given <see cref="IVPed"/> to check for.</param>
-        /// <param name="ignoreZCoordinate">Sets if the Z coordinate of the given <see cref="IVPed"/> should be ignored. If set to <see langword="true"/>, this function will return <see langword="true"/> when the <see cref="CPed"/> is inside the checkpoint no matter the current height.</param>
+        /// <param name="ignoreZCoordinate">Sets if the Z coordinate of the given <see cref="IVPed"/> should be ignored. If set to <see langword="true"/>, this function will return <see langword="true"/> when the <see cref="IVPed"/> is inside the checkpoint no matter the current height.</param>
         /// <returns>True if the given <see cref="IVPed"/> is inside this checkpoint. Otherwise, false.</returns>
         public bool IsInside(IVPed ped, bool ignoreZCoordinate = false)
         {

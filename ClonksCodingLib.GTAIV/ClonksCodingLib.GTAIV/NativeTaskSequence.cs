@@ -6,7 +6,7 @@ using static IVSDKDotNet.Native.Natives;
 namespace CCL.GTAIV
 {
     /// <summary>
-    /// Allows you to perform a sequence on a <see cref="IVPed"/>.
+    /// Allows you to perform a sequence of tasks on a <see cref="IVPed"/>.
     /// </summary>
     public class NativeTaskSequence
     {

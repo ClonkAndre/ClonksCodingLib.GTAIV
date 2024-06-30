@@ -21,7 +21,7 @@ namespace CCL.GTAIV
     // IS_CAM_INTERPOLATING
 
     /// <summary>
-    /// Gives you access to native functions that involve the camera.
+    /// Gives you easy access to native functions that involve cameras.
     /// </summary>
     public class NativeCamera : HandleObject
     {

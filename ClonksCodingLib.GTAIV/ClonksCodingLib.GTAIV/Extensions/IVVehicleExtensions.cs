@@ -99,6 +99,7 @@ namespace CCL.GTAIV
 
             MARK_CAR_AS_NO_LONGER_NEEDED(GetHandle(veh));
         }
+
         public static void Delete(this IVVehicle veh)
         {
             if (veh == null)
@@ -166,6 +167,16 @@ namespace CCL.GTAIV
                 return false;
 
             return DOES_VEHICLE_EXIST(GetHandle(veh));
+        }
+
+        public static bool IsRequiredForMission(this IVVehicle veh)
+        {
+            if (veh == null)
+                return false;
+            if (!Exists(veh))
+                return false;
+
+            return IS_CAR_A_MISSION_CAR(GetHandle(veh));
         }
 
         /// <summary>
@@ -264,6 +275,104 @@ namespace CCL.GTAIV
                 return null;
 
             return NativeBlip.AddBlip(veh);
+        }
+
+        public static int GetMaximumNumberOfPassengers(this IVVehicle veh)
+        {
+            if (veh == null)
+                return 0;
+            if (!Exists(veh))
+                return 0;
+
+            GET_MAXIMUM_NUMBER_OF_PASSENGERS(GetHandle(veh), out int max);
+            return max;
+        }
+
+        public static bool IsSeatFree(this IVVehicle veh, VehicleSeat seat)
+        {
+            if (veh == null)
+                return false;
+            if (!Exists(veh))
+                return false;
+
+            if (seat <= VehicleSeat.None)
+                return false;
+
+            int handle = GetHandle(veh);
+            int maxPassengers = GetMaximumNumberOfPassengers(veh);
+
+            switch (seat)
+            {
+                case VehicleSeat.AnyPassengerSeat:
+
+                    for (int i = 0; i < maxPassengers; i++)
+                    {
+                        if (IsSeatFree(veh, (VehicleSeat)i))
+                            return true;
+                    }
+                    return false;
+
+                case VehicleSeat.Driver:
+
+                    GET_DRIVER_OF_CAR(handle, out int ped);
+                    return ped == 0;
+
+                default:
+                    return IS_CAR_PASSENGER_SEAT_FREE(handle, (uint)seat);
+            }
+        }
+
+        public static bool CanVehicleSeeVehicle(this IVVehicle source, int targetVehicle, float sourceVehicleViewDistance = 50f, float sourceVehicleFOV = 90f)
+        {
+            if (source == null)
+                return false;
+            if (targetVehicle <= 0)
+                return false;
+            if (!Exists(source))
+                return false;
+            if (!DOES_VEHICLE_EXIST(targetVehicle))
+                return false;
+
+            // Get the position of the source vehicle
+            int sourceCarHandle = source.GetHandle();
+            GET_CAR_MODEL(sourceCarHandle, out uint model);
+            GET_MODEL_DIMENSIONS(model, out Vector3 min, out Vector3 max);
+            GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(sourceCarHandle, new Vector3(0f, 0f, max.Z + 0.1f), out Vector3 sourceCarInfrontPos);
+
+            // Get the position of the target vehicle
+            GET_CAR_MODEL(targetVehicle, out model);
+            GET_MODEL_DIMENSIONS(model, out min, out max);
+            GET_OFFSET_FROM_CAR_IN_WORLD_COORDS(targetVehicle, new Vector3(0f, 0f, max.Z + 0.1f), out Vector3 targetVehiclePosition);
+
+            Vector3 toTarget = targetVehiclePosition - sourceCarInfrontPos;
+
+            // Check if within view distance
+            if (Vector3.Distance(source.Matrix.Pos, targetVehiclePosition) > sourceVehicleViewDistance)
+                return false;
+
+            // Normalize the vector to target
+            toTarget = Vector3.Normalize(toTarget);
+
+            // Calculate the angle between the forward direction and the direction to the target
+            float dotProduct = Vector3.Dot(Helper.HeadingToDirection(source.GetHeading()), toTarget);
+            float angleToTarget = (float)Math.Acos(dotProduct) * (180f / (float)Math.PI); // Convert to degrees
+
+            // Check if within field of view
+            if (angleToTarget > sourceVehicleFOV / 2f)
+                return false;
+
+            // Check if source vehicle has a clear line-of-sight to the target vehicle
+            // source.Matrix.Pos
+            return !IVWorld.ProcessLineOfSight(sourceCarInfrontPos, targetVehiclePosition, out IVLineOfSightResults res, 1);
+        }
+        public static bool CanVehicleSeeVehicle(this IVVehicle source, IVVehicle targetVehicle, float sourceVehicleViewDistance = 50f, float sourceVehicleFOV = 90f)
+        {
+            if (targetVehicle == null)
+                return false;
+            if (!targetVehicle.Exists())
+                return false;
+
+            return CanVehicleSeeVehicle(source, targetVehicle.GetHandle(), sourceVehicleViewDistance, sourceVehicleFOV);
         }
 
         public static unsafe uint GetVehIndicatorState(this IVVehicle veh, VehicleIndicator indicator)
