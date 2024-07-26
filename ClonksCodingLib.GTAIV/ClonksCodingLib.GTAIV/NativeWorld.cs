@@ -178,7 +178,7 @@ namespace CCL.GTAIV
         /// <param name="pos">The explosion position.</param>
         public static void AddExplosion(Vector3 pos)
         {
-            ADD_EXPLOSION(pos.X, pos.Y, pos.Z, (int)eExplosionType.EXPLOSION_TYPE_DEFAULT, 1f, true, false, 1f);
+            ADD_EXPLOSION(pos.X, pos.Y, pos.Z, (int)eExplosion.EXPLOSION_GRENADE, 1f, true, false, 1f);
         }
         /// <summary>
         /// Creates an explosion at the given postition.

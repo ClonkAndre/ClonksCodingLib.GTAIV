@@ -1124,44 +1124,49 @@ namespace CCL.GTAIV
         /// <param name="text">The text you want to display.</param>
         /// <param name="noSound">If the message should display without any sound.</param>
         /// <param name="forever">If the message should be visible all the time. Make sure to call <see cref="CLEAR_HELP"/> once you're done.</param>
-        public static void DisplayCustomHelpMessage(string text, bool noSound = false, bool forever = false)
+        /// <param name="targetReplacementGXT">
+        /// This method works by replacing the text of an unused GXT entry to show your own custom <paramref name="text"/>.<br/>
+        /// If you like to specify which GXT entry should be replaced, you can do that here.<br/>
+        /// This can be useful to check if a help message is currently being displayed by using <see cref="IS_THIS_HELP_MESSAGE_BEING_DISPLAYED(string)"/>.
+        /// </param>
+        public static void DisplayCustomHelpMessage(string text, bool noSound = false, bool forever = false, string targetReplacementGXT = "PLACEHOLDER_1")
         {
-            IVText.TheIVText.ReplaceTextOfTextLabel("PLACEHOLDER_1", text);
+            IVText.TheIVText.ReplaceTextOfTextLabel(targetReplacementGXT, text);
             
             if (noSound)
             {
                 if (forever)
-                    PRINT_HELP_FOREVER_WITH_STRING_NO_SOUND("PLACEHOLDER_1", "STRING");
+                    PRINT_HELP_FOREVER_WITH_STRING_NO_SOUND(targetReplacementGXT, "STRING");
                 else
-                    PRINT_HELP_WITH_STRING_NO_SOUND("PLACEHOLDER_1", "STRING");
+                    PRINT_HELP_WITH_STRING_NO_SOUND(targetReplacementGXT, "STRING");
             }
             else
             {
                 if (forever)
-                    PRINT_HELP_FOREVER("PLACEHOLDER_1");
+                    PRINT_HELP_FOREVER(targetReplacementGXT);
                 else
-                    PRINT_HELP("PLACEHOLDER_1");
+                    PRINT_HELP(targetReplacementGXT);
             }
         }
         #endregion
 
         #region Functions
-        public static uint GetIntegerStatistic(eIntStatistic stat)
+        public static int GetIntegerStatistic(eIntStatistic stat)
         {
-            return GET_INT_STAT((uint)stat);
+            return GET_INT_STAT((int)stat);
         }
-        public static void SetIntegerStatistic(eIntStatistic stat, uint value)
+        public static void SetIntegerStatistic(eIntStatistic stat, int value)
         {
-            SET_INT_STAT((uint)stat, value);
+            SET_INT_STAT((int)stat, value);
         }
 
         public static float GetFloatStatistic(eFloatStatistic stat)
         {
-            return GET_FLOAT_STAT((uint)stat);
+            return GET_FLOAT_STAT((int)stat);
         }
-        public static void GetFloatStatistic(eIntStatistic stat, float value)
+        public static void SetFloatStatistic(eFloatStatistic stat, float value)
         {
-            SET_FLOAT_STAT((uint)stat, value);
+            SET_FLOAT_STAT((int)stat, value);
         }
 
         /// <summary>

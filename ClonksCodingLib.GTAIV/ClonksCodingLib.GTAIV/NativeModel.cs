@@ -38,7 +38,7 @@ namespace CCL.GTAIV
                 if (!IsValid())
                     return false;
 
-                return HAS_MODEL_LOADED(GetModelHashAs<int>());
+                return HAS_MODEL_LOADED((int)Hash);
             }
         }
         public bool IsCollisionDataInMemory
@@ -181,7 +181,7 @@ namespace CCL.GTAIV
             if (!IsValid())
                 return;
 
-            REQUEST_MODEL(GetModelHashAs<int>());
+            REQUEST_MODEL((int)Hash);
         }
         public void LoadCollisionDataToMemory()
         {
@@ -196,7 +196,7 @@ namespace CCL.GTAIV
             if (!IsValid())
                 return;
 
-            MARK_MODEL_AS_NO_LONGER_NEEDED(GetModelHashAs<int>());
+            MARK_MODEL_AS_NO_LONGER_NEEDED((int)Hash);
         }
 
         public void GetDimensions(out Vector3 min, out Vector3 max)
@@ -233,7 +233,7 @@ namespace CCL.GTAIV
             if (!IsValid())
                 return false;
 
-            IVStreaming.ScriptRequestModel(GetModelHashAs<int>());
+            IVStreaming.ScriptRequestModel((int)Hash);
 
             if (IsInMemory)
                 return true;
@@ -301,19 +301,13 @@ namespace CCL.GTAIV
             GET_WEAPONTYPE_MODEL((int)weaponType, out uint model);
             return new NativeModel(model);
         }
-
-        // Private stuff
-        private T GetModelHashAs<T>()
-        {
-            return (T)Convert.ChangeType(Hash, typeof(T));
-        }
         #endregion
 
         #region Overrides
         public override string ToString()
         {
             if (string.IsNullOrEmpty(_modelName))
-                return "0x" + Helper.ToHex(GetModelHashAs<int>());
+                return "0x" + Helper.ToHex((int)Hash);
             else
                 return _modelName;
         }

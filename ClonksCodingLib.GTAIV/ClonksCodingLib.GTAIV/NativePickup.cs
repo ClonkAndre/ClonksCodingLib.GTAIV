@@ -133,6 +133,122 @@ namespace CCL.GTAIV
 
         // Statics
         /// <summary>
+        /// Sets if weapon pickups should be rendered bigger in-game.
+        /// </summary>
+        /// <param name="value">True, weapon pickups will render bigger. False, weapon pickups will not render bigger.</param>
+        public static void RenderWeaponPickupsBigger(bool value)
+        {
+            RENDER_WEAPON_PICKUPS_BIGGER(value);
+        }
+
+        /// <summary>
+        /// Sets if pickups fix cars.
+        /// </summary>
+        /// <param name="value">True, pickups will fix cars. False, pickups will not fix cars.</param>
+        public static void SetPickupsFixCars(bool value)
+        {
+            SET_PICKUPS_FIX_CARS(value);
+        }
+
+        /// <summary>
+        /// Sets if pickups of the given type can be collected by car.
+        /// </summary>
+        /// <param name="type">The pickup type this should apply on.</param>
+        /// <param name="value">True if pickups of given type will be collectable by car. False if pickups of given type will not be collectable by car.</param>
+        public static void SetAllPickupsOfTypeCollectableByCar(ePickupType type, bool value)
+        {
+            SET_ALL_PICKUPS_OF_TYPE_COLLECTABLE_BY_CAR((int)type, value);
+        }
+
+        /// <summary>
+        /// Probably sets the message that will be displayed when the game asks you to replace the current weapon with the new weapon.
+        /// </summary>
+        /// <param name="value">True if the message should always display. Otherwise, false.</param>
+        public static void SetAlwaysDisplayWeaponPickupMessage(bool value)
+        {
+            SET_ALWAYS_DISPLAY_WEAPON_PICKUP_MESSAGE(value);
+        }
+
+        /// <summary>
+        /// Removes all pickups of the given type.
+        /// </summary>
+        /// <param name="type">The target type.</param>
+        public static void RemoveAllPickupsOfType(ePickupType type)
+        {
+            REMOVE_ALL_PICKUPS_OF_TYPE((uint)type);
+        }
+        #endregion
+
+        #region Functions
+        /// <inheritdoc/>
+        public override bool Exists()
+        {
+            if (!IsValid)
+                return false;
+
+            return DOES_PICKUP_EXIST(Handle);
+        }
+
+        /// <summary>
+        /// Gets if the pickup has been collected by the given player.
+        /// </summary>
+        /// <param name="playerIndex">The player to check on.</param>
+        /// <returns>True if the given player has collected the pickup. Otherwise, false.</returns>
+        public bool HasPlayerCollectedPickup(int playerIndex)
+        {
+            if (!IsValid)
+                return false;
+
+            return HAS_PLAYER_COLLECTED_PICKUP(playerIndex, Handle);
+        }
+
+        /// <summary>
+        /// Attaches a <see cref="NativeBlip"/> to this <see cref="NativePickup"/>.
+        /// </summary>
+        /// <returns>If successful, the attached <see cref="NativeBlip"/> is returned. Otherwise, <see langword="null"/>.</returns>
+        public NativeBlip AttachBlip()
+        {
+            if (!IsValid)
+                return null;
+            if (!Exists())
+                return null;
+
+            return NativeBlip.AddBlip(this);
+        }
+
+        // Statics
+        /// <summary>
+        /// Gets a safe position for a pickup from the given position.
+        /// </summary>
+        /// <param name="targetPos">Target position to get a safe pickup position from.</param>
+        /// <returns>The safe position.</returns>
+        public static Vector3 GetSafePickupPositionAtPos(Vector3 targetPos)
+        {
+            GET_SAFE_PICKUP_COORDS(targetPos.X, targetPos.Y, targetPos.Z, out float x, out float y, out float z);
+            return new Vector3(x, y, z);
+        }
+
+        /// <summary>
+        /// Gets if any pickup is at the given position.
+        /// </summary>
+        /// <param name="pos">Target position to check for.</param>
+        /// <returns>True if there is any pickup at the position. Otherwise, false.</returns>
+        public static bool IsAnyPickupAtPos(Vector3 pos)
+        {
+            return IS_ANY_PICKUP_AT_COORDS(pos.X, pos.Y, pos.Z);
+        }
+
+        /// <summary>
+        /// Gets if any money pickup is at the given position.
+        /// </summary>
+        /// <param name="pos">Target position to check for.</param>
+        /// <returns>True if there is any money pickup at the position. Otherwise, false.</returns>
+        public static bool IsMoneyPickupAtPos(Vector3 pos)
+        {
+            return IS_MONEY_PICKUP_AT_COORDS(pos.X, pos.Y, pos.Z);
+        }
+
+        /// <summary>
         /// Creates a pickup at the given location.
         /// </summary>
         /// <param name="model">The pickup model.</param>
@@ -199,122 +315,6 @@ namespace CCL.GTAIV
                 return null;
 
             return new NativePickup(handle);
-        }
-
-        /// <summary>
-        /// Sets if weapon pickups should be rendered bigger in-game.
-        /// </summary>
-        /// <param name="value">True, weapon pickups will render bigger. False, weapon pickups will not render bigger.</param>
-        public static void RenderWeaponPickupsBigger(bool value)
-        {
-            RENDER_WEAPON_PICKUPS_BIGGER(value);
-        }
-
-        /// <summary>
-        /// Sets if pickups of the given type can be collected by car.
-        /// </summary>
-        /// <param name="type">The pickup type this should apply on.</param>
-        /// <param name="value">True if pickups of given type will be collectable by car. False if pickups of given type will not be collectable by car.</param>
-        public static void SetAllPickupsOfTypeCollectableByCar(ePickupType type, bool value)
-        {
-            SET_ALL_PICKUPS_OF_TYPE_COLLECTABLE_BY_CAR((int)type, value);
-        }
-
-        /// <summary>
-        /// Probably sets the message that will be displayed when the game asks you to replace the current weapon with the new weapon.
-        /// </summary>
-        /// <param name="value">True if the message should always display. Otherwise, false.</param>
-        public static void SetAlwaysDisplayWeaponPickupMessage(bool value)
-        {
-            SET_ALWAYS_DISPLAY_WEAPON_PICKUP_MESSAGE(value);
-        }
-
-        /// <summary>
-        /// Removes all pickups of the given type.
-        /// </summary>
-        /// <param name="type">The target type.</param>
-        public static void RemoveAllPickupsOfType(ePickupType type)
-        {
-            REMOVE_ALL_PICKUPS_OF_TYPE((uint)type);
-        }
-        #endregion
-
-        #region Functions
-        /// <inheritdoc/>
-        public override bool Exists()
-        {
-            if (!IsValid)
-                return false;
-
-            return DOES_PICKUP_EXIST(Handle);
-        }
-
-        /// <summary>
-        /// Gets if the pickup has been collected by the given player.
-        /// </summary>
-        /// <param name="playerIndex">The player to check on.</param>
-        /// <returns>True if the given player has collected the pickup. Otherwise, false.</returns>
-        public bool HasPlayerCollectedPickup(int playerIndex)
-        {
-            if (!IsValid)
-                return false;
-
-            return HAS_PLAYER_COLLECTED_PICKUP(playerIndex, Handle);
-        }
-
-        // Statics
-        /// <summary>
-        /// Gets a safe position for a pickup from the given position.
-        /// </summary>
-        /// <param name="targetPos">Target position to get a safe pickup position from.</param>
-        /// <returns>The safe position.</returns>
-        public static Vector3 GetSafePickupPositionAtPos(Vector3 targetPos)
-        {
-            GET_SAFE_PICKUP_COORDS(targetPos.X, targetPos.Y, targetPos.Z, out float x, out float y, out float z);
-            return new Vector3(x, y, z);
-        }
-
-        /// <summary>
-        /// Gets if any pickup is at the given position.
-        /// </summary>
-        /// <param name="pos">Target position to check for.</param>
-        /// <returns>True if there is any pickup at the position. Otherwise, false.</returns>
-        public static bool IsAnyPickupAtPos(Vector3 pos)
-        {
-            return IS_ANY_PICKUP_AT_COORDS(pos.X, pos.Y, pos.Z);
-        }
-
-        /// <summary>
-        /// Gets if any money pickup is at the given position.
-        /// </summary>
-        /// <param name="pos">Target position to check for.</param>
-        /// <returns>True if there is any money pickup at the position. Otherwise, false.</returns>
-        public static bool IsMoneyPickupAtPos(Vector3 pos)
-        {
-            return IS_MONEY_PICKUP_AT_COORDS(pos.X, pos.Y, pos.Z);
-        }
-
-        /// <summary>
-        /// Sets if pickups fix cars.
-        /// </summary>
-        /// <param name="value">True, pickups will fix cars. False, pickups will not fix cars.</param>
-        public static void SetPickupsFixCars(bool value)
-        {
-            SET_PICKUPS_FIX_CARS(value);
-        }
-
-        /// <summary>
-        /// Attaches a <see cref="NativeBlip"/> to this <see cref="NativePickup"/>.
-        /// </summary>
-        /// <returns>If successful, the attached <see cref="NativeBlip"/> is returned. Otherwise, <see langword="null"/>.</returns>
-        public NativeBlip AttachBlip()
-        {
-            if (!IsValid)
-                return null;
-            if (!Exists())
-                return null;
-
-            return NativeBlip.AddBlip(this);
         }
         #endregion
 

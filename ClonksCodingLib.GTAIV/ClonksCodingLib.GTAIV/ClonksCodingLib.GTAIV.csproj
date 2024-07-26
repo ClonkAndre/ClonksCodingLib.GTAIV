@@ -36,7 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IVSDKDotNetWrapper, Version=1.4.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="IVSDKDotNetWrapper, Version=1.5.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\IVSDKDotNet\Release\IVSDKDotNetWrapper.dll</HintPath>
     </Reference>
@@ -45,6 +45,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimationController\PedAnimationController.cs" />
@@ -59,7 +60,9 @@
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="HandleObject.cs" />
     <Compile Include="AnimationStuff.cs" />
-    <Compile Include="InternalHelper.cs" />
+    <Compile Include="Helper\ImGuiHelper.cs" />
+    <Compile Include="Helper\InternalHelper.cs" />
+    <Compile Include="Helper\LightHelper.cs" />
     <Compile Include="NativeBlip.cs" />
     <Compile Include="NativeCamera.cs" />
     <Compile Include="NativeCheckpoint.cs" />
