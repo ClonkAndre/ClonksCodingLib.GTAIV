@@ -23,7 +23,7 @@ namespace CCL.GTAIV
         {
             get
             {
-                GET_MOUSE_POSITION(out int x, out int y);
+                GET_MOUSE_POSITION(out float x, out float y);
                 return new Vector2(x, y);
             }
         }
