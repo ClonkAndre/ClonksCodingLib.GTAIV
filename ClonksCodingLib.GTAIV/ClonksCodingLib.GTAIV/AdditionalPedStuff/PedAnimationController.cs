@@ -1,24 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using IVSDKDotNet;
+﻿using IVSDKDotNet;
 using static IVSDKDotNet.Native.Natives;
 
-namespace CCL.GTAIV.AnimationController
+namespace CCL.GTAIV
 {
-    public class PedAnimationController
+    public struct PedAnimationController
     {
-        #region Variables
+        #region Variables and Properties
+        // Variables
         private IVPed ped;
+        private int handle;
+
+        // Properties
+        /// <summary>
+        /// Gets if this <see cref="PedAnimationController"/> is valid or not.
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                return handle != 0;
+            }
+        }
         #endregion
 
         #region Constructor
         internal PedAnimationController(IVPed targetPed)
         {
             ped = targetPed;
+            handle = ped.GetHandle();
+        }
+        internal PedAnimationController(int pedHandle)
+        {
+            ped = null;
+            handle = pedHandle;
         }
         #endregion
 
@@ -55,6 +69,15 @@ namespace CCL.GTAIV.AnimationController
         #endregion
 
         #region Functions
+        /// <summary>
+        /// Returns an invalid <see cref="PedAnimationController"/> which cannot be used to play any animations on a <see cref="IVPed"/>.
+        /// </summary>
+        /// <returns>An invalid <see cref="PedAnimationController"/>.</returns>
+        public static PedAnimationController Empty()
+        {
+            return new PedAnimationController(0);
+        }
+
         public bool IsPlaying(string animSet, string animName)
         {
             if (ped == null)

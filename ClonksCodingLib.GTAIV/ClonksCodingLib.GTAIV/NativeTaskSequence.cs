@@ -1,6 +1,4 @@
-﻿using CCL.GTAIV.TaskController;
-
-using IVSDKDotNet;
+﻿using IVSDKDotNet;
 using static IVSDKDotNet.Native.Natives;
 
 namespace CCL.GTAIV
@@ -46,7 +44,7 @@ namespace CCL.GTAIV
             get
             {
                 if (Closed)
-                    return null;
+                    return PedTaskController.Empty();
 
                 return PedTaskController.TempTaskController;
             }

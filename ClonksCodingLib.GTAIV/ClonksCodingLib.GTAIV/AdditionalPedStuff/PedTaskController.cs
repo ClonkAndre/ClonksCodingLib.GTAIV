@@ -4,22 +4,37 @@ using IVSDKDotNet;
 using IVSDKDotNet.Enums;
 using static IVSDKDotNet.Native.Natives;
 
-namespace CCL.GTAIV.TaskController
+namespace CCL.GTAIV
 {
-    public class PedTaskController
+    public struct PedTaskController
     {
+        #region Consts
+        /// <summary>1 Hour</summary>
+        public const int MAX_DURATION = 3600000;
+        #endregion
+
         #region Variables and Properties
         // Variables
         internal static readonly PedTaskController TempTaskController = new PedTaskController(0);
-
-        /// <summary>1 Hour</summary>
-        public const int MAX_DURATION = 3600000;
 
         private IVPed thePed;
         private int handle;
         private bool wasCreatedForTaskSequence;
 
         // Properties
+        /// <summary>
+        /// Gets if this <see cref="PedTaskController"/> is valid or not.
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                return handle != 0;
+            }
+        }
+        /// <summary>
+        /// Sets if the <see cref="IVPed"/> should keep a task.
+        /// </summary>
         public bool AlwaysKeepTask
         {
             set { SET_CHAR_KEEP_TASK(handle, value); }
@@ -35,8 +50,26 @@ namespace CCL.GTAIV.TaskController
         }
         internal PedTaskController(int pedHandle)
         {
+            thePed = null;
             handle = pedHandle;
             wasCreatedForTaskSequence = true;
+        }
+        internal PedTaskController(bool createdForTaskSequence, int pedHandle)
+        {
+            thePed = null;
+            handle = pedHandle;
+            wasCreatedForTaskSequence = createdForTaskSequence;
+        }
+        #endregion
+
+        #region Functions
+        /// <summary>
+        /// Returns an invalid <see cref="PedTaskController"/> which cannot be used to perfom any tasks on a <see cref="IVPed"/>.
+        /// </summary>
+        /// <returns>An invalid <see cref="PedTaskController"/>.</returns>
+        public static PedTaskController Empty()
+        {
+            return new PedTaskController(false, 0);
         }
         #endregion
 
