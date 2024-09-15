@@ -30,7 +30,7 @@ namespace CCL.GTAIV
                 if (leaderHandle <= 0)
                     return null;
 
-                return NativeWorld.GetPedInstaceFromHandle(leaderHandle);
+                return NativeWorld.GetPedInstanceFromHandle(leaderHandle);
             }
             set
             {
@@ -207,7 +207,7 @@ namespace CCL.GTAIV
             if (ped <= 0)
                 return false;
 
-            return AddMember(NativeWorld.GetPedInstaceFromHandle(ped), neverLeave);
+            return AddMember(NativeWorld.GetPedInstanceFromHandle(ped), neverLeave);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace CCL.GTAIV
             if (ped <= 0)
                 return false;
 
-            return AddMember(NativeWorld.GetPedInstaceFromHandle(ped));
+            return AddMember(NativeWorld.GetPedInstanceFromHandle(ped));
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace CCL.GTAIV
             if (memberHandle == 0)
                 return null;
 
-            return NativeWorld.GetPedInstaceFromHandle(memberHandle);
+            return NativeWorld.GetPedInstanceFromHandle(memberHandle);
         }
 
         /// <summary>
@@ -276,7 +276,7 @@ namespace CCL.GTAIV
             if (ped <= 0)
                 return false;
 
-            return IsLeader(NativeWorld.GetPedInstaceFromHandle(ped));
+            return IsLeader(NativeWorld.GetPedInstanceFromHandle(ped));
         }
 
         /// <summary>
@@ -305,7 +305,7 @@ namespace CCL.GTAIV
             if (ped <= 0)
                 return false;
 
-            return IsMember(NativeWorld.GetPedInstaceFromHandle(ped));
+            return IsMember(NativeWorld.GetPedInstanceFromHandle(ped));
         }
 
         /// <summary>
@@ -478,7 +478,7 @@ namespace CCL.GTAIV
             if (veh <= 0)
                 return;
 
-            EnterVehicle(NativeWorld.GetVehicleInstaceFromHandle(veh), withLeader, keepCurrentDriver);
+            EnterVehicle(NativeWorld.GetVehicleInstanceFromHandle(veh), withLeader, keepCurrentDriver);
         }
         #endregion
 

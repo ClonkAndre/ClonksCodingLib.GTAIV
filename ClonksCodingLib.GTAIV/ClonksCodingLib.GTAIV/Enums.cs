@@ -20,11 +20,10 @@ namespace CCL.GTAIV
     /// </summary>
     public enum PedGender
     {
-        // Whoops
         /// <summary>
         /// Unknown gender. You will only see this appearing when <see cref="IVSDKDotNet.IVPed"/> would be <see langword="null"/> for example.
         /// </summary>
-        Unkown,
+        Unknown,
         /// <summary>
         /// Ped is a male.
         /// </summary>
@@ -374,6 +373,18 @@ namespace CCL.GTAIV
         Nothing,
         Vehicle,
         Ped
+    }
+
+    /// <summary>
+    /// Contains day states. 
+    /// </summary>
+    public enum DayState
+    {
+        Unknown,
+        Morning,
+        Day,
+        Evening,
+        Night
     }
 
 }

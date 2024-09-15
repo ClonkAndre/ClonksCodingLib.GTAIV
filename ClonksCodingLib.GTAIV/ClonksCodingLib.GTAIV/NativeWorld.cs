@@ -221,10 +221,17 @@ namespace CCL.GTAIV
         /// <para>Warning: Can cause a freeze for a few seconds.</para>
         /// </summary>
         /// <param name="pos">The target position.</param>
-        public static void LoadEnvironmentNow(Vector3 pos)
+        /// <param name="alsoLoadAllObjectsNow">
+        /// If the <see cref="LOAD_ALL_OBJECTS_NOW"/> native should be called before the <see cref="LOAD_SCENE(Vector3)"/> native is called.
+        /// <para>I dont think it is necessary to set it to <see langword="true"/> as the <see cref="LOAD_SCENE(Vector3)"/> native already load all the objects.</para>
+        /// </param>
+        public static void LoadEnvironmentNow(Vector3 pos, bool alsoLoadAllObjectsNow = false)
         {
             REQUEST_COLLISION_AT_POSN(pos);
-            LOAD_ALL_OBJECTS_NOW();
+
+            if (alsoLoadAllObjectsNow)
+                LOAD_ALL_OBJECTS_NOW();
+
             LOAD_SCENE(pos);
             POPULATE_NOW();
         }
@@ -582,7 +589,7 @@ namespace CCL.GTAIV
         /// </summary>
         /// <param name="pedHandle">The ped handle to get the <see cref="IVPed"/> instance from.</param>
         /// <returns>If successful the <see cref="IVPed"/> is returned. Otherwise, null.</returns>
-        public static IVPed GetPedInstaceFromHandle(int pedHandle)
+        public static IVPed GetPedInstanceFromHandle(int pedHandle)
         {
             UIntPtr ptr = IVPools.GetPedPool().GetAt((uint)pedHandle);
 
@@ -591,13 +598,12 @@ namespace CCL.GTAIV
 
             return null;
         }
-        // Whoops
         /// <summary>
         /// Gets the <see cref="IVVehicle"/> IV-SDK instance from the given <paramref name="vehicleHandle"/>.
         /// </summary>
         /// <param name="vehicleHandle">The vehicle handle to get the <see cref="IVVehicle"/> instance from.</param>
         /// <returns>If successful the <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
-        public static IVVehicle GetVehicleInstaceFromHandle(int vehicleHandle)
+        public static IVVehicle GetVehicleInstanceFromHandle(int vehicleHandle)
         {
             UIntPtr ptr = IVPools.GetVehiclePool().GetAt((uint)vehicleHandle);
 
@@ -611,7 +617,7 @@ namespace CCL.GTAIV
         /// </summary>
         /// <param name="objectHandle">The object handle to get the <see cref="IVObject"/> instance from.</param>
         /// <returns>If successful the <see cref="IVObject"/> is returned. Otherwise, null.</returns>
-        public static IVObject GetObjectInstaceFromHandle(int objectHandle)
+        public static IVObject GetObjectInstanceFromHandle(int objectHandle)
         {
             UIntPtr ptr = IVPools.GetObjectPool().GetAt((uint)objectHandle);
 
@@ -766,6 +772,34 @@ namespace CCL.GTAIV
         {
             GET_GAME_VIEWPORT_ID(out int viewportId);
             return CAM_IS_SPHERE_VISIBLE(viewportId, pos, radius);
+        }
+
+        /// <summary>
+        /// Get the current state of the day.
+        /// <para>Example: Returns <see cref="DayState.Night"/> if it's currently in the middle of the night.</para>
+        /// </summary>
+        /// <returns>One of the elements within the <see cref="DayState"/> enum.</returns>
+        public static DayState GetDayState()
+        {
+            uint hour = GET_HOURS_OF_DAY();
+
+            // Morning (5 to 12)
+            if (hour >= 5 && hour <= 12)
+                return DayState.Morning;
+
+            // Day (12 to 18)
+            if (hour > 12 && hour < 18)
+                return DayState.Day;
+
+            // Evening (18 to 23)
+            if (hour >= 18 && hour <= 23)
+                return DayState.Evening;
+
+            // Night (0 to 5)
+            if (hour >= 0 && hour < 5)
+                return DayState.Night;
+
+            return DayState.Unknown;
         }
         #endregion
 
