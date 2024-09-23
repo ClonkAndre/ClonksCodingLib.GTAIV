@@ -4,22 +4,41 @@ using IVSDKDotNet;
 using IVSDKDotNet.Enums;
 using static IVSDKDotNet.Native.Natives;
 
-namespace CCL.GTAIV.TaskController
+namespace CCL.GTAIV
 {
-    public class PedTaskController
+    /// <summary>
+    /// Gives you easy access to some native function tasks for a <see cref="IVPed"/>.
+    /// </summary>
+    public struct PedTaskController
     {
+
+        #region Consts
+        /// <summary>1 Hour</summary>
+        public const int MAX_DURATION = 3600000;
+        #endregion
+
         #region Variables and Properties
         // Variables
         internal static readonly PedTaskController TempTaskController = new PedTaskController(0);
-
-        /// <summary>1 Hour</summary>
-        public const int MAX_DURATION = 3600000;
 
         private IVPed thePed;
         private int handle;
         private bool wasCreatedForTaskSequence;
 
         // Properties
+        /// <summary>
+        /// Gets if this <see cref="PedTaskController"/> is valid or not.
+        /// </summary>
+        public bool IsValid
+        {
+            get
+            {
+                return handle != 0;
+            }
+        }
+        /// <summary>
+        /// Sets if the <see cref="IVPed"/> should keep a task.
+        /// </summary>
         public bool AlwaysKeepTask
         {
             set { SET_CHAR_KEEP_TASK(handle, value); }
@@ -35,8 +54,39 @@ namespace CCL.GTAIV.TaskController
         }
         internal PedTaskController(int pedHandle)
         {
+            thePed = null;
             handle = pedHandle;
             wasCreatedForTaskSequence = true;
+        }
+        internal PedTaskController(bool createdForTaskSequence, int pedHandle)
+        {
+            thePed = null;
+            handle = pedHandle;
+            wasCreatedForTaskSequence = createdForTaskSequence;
+        }
+        #endregion
+
+        #region Functions
+        /// <summary>
+        /// Returns an invalid <see cref="PedTaskController"/> which cannot be used to perfom any tasks on a <see cref="IVPed"/>.
+        /// </summary>
+        /// <returns>An invalid <see cref="PedTaskController"/>.</returns>
+        public static PedTaskController Empty()
+        {
+            return new PedTaskController(false, 0);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="PedTaskController"/> from an existing ped <paramref name="handle"/>.
+        /// </summary>
+        /// <param name="handle">The handle from an existing ped.</param>
+        /// <returns>The newly created <see cref="PedTaskController"/> if successful. Otherwise, an invalid <see cref="PedTaskController"/> is returned if the <paramref name="handle"/> is 0.</returns>
+        public static PedTaskController FromHandle(int handle)
+        {
+            if (handle <= 0)
+                return Empty();
+
+            return new PedTaskController(false, handle);
         }
         #endregion
 
@@ -458,6 +508,7 @@ namespace CCL.GTAIV.TaskController
         }
         /// <summary>
         /// Example scenario: Vehicle_LookingInBoot
+        /// <para>Check out <b>Scenarios.dat</b> file inside the <b>common -> data</b> folder for more scenarios.</para>
         /// </summary>
         /// <param name="scenarioName">The name of the scenario to start.</param>
         /// <param name="pos">The position of the scenario to start?</param>
@@ -533,7 +584,7 @@ namespace CCL.GTAIV.TaskController
             if (sequence == null)
                 return;
 
-            sequence.Perform(thePed);
+            sequence.Perform(handle);
         }
 
     }

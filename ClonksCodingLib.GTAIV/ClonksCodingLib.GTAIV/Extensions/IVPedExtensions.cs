@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Numerics;
 
-using CCL.GTAIV.AnimationController;
-using CCL.GTAIV.TaskController;
-
 using IVSDKDotNet;
 using IVSDKDotNet.Enums;
 using static IVSDKDotNet.Native.Natives;
@@ -426,9 +423,9 @@ namespace CCL.GTAIV
         public static PedGender GetCharGender(this IVPed ped)
         {
             if (ped == null)
-                return PedGender.Unkown;
+                return PedGender.Unknown;
             if (!Exists(ped))
-                return PedGender.Unkown;
+                return PedGender.Unknown;
 
             return IS_CHAR_MALE(GetHandle(ped)) ? PedGender.Male : PedGender.Female;
         }
@@ -519,18 +516,18 @@ namespace CCL.GTAIV
         public static PedAnimationController GetAnimationController(this IVPed ped)
         {
             if (ped == null)
-                return null;
+                return PedAnimationController.Empty();
             if (!Exists(ped))
-                return null;
+                return PedAnimationController.Empty();
 
             return new PedAnimationController(ped);
         }
         public static PedTaskController GetTaskController(this IVPed ped)
         {
             if (ped == null)
-                return null;
+                return PedTaskController.Empty();
             if (!Exists(ped))
-                return null;
+                return PedTaskController.Empty();
 
             return new PedTaskController(ped);
         }

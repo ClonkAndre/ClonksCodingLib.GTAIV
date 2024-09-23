@@ -508,7 +508,7 @@ namespace CCL.GTAIV
         /// The created <see cref="Rope"/> if successful.
         /// <para>
         /// Otherwise <see langword="null"/> if:<br/>
-        /// - The given <paramref name="model"/> does not exist within the game.<br/>
+        /// - The given <paramref name="model"/> does not exist within the game (THIS WILL ALSO THROW AN EXCEPTION!).<br/>
         /// - The <paramref name="startPos"/> is below the ground position at this position.
         /// </para>
         /// </returns>
@@ -518,7 +518,7 @@ namespace CCL.GTAIV
             uint modelHash = RAGE.AtStringHash(model);
             
             if (!IS_MODEL_IN_CDIMAGE((int)modelHash))
-                throw new Exception(string.Format("Failed to create rope. Model {0} does not exists in game.", model));
+                throw new Exception(string.Format("Failed to create rope. Model '{0}' does not exists in game.", model));
 
             Rope rope = new Rope(startPos);
             rope.LoadModel(modelHash);
