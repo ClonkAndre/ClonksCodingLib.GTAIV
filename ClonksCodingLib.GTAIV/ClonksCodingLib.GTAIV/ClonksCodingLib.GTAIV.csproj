@@ -64,6 +64,7 @@
     <Compile Include="Helper\ImGuiHelper.cs" />
     <Compile Include="Helper\InternalHelper.cs" />
     <Compile Include="Helper\LightHelper.cs" />
+    <Compile Include="Mods\ZMenuIV.cs" />
     <Compile Include="NativeBlip.cs" />
     <Compile Include="NativeCamera.cs" />
     <Compile Include="NativeCheckpoint.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Rope.cs" />
     <Compile Include="Structs\Rectangle3D.cs" />
     <Compile Include="AdditionalPedStuff\PedTaskController.cs" />
+    <Compile Include="Win32\Win32Natives.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -6,8 +6,12 @@ using static IVSDKDotNet.Native.Natives;
 
 namespace CCL.GTAIV
 {
+    /// <summary>
+    /// Gives you easy access to some native function tasks for a <see cref="IVPed"/>.
+    /// </summary>
     public struct PedTaskController
     {
+
         #region Consts
         /// <summary>1 Hour</summary>
         public const int MAX_DURATION = 3600000;
@@ -70,6 +74,19 @@ namespace CCL.GTAIV
         public static PedTaskController Empty()
         {
             return new PedTaskController(false, 0);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="PedTaskController"/> from an existing ped <paramref name="handle"/>.
+        /// </summary>
+        /// <param name="handle">The handle from an existing ped.</param>
+        /// <returns>The newly created <see cref="PedTaskController"/> if successful. Otherwise, an invalid <see cref="PedTaskController"/> is returned if the <paramref name="handle"/> is 0.</returns>
+        public static PedTaskController FromHandle(int handle)
+        {
+            if (handle <= 0)
+                return Empty();
+
+            return new PedTaskController(false, handle);
         }
         #endregion
 
@@ -491,6 +508,7 @@ namespace CCL.GTAIV
         }
         /// <summary>
         /// Example scenario: Vehicle_LookingInBoot
+        /// <para>Check out <b>Scenarios.dat</b> file inside the <b>common -> data</b> folder for more scenarios.</para>
         /// </summary>
         /// <param name="scenarioName">The name of the scenario to start.</param>
         /// <param name="pos">The position of the scenario to start?</param>
@@ -566,7 +584,7 @@ namespace CCL.GTAIV
             if (sequence == null)
                 return;
 
-            sequence.Perform(thePed);
+            sequence.Perform(handle);
         }
 
     }

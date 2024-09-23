@@ -285,284 +285,6 @@ namespace CCL.GTAIV
 
         #region Functions
         /// <summary>
-        /// Creates a new ped with the given model name at the given position.
-        /// </summary>
-        /// <param name="modelName">The model name of the ped.</param>
-        /// <param name="position">The position of the ped.</param>
-        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
-        /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
-        public static IVPed SpawnPed(string modelName, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
-        {
-            uint modelHash = RAGE.AtStringHash(modelName);
-            IVModelInfo.GetModelInfo(modelHash, out int index);
-            IVStreaming.ScriptRequestModel((int)modelHash);
-            IVStreaming.LoadAllRequestedModels(false);
-
-            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, position, true, true);
-
-            if (ped == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld) 
-                IVWorld.Add(ped.GetUIntPtr(), false);
-
-            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
-
-            if (setAsMissionPed)
-                SET_CHAR_AS_MISSION_CHAR(pedHandle);
-
-            handle = pedHandle;
-            return ped;
-        }
-        /// <summary>
-        /// Creates a new ped with the given model name at the given position.
-        /// </summary>
-        /// <param name="modelName">The model name of the ped.</param>
-        /// <param name="position">The position of the ped.</param>
-        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
-        /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
-        public static IVPed SpawnPed(string modelName, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
-        {
-            uint modelHash = RAGE.AtStringHash(modelName);
-            IVModelInfo.GetModelInfo(modelHash, out int index);
-            IVStreaming.ScriptRequestModel((int)modelHash);
-            IVStreaming.LoadAllRequestedModels(false);
-
-            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true, true);
-
-            if (ped == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld)
-                IVWorld.Add(ped.GetUIntPtr(), false);
-
-            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
-
-            if (setAsMissionPed)
-                SET_CHAR_AS_MISSION_CHAR(pedHandle);
-
-            handle = pedHandle;
-            return ped;
-        }
-        /// <summary>
-        /// Creates a new ped with the given model hash at the given position.
-        /// </summary>
-        /// <param name="model">The model hash of the ped.</param>
-        /// <param name="position">The position of the ped.</param>
-        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
-        /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
-        public static IVPed SpawnPed(uint model, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
-        {
-            IVModelInfo.GetModelInfo(model, out int index);
-            IVStreaming.ScriptRequestModel((int)model);
-            IVStreaming.LoadAllRequestedModels(false);
-
-            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, position, true, true);
-
-            if (ped == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld)
-                IVWorld.Add(ped.GetUIntPtr(), false);
-
-            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
-
-            if (setAsMissionPed)
-                SET_CHAR_AS_MISSION_CHAR(pedHandle);
-
-            handle = pedHandle;
-            return ped;
-        }
-        /// <summary>
-        /// Creates a new ped with the given model hash at the given position.
-        /// </summary>
-        /// <param name="model">The model hash of the ped.</param>
-        /// <param name="position">The position of the ped.</param>
-        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
-        /// <param name="addToWorld">Sets if the ped should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
-        public static IVPed SpawnPed(uint model, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
-        {
-            IVModelInfo.GetModelInfo(model, out int index);
-            IVStreaming.ScriptRequestModel((int)model);
-            IVStreaming.LoadAllRequestedModels(false);
-
-            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVSpawnData.Default(), index, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true, true);
-
-            if (ped == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld)
-                IVWorld.Add(ped.GetUIntPtr(), false);
-
-            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
-
-            if (setAsMissionPed)
-                SET_CHAR_AS_MISSION_CHAR(pedHandle);
-
-            handle = pedHandle;
-            return ped;
-        }
-
-        /// <summary>
-        /// Creates a new vehicle with the given model name at the given position.
-        /// </summary>
-        /// <param name="modelName">The model name of the vehicle.</param>
-        /// <param name="position">The position of the vehicle.</param>
-        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
-        /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
-        public static IVVehicle SpawnVehicle(string modelName, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
-        {
-            uint modelHash = RAGE.AtStringHash(modelName);
-            IVModelInfo.GetModelInfo(modelHash, out int index);
-            IVStreaming.ScriptRequestModel((int)modelHash);
-            IVStreaming.LoadAllRequestedModels(false);
-
-            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
-
-            if (veh == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld)
-                IVWorld.Add(veh.GetUIntPtr(), false);
-
-            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
-
-            if (setAsMissionVehicle)
-                SET_CAR_AS_MISSION_CAR(vehHandle);
-
-            handle = vehHandle;
-            return veh;
-        }
-        /// <summary>
-        /// Creates a new vehicle with the given model name at the given position.
-        /// </summary>
-        /// <param name="modelName">The model name of the vehicle.</param>
-        /// <param name="position">The position of the vehicle.</param>
-        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
-        /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
-        public static IVVehicle SpawnVehicle(string modelName, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
-        {
-            uint modelHash = RAGE.AtStringHash(modelName);
-            IVModelInfo.GetModelInfo(modelHash, out int index);
-            IVStreaming.ScriptRequestModel((int)modelHash);
-            IVStreaming.LoadAllRequestedModels(false);
-            
-            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true);
-
-            if (veh == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld)
-                IVWorld.Add(veh.GetUIntPtr(), false);
-
-            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
-
-            if (setAsMissionVehicle)
-                SET_CAR_AS_MISSION_CAR(vehHandle);
-
-            handle = vehHandle;
-            return veh;
-        }
-        /// <summary>
-        /// Creates a new vehicle with the given model hash at the given position.
-        /// </summary>
-        /// <param name="model">The model hash of the vehicle.</param>
-        /// <param name="position">The position of the vehicle.</param>
-        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
-        /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
-        public static IVVehicle SpawnVehicle(uint model, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
-        {
-            IVModelInfo.GetModelInfo(model, out int index);
-            IVStreaming.ScriptRequestModel((int)model);
-            IVStreaming.LoadAllRequestedModels(false);
-
-            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
-
-            if (veh == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld)
-                IVWorld.Add(veh.GetUIntPtr(), false);
-
-            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
-
-            if (setAsMissionVehicle)
-                SET_CAR_AS_MISSION_CAR(vehHandle);
-
-            handle = vehHandle;
-            return veh;
-        }
-        /// <summary>
-        /// Creates a new vehicle with the given model hash at the given position.
-        /// </summary>
-        /// <param name="model">The model hash of the vehicle.</param>
-        /// <param name="position">The position of the vehicle.</param>
-        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
-        /// <param name="addToWorld">Sets if the vehicle should be added to the world. Default is true.</param>
-        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning. Default is false.</param>
-        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
-        public static IVVehicle SpawnVehicle(uint model, Vector3 position, out int handle, bool addToWorld = true, bool setAsMissionVehicle = false)
-        {
-            IVModelInfo.GetModelInfo(model, out int index);
-            IVStreaming.ScriptRequestModel((int)model);
-            IVStreaming.LoadAllRequestedModels(false);
-
-            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, new IVMatrix(Vector3.Zero, Vector3.Zero, Vector3.Zero, position), true);
-
-            if (veh == null)
-            {
-                handle = 0;
-                return null;
-            }
-
-            if (addToWorld)
-                IVWorld.Add(veh.GetUIntPtr(), false);
-
-            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
-
-            if (setAsMissionVehicle)
-                SET_CAR_AS_MISSION_CAR(vehHandle);
-
-            handle = vehHandle;
-            return veh;
-        }
-
-        /// <summary>
         /// Doesn't always work so well.
         /// </summary>
         /// <param name="position">The postition to search for peds.</param>
@@ -585,7 +307,7 @@ namespace CCL.GTAIV
         }
 
         /// <summary>
-        /// Gets the <see cref="IVPed"/> IV-SDK instance from the given <paramref name="pedHandle"/>.
+        /// Gets the <see cref="IVPed"/> instance from the given <paramref name="pedHandle"/>.
         /// </summary>
         /// <param name="pedHandle">The ped handle to get the <see cref="IVPed"/> instance from.</param>
         /// <returns>If successful the <see cref="IVPed"/> is returned. Otherwise, null.</returns>
@@ -598,8 +320,9 @@ namespace CCL.GTAIV
 
             return null;
         }
+
         /// <summary>
-        /// Gets the <see cref="IVVehicle"/> IV-SDK instance from the given <paramref name="vehicleHandle"/>.
+        /// Gets the <see cref="IVVehicle"/> instance from the given <paramref name="vehicleHandle"/>.
         /// </summary>
         /// <param name="vehicleHandle">The vehicle handle to get the <see cref="IVVehicle"/> instance from.</param>
         /// <returns>If successful the <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
@@ -612,8 +335,9 @@ namespace CCL.GTAIV
 
             return null;
         }
+
         /// <summary>
-        /// Gets the <see cref="IVObject"/> IV-SDK instance from the given <paramref name="objectHandle"/>.
+        /// Gets the <see cref="IVObject"/> instance from the given <paramref name="objectHandle"/>.
         /// </summary>
         /// <param name="objectHandle">The object handle to get the <see cref="IVObject"/> instance from.</param>
         /// <returns>If successful the <see cref="IVObject"/> is returned. Otherwise, null.</returns>
@@ -800,6 +524,338 @@ namespace CCL.GTAIV
                 return DayState.Night;
 
             return DayState.Unknown;
+        }
+        #endregion
+
+        #region Ped Spawning
+        /// <summary>
+        /// Creates a new ped with the given model name at the given position.
+        /// </summary>
+        /// <param name="modelName">The model name of the ped.</param>
+        /// <param name="position">The position of the ped.</param>
+        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
+        /// <param name="addToWorld">Sets if the ped should be added to the world.</param>
+        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning.</param>
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(string modelName, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
+        {
+            if (string.IsNullOrWhiteSpace(modelName))
+            {
+                handle = 0;
+                return null;
+            }
+
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates the ped
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVControlledByInfo.LocalAIControl(), index, position, true, true);
+
+            if (ped == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the ped to the world
+            if (addToWorld)
+                IVWorld.Add(ped.GetUIntPtr(), false);
+
+            // Gets the handle of the ped
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+
+            // Sets the ped as a mission ped
+            if (setAsMissionPed)
+                SET_CHAR_AS_MISSION_CHAR(pedHandle);
+
+            handle = pedHandle;
+            return ped;
+        }
+
+        /// <summary>
+        /// Creates a new ped with the given model name at the given position.
+        /// </summary>
+        /// <param name="modelName">The model name of the ped.</param>
+        /// <param name="position">The position of the ped.</param>
+        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
+        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning.</param>
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(string modelName, Vector3 position, out int handle, bool setAsMissionPed = false)
+        {
+            if (string.IsNullOrWhiteSpace(modelName))
+            {
+                handle = 0;
+                return null;
+            }
+
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates a new ped
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVControlledByInfo.LocalAIControl(), index, position, true, true);
+
+            if (ped == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the ped to the world
+            IVWorld.Add(ped.GetUIntPtr(), false);
+
+            // Gets the handle of the ped
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+
+            // Sets the ped as a mission ped
+            if (setAsMissionPed)
+                SET_CHAR_AS_MISSION_CHAR(pedHandle);
+
+            handle = pedHandle;
+            return ped;
+        }
+
+        /// <summary>
+        /// Creates a new ped with the given model hash at the given position.
+        /// </summary>
+        /// <param name="model">The model hash of the ped.</param>
+        /// <param name="position">The position of the ped.</param>
+        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
+        /// <param name="addToWorld">Sets if the ped should be added to the world.</param>
+        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning.</param>
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(uint model, IVMatrix position, out int handle, bool addToWorld = true, bool setAsMissionPed = false)
+        {
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates a new ped
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVControlledByInfo.LocalAIControl(), index, position, true, true);
+
+            if (ped == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the ped to the world
+            if (addToWorld)
+                IVWorld.Add(ped.GetUIntPtr(), false);
+
+            // Gets the handle of the ped
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+
+            // Sets the ped as a mission ped
+            if (setAsMissionPed)
+                SET_CHAR_AS_MISSION_CHAR(pedHandle);
+
+            handle = pedHandle;
+            return ped;
+        }
+
+        /// <summary>
+        /// Creates a new ped with the given model hash at the given position.
+        /// </summary>
+        /// <param name="model">The model hash of the ped.</param>
+        /// <param name="position">The position of the ped.</param>
+        /// <param name="handle">Returns the handle of the ped if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a ped.</param>
+        /// <param name="setAsMissionPed">Sets if the ped should be marked as a mission ped. This will prevent the ped from despawning. Default is false.</param>
+        /// <returns>If successful, the newly created <see cref="IVPed"/> is returned. Otherwise, null.</returns>
+        public static IVPed SpawnPed(uint model, Vector3 position, out int handle, bool setAsMissionPed = false)
+        {
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates a new ped
+            IVPed ped = IVPedFactoryNY.ThePedFactory.CreatePed(IVControlledByInfo.LocalAIControl(), index, position, true, true);
+
+            if (ped == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the ped to the world
+            IVWorld.Add(ped.GetUIntPtr(), false);
+
+            // Gets the handle of the ped
+            int pedHandle = (int)IVPools.GetPedPool().GetIndex(ped.GetUIntPtr());
+
+            // Sets the ped as a mission ped
+            if (setAsMissionPed)
+                SET_CHAR_AS_MISSION_CHAR(pedHandle);
+
+            handle = pedHandle;
+            return ped;
+        }
+        #endregion
+
+        #region Vehicle Spawning
+        /// <summary>
+        /// Creates a new vehicle with the given model name at the given position.
+        /// </summary>
+        /// <param name="modelName">The model name of the vehicle.</param>
+        /// <param name="position">The position of the vehicle.</param>
+        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
+        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning.</param>
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(string modelName, IVMatrix position, out int handle, bool setAsMissionVehicle = false)
+        {
+            if (string.IsNullOrWhiteSpace(modelName))
+            {
+                handle = 0;
+                return null;
+            }
+
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates a new vehicle
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
+
+            if (veh == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the vehicle to the world
+            IVWorld.Add(veh.GetUIntPtr(), false);
+
+            // Gets the handle of the vehicle
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+
+            // Sets the vehicle as a mission vehicle
+            if (setAsMissionVehicle)
+                SET_CAR_AS_MISSION_CAR(vehHandle);
+
+            handle = vehHandle;
+            return veh;
+        }
+
+        /// <summary>
+        /// Creates a new vehicle with the given model name at the given position.
+        /// </summary>
+        /// <param name="modelName">The model name of the vehicle.</param>
+        /// <param name="position">The position of the vehicle.</param>
+        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
+        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning.</param>
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(string modelName, Vector3 position, out int handle, bool setAsMissionVehicle = false)
+        {
+            if (string.IsNullOrWhiteSpace(modelName))
+            {
+                handle = 0;
+                return null;
+            }
+
+            uint modelHash = RAGE.AtStringHash(modelName);
+            IVModelInfo.GetModelInfo(modelHash, out int index);
+            IVStreaming.ScriptRequestModel((int)modelHash);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates a new vehicle
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
+
+            if (veh == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the vehicle to the world
+            IVWorld.Add(veh.GetUIntPtr(), false);
+
+            // Gets the handle of the vehicle
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+
+            // Sets the vehicle as a mission vehicle
+            if (setAsMissionVehicle)
+                SET_CAR_AS_MISSION_CAR(vehHandle);
+
+            handle = vehHandle;
+            return veh;
+        }
+
+        /// <summary>
+        /// Creates a new vehicle with the given model hash at the given position.
+        /// </summary>
+        /// <param name="model">The model hash of the vehicle.</param>
+        /// <param name="position">The position of the vehicle.</param>
+        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
+        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning.</param>
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(uint model, IVMatrix position, out int handle, bool setAsMissionVehicle = false)
+        {
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates a new vehicle
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
+
+            if (veh == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the vehicle to the world
+            IVWorld.Add(veh.GetUIntPtr(), false);
+
+            // Gets the handle of the vehicle
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+
+            // Sets the vehicle as a mission vehicle
+            if (setAsMissionVehicle)
+                SET_CAR_AS_MISSION_CAR(vehHandle);
+
+            handle = vehHandle;
+            return veh;
+        }
+
+        /// <summary>
+        /// Creates a new vehicle with the given model hash at the given position.
+        /// </summary>
+        /// <param name="model">The model hash of the vehicle.</param>
+        /// <param name="position">The position of the vehicle.</param>
+        /// <param name="handle">Returns the handle of the vehicle if the function succeeded. The handle can be used with all sorts of native functions that want the handle of a vehicle.</param>
+        /// <param name="setAsMissionVehicle">Sets if the vehicle should be marked as a mission vehicle. This will prevent the vehicle from despawning.</param>
+        /// <returns>If successful, the newly created <see cref="IVVehicle"/> is returned. Otherwise, null.</returns>
+        public static IVVehicle SpawnVehicle(uint model, Vector3 position, out int handle, bool setAsMissionVehicle = false)
+        {
+            IVModelInfo.GetModelInfo(model, out int index);
+            IVStreaming.ScriptRequestModel((int)model);
+            IVStreaming.LoadAllRequestedModels(false);
+
+            // Creates a new vehicle
+            IVVehicle veh = IVVehicleFactoryNY.TheVehicleFactory.CreateVehicle(index, (int)eVehicleCreatedBy.RANDOM_VEHICLE, position, true);
+
+            if (veh == null)
+            {
+                handle = 0;
+                return null;
+            }
+
+            // Adds the vehicle to the world
+            IVWorld.Add(veh.GetUIntPtr(), false);
+
+            // Gets the handle of the vehicle
+            int vehHandle = (int)IVPools.GetVehiclePool().GetIndex(veh.GetUIntPtr());
+
+            // Sets the vehicle as a mission vehicle
+            if (setAsMissionVehicle)
+                SET_CAR_AS_MISSION_CAR(vehHandle);
+
+            handle = vehHandle;
+            return veh;
         }
         #endregion
 

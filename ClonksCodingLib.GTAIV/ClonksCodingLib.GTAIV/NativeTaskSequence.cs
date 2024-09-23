@@ -64,17 +64,13 @@ namespace CCL.GTAIV
 
         #region Methods
         /// <summary>
-        /// Starts performing the added tasks in this sequence of the <paramref name="target"/> <see cref="IVPed"/>.
+        /// Starts performing the added tasks in this sequence on the <paramref name="handle"/>.
         /// </summary>
-        /// <param name="target">The <see cref="IVPed"/> to perform the sequence on.</param>
-        /// <param name="clearTargetTasksAndBlockEventsBeforeRun">If the current tasks of the <paramref name="target"/> should be cleared, and if the <paramref name="target"/> should block permanent events before performing the sequence.</param>
-        public void Perform(IVPed target, bool clearTargetTasksAndBlockEventsBeforeRun = true)
+        /// <param name="handle">The handle to perform the sequence on.</param>
+        /// <param name="clearTargetTasksAndBlockEventsBeforeRun">If the current tasks of the target ped should be cleared, and if the ped should block permanent events before performing the sequence.</param>
+        public void Perform(int handle, bool clearTargetTasksAndBlockEventsBeforeRun = true)
         {
             if (Closed)
-                return;
-            if (target == null)
-                return;
-            if (!target.Exists())
                 return;
 
             // Close the sequence task
@@ -84,18 +80,36 @@ namespace CCL.GTAIV
                 Closed = true;
             }
 
+            if (clearTargetTasksAndBlockEventsBeforeRun)
+            {
+                CLEAR_CHAR_TASKS(handle);
+                SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(handle, true);
+            }
+
+            // Set stuff
+            TargetPedHandle = handle;
+
+            // Perform the sequence on the target ped
+            _TASK_PERFORM_SEQUENCE(handle, Handle);
+            CLEAR_SEQUENCE_TASK(Handle);
+        }
+
+        /// <summary>
+        /// Starts performing the added tasks in this sequence on the <paramref name="target"/>.
+        /// </summary>
+        /// <param name="target">The <see cref="IVPed"/> to perform the sequence on.</param>
+        /// <param name="clearTargetTasksAndBlockEventsBeforeRun">If the current tasks of the <paramref name="target"/> should be cleared, and if the <paramref name="target"/> should block permanent events before performing the sequence.</param>
+        public void Perform(IVPed target, bool clearTargetTasksAndBlockEventsBeforeRun = true)
+        {
+            if (target == null)
+                return;
+            if (!target.Exists())
+                return;
+
             // Set stuff
             TargetPedHandle = target.GetHandle();
 
-            if (clearTargetTasksAndBlockEventsBeforeRun)
-            {
-                CLEAR_CHAR_TASKS(TargetPedHandle);
-                target.BlockPermanentEvents(true);
-            }
-
-            // Perform the sequence on the target ped
-            _TASK_PERFORM_SEQUENCE(TargetPedHandle, Handle);
-            CLEAR_SEQUENCE_TASK(Handle);
+            Perform(TargetPedHandle, clearTargetTasksAndBlockEventsBeforeRun);
         }
         #endregion
 

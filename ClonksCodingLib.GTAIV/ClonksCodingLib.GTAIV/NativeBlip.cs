@@ -12,7 +12,11 @@ namespace CCL.GTAIV
     /// </summary>
     public class NativeBlip : HandleObject
     {
+
         #region Properties
+        /// <summary>
+        /// Gets the position of this <see cref="NativeBlip"/>.
+        /// </summary>
         public Vector3 Position
         {
             get
@@ -25,6 +29,9 @@ namespace CCL.GTAIV
             }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="eBlipColor"/> of this <see cref="NativeBlip"/>.
+        /// </summary>
         public eBlipColor Color
         {
             get
@@ -41,6 +48,9 @@ namespace CCL.GTAIV
                     CHANGE_BLIP_COLOUR(Handle, (int)value);
             }
         }
+        /// <summary>
+        /// Gets or set the <see cref="eBlipDisplay"/> type of this <see cref="NativeBlip"/>.
+        /// </summary>
         public eBlipDisplay Display
         {
             get
@@ -56,6 +66,9 @@ namespace CCL.GTAIV
                     CHANGE_BLIP_DISPLAY(Handle, (uint)value);
             }
         }
+        /// <summary>
+        /// Gets or sets the <see cref="BlipIcon"/> of this <see cref="NativeBlip"/>.
+        /// </summary>
         public BlipIcon Icon
         {
             get
@@ -71,6 +84,9 @@ namespace CCL.GTAIV
                     CHANGE_BLIP_SPRITE(Handle, (uint)value);
             }
         }
+        /// <summary>
+        /// Gets the <see cref="eBlipType"/> of this <see cref="NativeBlip"/>.
+        /// </summary>
         public eBlipType Type
         {
             get
@@ -81,6 +97,9 @@ namespace CCL.GTAIV
                 return (eBlipType)GET_BLIP_INFO_ID_TYPE(Handle);
             }
         }
+        /// <summary>
+        /// Sets the priority of this <see cref="NativeBlip"/>.
+        /// </summary>
         public uint Priority
         {
             set
@@ -89,6 +108,9 @@ namespace CCL.GTAIV
                     CHANGE_BLIP_PRIORITY(Handle, value);
             }
         }
+        /// <summary>
+        /// If set to false, this <see cref="NativeBlip"/> will be displayed as a enemy blip.
+        /// </summary>
         public bool Friendly
         {
             set
@@ -97,6 +119,9 @@ namespace CCL.GTAIV
                     SET_BLIP_AS_FRIENDLY(Handle, value);
             }
         }
+        /// <summary>
+        /// Gets or sets if this <see cref="NativeBlip"/> will only shop up when the player is near it.
+        /// </summary>
         public bool ShowOnlyWhenNear
         {
             get
@@ -112,6 +137,9 @@ namespace CCL.GTAIV
                     SET_BLIP_AS_SHORT_RANGE(Handle, value);
             }
         }
+        /// <summary>
+        /// Sets if there is an active route on the radar to this <see cref="NativeBlip"/>.
+        /// </summary>
         public bool RouteActive
         {
             set
@@ -120,6 +148,9 @@ namespace CCL.GTAIV
                     SET_ROUTE(Handle, value);
             }
         }
+        /// <summary>
+        /// Sets if this <see cref="NativeBlip"/> should flash.
+        /// </summary>
         public bool FlashBlip
         {
             set
@@ -128,6 +159,9 @@ namespace CCL.GTAIV
                     FLASH_BLIP(Handle, value);
             }
         }
+        /// <summary>
+        /// Sets if this <see cref="NativeBlip"/> should flash. This is the same as <see cref="FlashBlip"/> but it flashes "in reverse".
+        /// </summary>
         public bool FlashBlip2
         {
             set
@@ -136,6 +170,9 @@ namespace CCL.GTAIV
                     FLASH_BLIP_ALT(Handle, value);
             }
         }
+        /// <summary>
+        /// Sets the scale of this <see cref="NativeBlip"/>.
+        /// </summary>
         public float Scale
         {
             set
@@ -144,6 +181,9 @@ namespace CCL.GTAIV
                     CHANGE_BLIP_SCALE(Handle, value);
             }
         }
+        /// <summary>
+        /// Sets the transparency of this <see cref="NativeBlip"/>.
+        /// </summary>
         public int Transparency
         {
             set
@@ -152,7 +192,9 @@ namespace CCL.GTAIV
                     CHANGE_BLIP_ALPHA(Handle, value);
             }
         }
-        
+        /// <summary>
+        /// Sets the name of this <see cref="NativeBlip"/>.
+        /// </summary>
         public string Name
         {
             set
@@ -176,14 +218,18 @@ namespace CCL.GTAIV
 
         #region Methods
         /// <inheritdoc/>
-        public override void Dispose()
+        public override void Delete()
         {
             if (Exists())
                 REMOVE_BLIP(Handle);
             
-            base.Dispose();
+            base.Delete();
         }
 
+        /// <summary>
+        /// Changes the blip colour to be the given <paramref name="color"/>.
+        /// </summary>
+        /// <param name="color">The new color.</param>
         public void SetColorRGB(Color color)
         {
             if (IsValid)
@@ -357,5 +403,6 @@ namespace CCL.GTAIV
             return null;
         }
         #endregion
+
     }
 }

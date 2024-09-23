@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Numerics;
 
 using IVSDKDotNet.Enums;
@@ -31,13 +30,13 @@ namespace CCL.GTAIV
 
         #region Properties
         /// <summary>
-        /// Gets the position of this pickup.
+        /// Gets the position of this <see cref="NativePickup"/>.
         /// </summary>
         public Vector3 Position
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return Vector3.Zero;
 
                 GET_PICKUP_COORDINATES(Handle, out float x, out float y, out float z);
@@ -45,52 +44,52 @@ namespace CCL.GTAIV
             }
         }
         /// <summary>
-        /// Gets if this pickup has been collected.
+        /// Gets if this <see cref="NativePickup"/> has been collected.
         /// </summary>
         public bool HasBeenCollected
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return false;
 
                 return HAS_PICKUP_BEEN_COLLECTED(Handle);
             }
         }
         /// <summary>
-        /// Sets if parked cars can spawn on top of this pickup.
+        /// Sets if parked cars can spawn on top of this <see cref="NativePickup"/>.
         /// </summary>
         public bool DoNotSpawnParkedCarsOnTop
         {
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_DO_NOT_SPAWN_PARKED_CARS_ON_TOP(Handle, value);
             }
         }
         /// <summary>
-        /// Sets if this pickup can be collected by car.
+        /// Sets if this <see cref="NativePickup"/> can be collected by car.
         /// </summary>
         public bool CollectableByCar
         {
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_PICKUP_COLLECTABLE_BY_CAR(Handle, value);
             }
         }
         /// <summary>
-        /// Gets the current room hash of the pickup.
+        /// Gets the current room hash of the <see cref="NativePickup"/>.
         /// </summary>
         public uint RoomHash
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return 0;
 
                 GET_ROOM_KEY_FROM_PICKUP(Handle, out uint hash);
@@ -112,20 +111,20 @@ namespace CCL.GTAIV
 
         #region Methods
         /// <inheritdoc/>
-        public override void Dispose()
+        public override void Delete()
         {
             if (Exists())
                 REMOVE_PICKUP(Handle);
 
-            base.Dispose();
+            base.Delete();
         }
 
         /// <summary>
-        /// Adds a simple blip for this pickup.
+        /// Adds a simple blip for this <see cref="NativePickup"/>.
         /// </summary>
         public void AddSimpleBlip()
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
             
             ADD_SIMPLE_BLIP_FOR_PICKUP(Handle);
@@ -196,7 +195,7 @@ namespace CCL.GTAIV
         /// <returns>True if the given player has collected the pickup. Otherwise, false.</returns>
         public bool HasPlayerCollectedPickup(int playerIndex)
         {
-            if (!IsValid)
+            if (!Exists())
                 return false;
 
             return HAS_PLAYER_COLLECTED_PICKUP(playerIndex, Handle);
@@ -208,8 +207,6 @@ namespace CCL.GTAIV
         /// <returns>If successful, the attached <see cref="NativeBlip"/> is returned. Otherwise, <see langword="null"/>.</returns>
         public NativeBlip AttachBlip()
         {
-            if (!IsValid)
-                return null;
             if (!Exists())
                 return null;
 

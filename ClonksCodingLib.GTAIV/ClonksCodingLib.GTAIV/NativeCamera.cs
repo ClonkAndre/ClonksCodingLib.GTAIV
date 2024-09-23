@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+
 using IVSDKDotNet;
 using IVSDKDotNet.Enums;
 using static IVSDKDotNet.Native.Natives;
@@ -16,7 +17,6 @@ namespace CCL.GTAIV
     // SET_CAM_POINT_DAMPING_PARAMS
     // IS_DEBUG_CAMERA_ON
     // SET_GAME_CAM_HEADING
-    // SET_CAMERA_STATE
     // DESTROY_ALL_CAMS
     // IS_CAM_INTERPOLATING
 
@@ -25,15 +25,16 @@ namespace CCL.GTAIV
     /// </summary>
     public class NativeCamera : HandleObject
     {
+
         #region Properties
         /// <summary>
-        /// Gets or sets the position of the camera.
+        /// Gets or sets the position of this <see cref="NativeCamera"/>.
         /// </summary>
         public Vector3 Position
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return Vector3.Zero;
 
                 GET_CAM_POS(Handle, out Vector3 pos);
@@ -41,33 +42,33 @@ namespace CCL.GTAIV
             }
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
                 
                 SET_CAM_POS(Handle, value.X, value.Y, value.Z);
             }
         }
         /// <summary>
-        /// Sets the attach offset position of the camera.
+        /// Sets the attach offset position of this <see cref="NativeCamera"/>.
         /// </summary>
         public Vector3 Offset
         {
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_ATTACH_OFFSET(Handle, value.X, value.Y, value.Z);
             }
         }
         /// <summary>
-        /// Gets or sets the rotation of the camera.
+        /// Gets or sets the rotation of this <see cref="NativeCamera"/>.
         /// </summary>
         public Vector3 Rotation
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return Vector3.Zero;
 
                 GET_CAM_ROT(Handle, out Vector3 pos);
@@ -75,20 +76,20 @@ namespace CCL.GTAIV
             }
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_ROT(Handle, value.X, value.Y, value.Z);
             }
         }
         /// <summary>
-        /// Gets the direction of the camera.
+        /// Gets the direction of this <see cref="NativeCamera"/>.
         /// </summary>
         public Vector3 Direction
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return Vector3.Zero;
 
                 return Helper.RotationToDirection(Rotation);
@@ -96,13 +97,13 @@ namespace CCL.GTAIV
         }
 
         /// <summary>
-        /// Gets or sets the FOV of the camera.
+        /// Gets or sets the FOV of this <see cref="NativeCamera"/>.
         /// </summary>
         public float FOV
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return 0f;
                 
                 GET_CAM_FOV(Handle, out float fov);
@@ -110,20 +111,20 @@ namespace CCL.GTAIV
             }
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_FOV(Handle, value);
             }
         }
         /// <summary>
-        /// Gets or sets near clip of the camera.
+        /// Gets or sets near clip of this <see cref="NativeCamera"/>.
         /// </summary>
         public float NearClip
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return 0f;
 
                 GET_CAM_NEAR_CLIP(Handle, out float nearClip);
@@ -131,7 +132,7 @@ namespace CCL.GTAIV
             }
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_NEAR_CLIP(Handle, value);
@@ -139,13 +140,13 @@ namespace CCL.GTAIV
         }
 
         /// <summary>
-        /// Gets or sets the far DoF of the camera.
+        /// Gets or sets the far DoF of this <see cref="NativeCamera"/>.
         /// </summary>
         public float FarDoF
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return 0f;
 
                 GET_CAM_FAR_DOF(Handle, out float farDoF);
@@ -153,20 +154,20 @@ namespace CCL.GTAIV
             }
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_FAR_DOF(Handle, value);
             }
         }
         /// <summary>
-        /// Gets or sets the near DoF of the camera.
+        /// Gets or sets the near DoF of this <see cref="NativeCamera"/>.
         /// </summary>
         public float NearDoF
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return 0f;
 
                 GET_CAM_NEAR_DOF(Handle, out float farDoF);
@@ -174,7 +175,7 @@ namespace CCL.GTAIV
             }
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_NEAR_DOF(Handle, value);
@@ -182,49 +183,70 @@ namespace CCL.GTAIV
         }
 
         /// <summary>
-        /// Gets if the camera is active.
+        /// Gets if this <see cref="NativeCamera"/> is active.
         /// </summary>
         public bool IsActive
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return false;
 
                 return IS_CAM_ACTIVE(Handle);
             }
         }
         /// <summary>
-        /// Gets or sets if the camera is propagating.
+        /// Gets or sets if this <see cref="NativeCamera"/> is propagating.
         /// </summary>
         public bool IsPropagating
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return false;
 
                 return IS_CAM_PROPAGATING(Handle);
             }
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_PROPAGATE(Handle, value);
             }
         }
         /// <summary>
-        /// Sets if the <see cref="Offset"/> is relative.
+        /// Sets if the <see cref="Offset"/> of this <see cref="NativeCamera"/> is relative.
         /// </summary>
         public bool AttachOffsetIsRelative
         {
             set
             {
-                if (!IsValid)
+                if (!Exists())
                     return;
 
                 SET_CAM_ATTACH_OFFSET_IS_RELATIVE(Handle, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the state of this <see cref="NativeCamera"/>.
+        /// </summary>
+        public int State
+        {
+            get
+            {
+                if (!Exists())
+                    return 0;
+
+                return GET_CAM_STATE(Handle);
+            }
+            set
+            {
+                if (!Exists())
+                    return;
+
+                SET_CAMERA_STATE(Handle, value);
             }
         }
         #endregion
@@ -242,12 +264,12 @@ namespace CCL.GTAIV
 
         #region Methods
         /// <inheritdoc/>
-        public override void Dispose()
+        public override void Delete()
         {
             if (Exists())
                 DESTROY_CAM(Handle);
-            
-            base.Dispose();
+
+            base.Delete();
         }
 
         /// <summary>
@@ -255,7 +277,7 @@ namespace CCL.GTAIV
         /// </summary>
         public void Activate()
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             SET_CAM_ACTIVE(Handle, true);
@@ -267,12 +289,20 @@ namespace CCL.GTAIV
         /// </summary>
         public void Deactivate()
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             SET_CAM_ACTIVE(Handle, false);
             IsPropagating = false;
             ACTIVATE_SCRIPTED_CAMS(false, false);
+        }
+
+        public void Process()
+        {
+            if (!Exists())
+                return;
+
+            CAM_PROCESS(Handle);
         }
 
         /// <summary>
@@ -282,14 +312,14 @@ namespace CCL.GTAIV
         /// <param name="unk">Undocumented.</param>
         public void SetDoFFocusPoint(Vector3 pos, float unk)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             SET_CAM_DOF_FOCUSPOINT(Handle, pos.X, pos.Y, pos.Z, unk);
         }
         public void SetTargetPed(int pedHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             SET_CAM_TARGET_PED(Handle, pedHandle);
@@ -306,10 +336,23 @@ namespace CCL.GTAIV
         /// <param name="unknown1">Unknown. Usually 0.0f, Sometimes (rarely) up to 0.9f.</param>
         public void Shake(CameraShakeType shakeType, CameraShakeBehaviour shakeBehaviour, int shakeDuration, float shakeAmplitude, float shakeFrequency, float unknown1)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             SET_CAM_COMPONENT_SHAKE(Handle, (int)shakeType, (int)shakeBehaviour, shakeDuration, shakeAmplitude, shakeFrequency, unknown1);
+        }
+
+        /// <summary>
+        /// Adds a drunk effect on this <see cref="NativeCamera"/>.
+        /// </summary>
+        /// <param name="intensity">The intensity of the drunk effect.</param>
+        /// <param name="time">How long the drunk effect will last for.</param>
+        public void SetDrunkEffect(float intensity, int time)
+        {
+            if (!Exists())
+                return;
+
+            SET_DRUNK_CAM(Handle, intensity, time);
         }
 
         /// <summary>
@@ -318,7 +361,7 @@ namespace CCL.GTAIV
         /// <param name="pos">The position to point at.</param>
         public void PointAtCoord(Vector3 pos)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             POINT_CAM_AT_COORD(Handle, pos.X, pos.Y, pos.Z);
@@ -329,7 +372,7 @@ namespace CCL.GTAIV
         /// <param name="pedHandle">The handle of the ped to point at.</param>
         public void PointAtPed(int pedHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             POINT_CAM_AT_PED(Handle, pedHandle);
@@ -340,7 +383,7 @@ namespace CCL.GTAIV
         /// <param name="vehicleHandle">The handle of the vehicle to point at.</param>
         public void PointAtVehicle(int vehicleHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             POINT_CAM_AT_VEHICLE(Handle, vehicleHandle);
@@ -351,7 +394,7 @@ namespace CCL.GTAIV
         /// <param name="objectHandle">The handle of the object to point at.</param>
         public void PointAtObject(int objectHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             POINT_CAM_AT_OBJECT(Handle, objectHandle);
@@ -362,7 +405,7 @@ namespace CCL.GTAIV
         /// <param name="camHandle">The handle of the camera to point at.</param>
         public void PointAtCam(int camHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             POINT_CAM_AT_CAM(Handle, camHandle);
@@ -372,7 +415,7 @@ namespace CCL.GTAIV
         /// </summary>
         public void Unpoint()
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
             
             UNPOINT_CAM(Handle);
@@ -384,7 +427,7 @@ namespace CCL.GTAIV
         /// <param name="vehicleHandle">The handle of the vehicle.</param>
         public void AttachToVehicle(int vehicleHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             ATTACH_CAM_TO_VEHICLE(Handle, vehicleHandle);
@@ -395,7 +438,7 @@ namespace CCL.GTAIV
         /// <param name="objectHandle">The handle of the object.</param>
         public void AttachToObject(int objectHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             ATTACH_CAM_TO_OBJECT(Handle, objectHandle);
@@ -406,7 +449,7 @@ namespace CCL.GTAIV
         /// <param name="pedHandle">The handle of the ped.</param>
         public void AttachToPed(int pedHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             ATTACH_CAM_TO_PED(Handle, pedHandle);
@@ -417,7 +460,7 @@ namespace CCL.GTAIV
         /// <param name="viewportHandle">The handle of the viewport.</param>
         public void AttachToViewport(int viewportHandle)
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             ATTACH_CAM_TO_VIEWPORT(Handle, viewportHandle);
@@ -427,7 +470,7 @@ namespace CCL.GTAIV
         /// </summary>
         public void Unattach()
         {
-            if (!IsValid)
+            if (!Exists())
                 return;
 
             UNATTACH_CAM(Handle);
@@ -466,7 +509,7 @@ namespace CCL.GTAIV
         /// <returns>True if the position is visible. Otherwise, false.</returns>
         public bool IsSphereVisible(Vector3 pos, float radius)
         {
-            if (!IsValid)
+            if (!Exists())
                 return false;
 
             return CAM_IS_SPHERE_VISIBLE(Handle, pos, radius);
@@ -566,6 +609,33 @@ namespace CCL.GTAIV
 
             return null;
         }
+        /// <summary>
+        /// Gets the script camera.
+        /// </summary>
+        /// <returns>If successful, the script camera is returned. Otherwise, false.</returns>
+        public static NativeCamera GetScriptCam()
+        {
+            GET_SCRIPT_CAM(out int cam);
+
+            if (cam != 0)
+                return new NativeCamera(cam);
+
+            return null;
+        }
+        /// <summary>
+        /// Gets the script draw camera.
+        /// </summary>
+        /// <returns>If successful, the script draw camera is returned. Otherwise, false.</returns>
+        public static NativeCamera GetScriptDrawCam()
+        {
+            GET_SCRIPT_DRAW_CAM(out int cam);
+
+            if (cam != 0)
+                return new NativeCamera(cam);
+
+            return null;
+        }
         #endregion
+
     }
 }

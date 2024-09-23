@@ -11,14 +11,15 @@ namespace CCL.GTAIV
     public class NativeFire : HandleObject
     {
 
-        // START_OBJECT_FIRE, EXTINGUISH_OBJECT_FIRE
-
         #region Properties
+        /// <summary>
+        /// Gets the position of this <see cref="NativeFire"/>.
+        /// </summary>
         public Vector3 Position
         {
             get
             {
-                if (!IsValid)
+                if (!Exists())
                     return Vector3.Zero;
 
                 GET_SCRIPT_FIRE_COORDS(Handle, out Vector3 pos);
@@ -40,12 +41,12 @@ namespace CCL.GTAIV
 
         #region Methods
         /// <inheritdoc/>
-        public override void Dispose()
+        public override void Delete()
         {
             if (Exists())
                 REMOVE_SCRIPT_FIRE(Handle);
 
-            base.Dispose();
+            base.Delete();
         }
 
         // Statics
@@ -62,6 +63,11 @@ namespace CCL.GTAIV
         {
             if (ped != null)
                 EXTINGUISH_CHAR_FIRE(ped.GetHandle());
+        }
+        public static void ExtinguishObjectFire(IVObject obj)
+        {
+            if (obj != null)
+                EXTINGUISH_CHAR_FIRE(obj.GetHandle());
         }
         #endregion
 
@@ -155,6 +161,24 @@ namespace CCL.GTAIV
                 return null;
 
             int handle = START_CAR_FIRE(veh.GetHandle());
+
+            if (handle == 0)
+                return null;
+
+            return new NativeFire(handle);
+        }
+
+        /// <summary>
+        /// Starts a new object fire for the specified <paramref name="obj"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="IVObject"/> that should be set on fire.</param>
+        /// <returns>If successful, the newly created fire is returned. Otherwise, false.</returns>
+        public static NativeFire StartObjectFire(IVObject obj)
+        {
+            if (obj == null)
+                return null;
+
+            int handle = START_OBJECT_FIRE(obj.GetHandle());
 
             if (handle == 0)
                 return null;

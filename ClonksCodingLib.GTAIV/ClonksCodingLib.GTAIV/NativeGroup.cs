@@ -12,7 +12,9 @@ namespace CCL.GTAIV
     public class NativeGroup : HandleObject
     {
 
+        #region Consts
         private const int MAX_GROUP_SIZE = 7;
+        #endregion
 
         #region Properties
         /// <summary>
@@ -368,12 +370,12 @@ namespace CCL.GTAIV
 
         #region Methods
         /// <inheritdoc/>
-        public override void Dispose()
+        public override void Delete()
         {
             if (Exists())
                 REMOVE_GROUP(Handle);
 
-            base.Dispose();
+            base.Delete();
         }
 
         /// <summary>
