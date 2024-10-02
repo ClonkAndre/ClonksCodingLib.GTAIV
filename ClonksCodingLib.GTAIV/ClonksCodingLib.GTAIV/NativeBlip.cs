@@ -346,6 +346,18 @@ namespace CCL.GTAIV
 
             return null;
         }
+        public static NativeBlip AddBlip(int targetPed)
+        {
+            if (targetPed == 0)
+                return null;
+
+            ADD_BLIP_FOR_CHAR(targetPed, out int handle);
+
+            if (handle != 0)
+                return new NativeBlip(handle);
+
+            return null;
+        }
         public static NativeBlip AddBlipContact(Vector3 target)
         {
             ADD_BLIP_FOR_CONTACT(target.X, target.Y, target.Z, out int handle);

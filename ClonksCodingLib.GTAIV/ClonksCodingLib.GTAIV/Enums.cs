@@ -16,6 +16,16 @@ namespace CCL.GTAIV
 	};
 
     /// <summary>
+    /// Left, Right or None.
+    /// </summary>
+    public enum Side
+    {
+        None,
+        Left,
+        Right
+    }
+
+    /// <summary>
     /// Contains ped genders.
     /// </summary>
     public enum PedGender

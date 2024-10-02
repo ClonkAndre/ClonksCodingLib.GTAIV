@@ -301,6 +301,11 @@ namespace CCL.GTAIV
             GET_WEAPONTYPE_MODEL((int)weaponType, out uint model);
             return new NativeModel(model);
         }
+
+        public static NativeModel Empty()
+        {
+            return new NativeModel(0);
+        }
         #endregion
 
         #region Overrides

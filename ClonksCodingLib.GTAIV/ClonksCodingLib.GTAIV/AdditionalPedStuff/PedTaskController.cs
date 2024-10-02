@@ -36,13 +36,6 @@ namespace CCL.GTAIV
                 return handle != 0;
             }
         }
-        /// <summary>
-        /// Sets if the <see cref="IVPed"/> should keep a task.
-        /// </summary>
-        public bool AlwaysKeepTask
-        {
-            set { SET_CHAR_KEEP_TASK(handle, value); }
-        }
         #endregion
 
         #region Constructor
@@ -89,6 +82,17 @@ namespace CCL.GTAIV
             return new PedTaskController(false, handle);
         }
         #endregion
+
+        /// <summary>
+        /// Sets if the <see cref="IVPed"/> should keep a task.
+        /// </summary>
+        public void SetAlwaysKeepTask(bool set)
+        {
+            if (!IsValid)
+                return;
+
+            SET_CHAR_KEEP_TASK(handle, set);
+        }
 
         public void ClearAll()
         {

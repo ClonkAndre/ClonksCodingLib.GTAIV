@@ -375,6 +375,32 @@ namespace CCL.GTAIV
             return CanVehicleSeeVehicle(source, targetVehicle.GetHandle(), sourceVehicleViewDistance, sourceVehicleFOV);
         }
 
+        public static Side GetSidePedIsStandingFromVehiclesPerspective(this IVVehicle veh, IVPed ped)
+        {
+            if (veh == null)
+                return Side.None;
+            if (ped == null)
+                return Side.None;
+            if (!Exists(veh))
+                return Side.None;
+            if (!ped.Exists())
+                return Side.None;
+
+            float heading = GetHeading(veh);
+
+            Vector3 vec = ped.Matrix.Pos - veh.Matrix.Pos;
+            Vector3 direction = Vector3.Cross(Helper.HeadingToDirection(heading), Vector3.UnitZ);
+
+            float dot = Vector3.Dot(direction, vec);
+
+            if (dot < 0f)
+                return Side.Left;
+            else if (dot > 0f)
+                return Side.Right;
+
+            return Side.None;
+        }
+
         public static unsafe uint GetVehIndicatorState(this IVVehicle veh, VehicleIndicator indicator)
         {
             if (veh == null)

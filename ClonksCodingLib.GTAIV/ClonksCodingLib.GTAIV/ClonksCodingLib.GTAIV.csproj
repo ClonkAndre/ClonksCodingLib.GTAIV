@@ -74,6 +74,7 @@
     <Compile Include="NativeGroup.cs" />
     <Compile Include="NativeLight.cs" />
     <Compile Include="NativeModel.cs" />
+    <Compile Include="NativePed.cs" />
     <Compile Include="NativePickup.cs" />
     <Compile Include="NativeRoom.cs" />
     <Compile Include="NativeFire.cs" />
