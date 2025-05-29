@@ -56,6 +56,11 @@
         }
         #endregion
 
+        internal void SetHandle(int newHandle)
+        {
+            Handle = newHandle;
+        }
+
         /// <summary>
         /// Deletes this native object.
         /// </summary>

@@ -3,6 +3,9 @@ using static IVSDKDotNet.Native.Natives;
 
 namespace CCL.GTAIV
 {
+    /// <summary>
+    /// A simple animation controller for <see cref="IVPed"/>'s. Uses native functions.
+    /// </summary>
     public struct PedAnimationController
     {
         #region Variables and Properties

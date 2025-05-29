@@ -336,6 +336,21 @@ namespace CCL.GTAIV
             return DOES_CHAR_EXIST(GetHandle(ped));
         }
 
+        /// <summary>
+        /// Converts this <see cref="IVPed"/> instance to a <see cref="NativePed"/> object.
+        /// </summary>
+        /// <param name="ped">The <see cref="IVPed"/> instance to convert. Must not be <see langword="null"/>.</param>
+        /// <returns>A <see cref="NativePed"/> object representing the specified <see cref="IVPed"/> instance,  or <see langword="null"/> if the <paramref name="ped"/> is <see langword="null"/> or does not exist.</returns>
+        public static NativePed GetNativePed(this IVPed ped)
+        {
+            if (ped == null)
+                return null;
+            if (!Exists(ped))
+                return null;
+
+            return new NativePed(GetHandle(ped));
+        }
+
         public static bool IsRequiredForMission(this IVPed ped)
         {
             if (ped == null)

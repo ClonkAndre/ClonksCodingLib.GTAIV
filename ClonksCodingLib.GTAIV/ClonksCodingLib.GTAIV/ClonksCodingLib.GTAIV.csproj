@@ -2,8 +2,8 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{31CE9C9F-778D-40B4-BB7C-0E2CA2D6C530}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -36,9 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IVSDKDotNetWrapper, Version=1.6.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="IVSDKDotNetWrapper, Version=1.8.1.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\IVSDKDotNet\Release\IVSDKDotNetWrapper.dll</HintPath>
+      <HintPath>..\..\..\IVSDKDotNet\Debug\IVSDKDotNetWrapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,6 +52,7 @@
     <Compile Include="ExtendedIVSave.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
+    <Compile Include="Extensions\IVDynamicEntityExtensions.cs" />
     <Compile Include="Extensions\IVObjectExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\IVPedExtensions.cs" />
@@ -74,11 +75,14 @@
     <Compile Include="NativeGroup.cs" />
     <Compile Include="NativeLight.cs" />
     <Compile Include="NativeModel.cs" />
+    <Compile Include="NativeObject.cs" />
     <Compile Include="NativePed.cs" />
     <Compile Include="NativePickup.cs" />
+    <Compile Include="NativePlayer.cs" />
     <Compile Include="NativeRoom.cs" />
     <Compile Include="NativeFire.cs" />
     <Compile Include="NativeTaskSequence.cs" />
+    <Compile Include="NativeVehicle.cs" />
     <Compile Include="NativeWorld.cs" />
     <Compile Include="NewsScrollbar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +92,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Rope.cs" />
+    <Compile Include="Structs\AnimDetails.cs" />
     <Compile Include="Structs\Rectangle3D.cs" />
     <Compile Include="AdditionalPedStuff\PedTaskController.cs" />
     <Compile Include="Win32\Win32Natives.cs" />
