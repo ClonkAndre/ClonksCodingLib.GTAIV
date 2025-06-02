@@ -1169,11 +1169,15 @@ namespace CCL.GTAIV
             SET_FLOAT_STAT((int)stat, value);
         }
 
-        public static int GetPlayerPedHandle()
+        public static int GetPlayerPedHandle(uint playerId)
         {
-            int playerIndex = CONVERT_INT_TO_PLAYERINDEX(GET_PLAYER_ID());
+            int playerIndex = CONVERT_INT_TO_PLAYERINDEX(playerId);
             GET_PLAYER_CHAR(playerIndex, out int handle);
             return handle;
+        }
+        public static int GetPlayerPedHandle()
+        {
+            return GetPlayerPedHandle(GET_PLAYER_ID());
         }
 
         public static string GetCommonWeaponName(eWeaponType type)

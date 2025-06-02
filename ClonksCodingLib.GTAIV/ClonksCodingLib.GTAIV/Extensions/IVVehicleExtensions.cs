@@ -169,6 +169,21 @@ namespace CCL.GTAIV
             return DOES_VEHICLE_EXIST(GetHandle(veh));
         }
 
+        /// <summary>
+        /// Converts this <see cref="IVVehicle"/> instance to a <see cref="NativeVehicle"/> object.
+        /// </summary>
+        /// <param name="veh">The <see cref="IVVehicle"/> instance to convert. Must not be <see langword="null"/>.</param>
+        /// <returns>A <see cref="NativeVehicle"/> object representing the specified <see cref="IVVehicle"/> instance,  or <see langword="null"/> if the <paramref name="veh"/> is <see langword="null"/> or does not exist.</returns>
+        public static NativeVehicle GetNativeVehicle(this IVVehicle veh)
+        {
+            if (veh == null)
+                return null;
+            if (!Exists(veh))
+                return null;
+
+            return new NativeVehicle(GetHandle(veh));
+        }
+
         public static bool IsRequiredForMission(this IVVehicle veh)
         {
             if (veh == null)
