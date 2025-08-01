@@ -4,6 +4,8 @@ using IVSDKDotNet;
 using IVSDKDotNet.Enums;
 using static IVSDKDotNet.Native.Natives;
 
+using CCL.GTAIV.Extensions;
+
 namespace CCL.GTAIV
 {
     /// <summary>

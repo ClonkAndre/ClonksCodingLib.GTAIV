@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using IVSDKDotNet;
 using static IVSDKDotNet.Native.Natives;
 
-namespace CCL.GTAIV
+namespace CCL.GTAIV.Extensions
 {
     /// <summary>
     /// Contains extensions for the <see cref="IVObject"/> class.

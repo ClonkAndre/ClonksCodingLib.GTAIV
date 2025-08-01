@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 
-namespace CCL.GTAIV
+namespace CCL.GTAIV.Extensions
 {
     /// <summary>
     /// Contains extensions for the <see cref="Color"/> struct.

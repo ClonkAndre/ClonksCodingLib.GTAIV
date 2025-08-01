@@ -3,6 +3,8 @@
 using IVSDKDotNet;
 using static IVSDKDotNet.Native.Natives;
 
+using CCL.GTAIV.Extensions;
+
 namespace CCL.GTAIV
 {
     /// <summary>

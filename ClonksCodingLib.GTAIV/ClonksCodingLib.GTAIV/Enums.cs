@@ -397,6 +397,21 @@ namespace CCL.GTAIV
         Night
     }
 
+    /// <summary>
+    /// Specifies the origin point of a rectangle for positioning or alignment purposes.
+    /// </summary>
+    /// <remarks>This enumeration is commonly used to define how a rectangle is positioned or aligned relative
+    /// to a reference point. For example, the origin can be set to the center of the rectangle or one of its
+    /// corners.</remarks>
+    public enum RectangleOrigin
+    {
+        Center,
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
+    }
+
 }
 
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

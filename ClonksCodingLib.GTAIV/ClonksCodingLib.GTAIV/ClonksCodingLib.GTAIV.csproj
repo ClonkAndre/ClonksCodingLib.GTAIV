@@ -53,6 +53,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="Extensions\FloatExtensions.cs" />
     <Compile Include="Extensions\IVDynamicEntityExtensions.cs" />
+    <Compile Include="Extensions\IVEntityExtensions.cs" />
     <Compile Include="Extensions\IVObjectExtensions.cs" />
     <Compile Include="Extensions\ColorExtensions.cs" />
     <Compile Include="Extensions\IVPedExtensions.cs" />
@@ -63,8 +64,8 @@
     <Compile Include="AnimationStuff.cs" />
     <Compile Include="Helper\CoronaHelper.cs" />
     <Compile Include="Helper\ImGuiHelper.cs" />
-    <Compile Include="Helper\InternalHelper.cs" />
     <Compile Include="Helper\LightHelper.cs" />
+    <Compile Include="Internal\InternalHelper.cs" />
     <Compile Include="Mods\ZMenuIV.cs" />
     <Compile Include="NativeBlip.cs" />
     <Compile Include="NativeCamera.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="NativePlayer.cs" />
     <Compile Include="NativeRoom.cs" />
     <Compile Include="NativeFire.cs" />
+    <Compile Include="NativeScreen.cs" />
     <Compile Include="NativeTaskSequence.cs" />
     <Compile Include="NativeVehicle.cs" />
     <Compile Include="NativeWorld.cs" />

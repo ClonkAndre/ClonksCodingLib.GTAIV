@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using IVSDKDotNet;
 
-// Version 0.1 by ItsClonkAndre
+using CCL.GTAIV.Internal;
 
 // TODO: This sadly doesn't work as how i first expected it to work...
 

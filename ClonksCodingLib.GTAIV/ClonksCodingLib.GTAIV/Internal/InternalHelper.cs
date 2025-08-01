@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace CCL.GTAIV
+namespace CCL.GTAIV.Internal
 {
     internal static class InternalHelper
     {
@@ -27,7 +29,7 @@ namespace CCL.GTAIV
 
                 return Convert.ToBase64String(compressedBytes);
             }
-            catch (Exception){}
+            catch (Exception) { }
 
             return string.Empty;
         }
@@ -51,10 +53,11 @@ namespace CCL.GTAIV
 
                 return Encoding.UTF8.GetString(decompressedBytes);
             }
-            catch (Exception){}
+            catch (Exception) { }
 
             return string.Empty;
         }
+
 
     }
 }
