@@ -66,6 +66,7 @@
     <Compile Include="Helper\ImGuiHelper.cs" />
     <Compile Include="Helper\LightHelper.cs" />
     <Compile Include="Internal\InternalHelper.cs" />
+    <Compile Include="Mods\FusionFix.cs" />
     <Compile Include="Mods\ZMenuIV.cs" />
     <Compile Include="NativeBlip.cs" />
     <Compile Include="NativeCamera.cs" />

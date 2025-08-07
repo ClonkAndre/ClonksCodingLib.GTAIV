@@ -9,11 +9,11 @@ namespace CCL.GTAIV.Win32
     public class Win32Natives
     {
 
-        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
         public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        public static extern IntPtr GetModuleHandle([MarshalAs(UnmanagedType.LPWStr)] string lpModuleName);
+        [DllImport("kernel32.dll", CharSet = CharSet.Ansi, SetLastError = true)]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
 
         /// <summary>
         /// Gets the base address of a module by the given <paramref name="moduleName"/> and subtracts it by the given <paramref name="subtract"/> value.

@@ -16,11 +16,26 @@ namespace CCL.GTAIV.Mods
     {
 
         #region Enums
+        /// <summary>
+        /// Specifies the radar styles for the GTA V Radar feature.
+        /// </summary>
         public enum eVRadarStyle : int
         {
+            /// <summary>
+            /// Only used when the radar style could not be determined or is not set.
+            /// </summary>
             UNKNOWN = -1,
+            /// <summary>
+            /// Last Gen radar style.
+            /// </summary>
             LG = 0,
+            /// <summary>
+            /// Next Gen radar style.
+            /// </summary>
             NG = 1,
+            /// <summary>
+            /// Beta radar style.
+            /// </summary>
             Beta = 2
         }
         #endregion
@@ -36,11 +51,12 @@ namespace CCL.GTAIV.Mods
         /// </summary>
         /// <remarks>This method checks for the presence of the module "ZMenuIV.asi" and retrieves its base address if found.
         /// If the module is not found, the method returns <see langword="false"/> and sets <paramref name="baseAddress"/> to <see cref="IntPtr.Zero"/>.</remarks>
-        /// <param name="baseAddress">When this method returns, contains the base address of the module (with 0x10000000 already subtracted) if the operation is successful; otherwise, <see cref="IntPtr.Zero"/>.</param>
+        /// <param name="baseAddress">When this method returns, contains the base address of the module if the operation is successful; otherwise, <see cref="IntPtr.Zero"/>.</param>
+        /// <param name="subtract">Subtracts the returned base address by 0x10000000.</param>
         /// <returns><see langword="true"/> if the base address was successfully retrieved; otherwise, <see langword="false"/>.</returns>
-        public static bool TryGetBaseAddress(out IntPtr baseAddress)
+        public static bool TryGetBaseAddress(out IntPtr baseAddress, bool subtract = true)
         {
-            IntPtr b = Win32Natives.GetModuleHandle("ZMenuIV.asi", 0x10000000);
+            IntPtr b = Win32Natives.GetModuleHandle("ZMenuIV.asi", subtract ? 0x10000000 : 0x0);
 
             if (b == IntPtr.Zero)
             {
@@ -56,7 +72,7 @@ namespace CCL.GTAIV.Mods
         /// Gets if ZMenuIV is present.
         /// </summary>
         /// <returns><see langword="true"/> if it is. Otherwise, <see langword="false"/>.</returns>
-        public static bool IsZMenuPresent()
+        public static bool IsPresent()
         {
             return Win32Natives.GetModuleHandle("ZMenuIV.asi") != IntPtr.Zero;
         }
@@ -74,9 +90,9 @@ namespace CCL.GTAIV.Mods
         /// <para>e.g.: 1 = 21.10.17.[1]</para>
         /// </param>
         /// <returns><see langword="true"/> if the function was successful at getting the current version. Otherwise, <see langword="false"/>.</returns>
-        public static bool GetZMenuVersion(out uint puiMajorVersion, out uint puiMinorVersion)
+        public static bool GetVersion(out uint puiMajorVersion, out uint puiMinorVersion)
         {
-            if (!TryGetBaseAddress(out IntPtr baseAddr))
+            if (!TryGetBaseAddress(out IntPtr baseAddr, false))
             {
                 puiMajorVersion = 0;
                 puiMinorVersion = 0;
